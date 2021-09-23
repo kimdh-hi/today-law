@@ -60,6 +60,11 @@
             display: block;
         }
 
+        .modal-content {
+            width: 60%;
+            height: 50%;
+        }
+
 
     </style>
     <script>
@@ -85,7 +90,7 @@
 
         })
 
-        //모달 열기
+        //모달 열기 (id를 인자로 받는 함수??)
         function open_modal(id) {
             //console.log(this.title)
             $.ajax({
@@ -100,23 +105,24 @@
             let temp_html = `<div class="modal is-active">
                                 <div class="modal-background" onclick="close_modal()"></div>
                                 <div class="modal-content">
-                                    <div class="card">
-                                        <div class="card-content" id="like">
+
+                                        <div class="card-content" style="text-align: center">
                                             <div class="media">
                                                 <div class="media-content">
                                                     <p class="title is-4">${title}</p>
-                                                    <p class="subtitle is-6">이름</p>
+
+                                                    <p class="subtitle is-6">xxx 의원</p>
                                                 </div>
                                             </div>
-
+                                            <hr>
                                             <div class="content">
                                                 ${content}
                                                 <br>
-                                                <time datetime="2016-1-1">${date}</time>
+                                                <time style="font-size: 0.5em" datetime="2016-1-1">${date}</time>
                                             </div>
 
                                         </div>
-                                    </div>
+
                                 </div>
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
                             </div>`
