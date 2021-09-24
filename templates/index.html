@@ -88,20 +88,17 @@
         })
 
         //모달 열기 (id를 인자로 받는 함수??)
-        function open_modal() {
-            let url = 'http://likms.assembly.go.kr/bill/billDetail.do?billId=PRC_J2G1Q0J9Y2K3Y1P1E0N5Q1G7Z8N8D5&ageFrom=21&ageTo=21'
-            //console.log(this.title)
+        function open_modal(url) {
+            console.log(url)
             $.ajax({
                 type: "POST",
                 url: "/api/laws/details",
                 data: {url_give: url},
                 success: function (response) {
-                    alert('modal ok')
                     let title = response['title'].split('(')[0]
                     let proposer = response['proposer']
                     let content = response['content']
                     let date = response['date']
-                    console.log(content)
                     let content2 = content.split('제안이유')[1].split('주요내용')[0]
                     let content3 = content.split('주요내용')[1]
                     let temp_html = `<div class="modal is-active">
@@ -194,7 +191,7 @@
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-content">
-                                        <p class="title is-4" id="title" onclick="open_modal()">${res[i].title}</p>
+                                        <p class="title is-4" id="title" onclick="open_modal('${res[i].url}')">${res[i].title}</p>
                                         <p class="subtitle is-6">${res[i].proposer_name}</p>
                                         <p>${res[i].proposer_names}</p>
                                     </div>
