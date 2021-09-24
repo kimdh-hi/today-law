@@ -58,7 +58,8 @@ def get_laws():
             'title':d['BILL_NAME'],               # 법안제목
             'proposer_name':d['RST_PROPOSER'],    # 대표제안자
             'proposer_names':names,               # 대표제안자 외 제안자
-            'date':d['PROPOSE_DT']                # 발의 날짜
+            'date':d['PROPOSE_DT'],               # 발의 날짜
+            'url':d['DETAIL_LINK']        # 상세내용 크롤링 link
         })
 
     return jsonify(response)
