@@ -3,29 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-        <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
-</head>
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            type: "GET",
-            url: "/test",
-            success: function(res) {
-                console.log(res)
-            }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .title:hover {
+            text-decoration: underline;
+        }
+
+        .hero is-warning {
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 4em;
+        }
+
+        .icon {
+            width: 15em;
+        }
+
+        .title-logo {
+            width: 20%;
+        }
+
+        .card {
+            margin-left: 10em;
+            margin-right: 10em;
+        }
+
+        .card-container div.card-list {
+            display: none;
+        }
+
+        .card-container div.card-list.on {
+            display: block;
+        }
+
+        .modal-content {
+            width: 60%;
+            height: 50%;
+        }
+
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            // 법안목록 받아오기
+            get_law_list()
+
+            //탭 메뉴 전환 ( 전체보기 / 즐겨찾기 )
+            $(".tab_title li").click(function () {
+                let idx = $(this).index();
+                //console.log(idx)
+                $(".tab_title li").removeClass("is-active");
+                $(".tab_title li").eq(idx).addClass("is-active");
+                $(".card-container > .card-list").hide();
+                $(".card-container > .card-list").eq(idx).show();
+                console.log($(".card-container > .card-list").index())
+            })
+
         })
-    })
-</script>
+
+        //모달 열기 (id를 인자로 받는 함수??)
+        function open_modal(id) {
+            //console.log(this.title)
+            $.ajax({
+                type: "GET",
+                url: "/api/laws/details",
+                data: {},
+                success: function (response) {
+
+                }
+            })
+
+            //$(".modal").addClass("is-active");
+            let temp_html = `<div class="modal is-active">
+                                <div class="modal-background" onclick="close_modal()"></div>
+                                <div class="modal-content">
+                                        <div class="card-content" style="text-align: center">
+                                            <div class="media">
+                                                <div class="media-content">
+                                                    <p class="title is-4">${title}</p>
+                                                    <p class="subtitle is-6">xxx 의원</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="content">
+                                                ${content}
+                                                <br>
+                                                <time style="font-size: 0.5em" datetime="2016-1-1">${date}</time>
+                                            </div>
+                                        </div>
+                                </div>
+                                <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
+                            </div>`
+            $('body').append(temp_html)
+        }
+
+
+        //모달 닫기
+        function close_modal() {
+            $(".modal").removeClass("is-active");
+        }
+
+        //법안 전체목록 가져오기
+        function get_law_list() {
+            $('#laws-box').empty()
+            $.ajax({
+                type:"GET",
+                url:"/api/laws?offset=1",
+                success: function(res) {
+                    console.log(res)
+                    for (let i=0;i<res.length;i++) {
+                        let tmp_html = `<div class="card">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-content">
+                                        <p class="title is-4" id="title" onclick="open_modal()">${res[i].title}</p>
+                                        <p class="subtitle is-6">${res[i].name}</p>
+                                    </div>
+                                </div>
+
+                                <div class="content" id="content">
+                                    <time id="date" datetime="2016-1-1">${res[i].date}</time>
+                                </div>
+
+                            </div>`
+                         $('#laws-box').append(tmp_html)
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+
 <body>
+<section class="hero is-info is-medium">
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item">
+                        <img src="/static/congress.png" alt="Logo">
+                    </a>
+                    <span class="navbar-burger" data-target="navbarMenuHeroB">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+                </div>
+                <div id="navbarMenuHeroB" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a class="navbar-item is-active">
+                            Today 국회
+                        </a>
+                        <a class="navbar-item">
+                            메뉴1
+                        </a>
+                        <a class="navbar-item">
+                            메뉴2
+                        </a>
+                        <span class="navbar-item">
+              <a class="button is-info is-inverted">
+                <span>로그인</span>
+              </a>
+            </span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <p class="title">
+                Today 국회
+            </p>
+            <img class="title-logo" src="/static/congress.png" alt="Logo"/>
+            <p class="subtitle">
+                국회 발의 법안 간편하게 보자!
+            </p>
+        </div>
+    </div>
+
+    <div class="hero-foot">
+        <nav class="tabs is-boxed is-fullwidth">
+            <div class="container">
+                <ul class="tab_title">
+                    <li class="is-active">
+                        <a>전체 보기</a>
+                    </li>
+                    <li>
+                        <a>⭐ 즐겨찾기</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</section>
+<div class="card-container">
+    <div class="card-list on" id="laws-box">
+        <div class="card">
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4" id="title" onclick="open_modal()">법안 제목</p>
+                        <p class="subtitle is-6">발의자</p>
+                    </div>
+                </div>
+
+                <div class="content" id="content">
+                    법안 내용
+                    <br>
+                    <time id="date" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4" id="title" onclick="open_modal()">법안 제목</p>
+                        <p class="subtitle is-6">발의자</p>
+                    </div>
+                </div>
+
+                <div class="content" id="content">
+                    법안 내용
+                    <br>
+                    <time id="date" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="card-list" id="bookmark">
+        <div class="card">
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4" onclick="open_modal()">즐겨찾기한 법안 이름</p>
+                        <p class="subtitle is-6">발의자</p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    법안 내용
+                    <br>
+                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4" onclick="open_modal()">즐겨찾기한 법안 이름</p>
+                        <p class="subtitle is-6">발의자</p>
+                    </div>
+                </div>
+
+                <div class="content">
+                    법안 내용
+                    <br>
+                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>

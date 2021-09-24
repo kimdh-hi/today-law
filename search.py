@@ -1,0 +1,68 @@
+import base64
+
+from flask import Flask, jsonify, request, Blueprint
+import requests
+from urllib import parse
+import xml.etree.ElementTree as et
+tree = et.parse('keys.xml')
+apiKey = tree.find('string[@name="api-key"]').text
+
+bp = Blueprint('search', __name__, url_prefix='/')
+
+# open api 주소
+# https://open.assembly.go.kr/portal/data/service/selectServicePage.do/OK7XM1000938DS17215
+
+type = 'json'
+age = '21'
+
+##=========================================##
+# 법안명, 발의제안자로 발의법안 조회 API
+# 1. 검색조건(condition)이 없는 경우 그냥 조회
+# 2. 검색조건이 법안명인 경우 법안명(BILL_NAME)으로 조회
+# 3. 검색조건이 제안자명인 경우 제안자명(PROPOSER)로 조회
+##=========================================##
+@bp.route('/api/laws')
+def get_laws():
+    query = request.args.get('query')
+    proposer_name = request.args.get('proposer')
+    condition = request.args.get('condition')
+    pIndex = request.args.get('offset')
+
+    #== 검색조건이 없는 경우 ==#
+    if query is None and condition is None:
+        data = requests.get(
+            f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&pIndex={pIndex}&pSize=10')
+    #== 법안명으로 검색 ==#
+    elif condition == '법안명':
+        url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&BILL_NAME={query}&pIndex={pIndex}&pSize=10'
+        query = encode_querystring(url)
+
+        data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
+    #== 법안발의 제안자명으로 검색==#
+    # http://localhost:5000/api/laws?offset=1&proposer=%EA%B9%80%EA%B4%91%EB%A6%BC&condition=%EC%A0%9C%EC%95%88%EC%9E%90
+    elif condition == '제안자':
+        url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&PROPOSER={proposer_name}&pIndex={pIndex}&pSize=10'
+        query = encode_querystring(url)
+
+        data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
+
+    data = data.json()
+    data = data['nzmimeepazxkubdpn'][1]['row']
+
+    response = []
+    for d in data:
+        response.append({
+            'title':d['BILL_NAME'],
+            'name':d['RST_PROPOSER'],
+            'date':d['PROPOSE_DT']
+        })
+
+    return jsonify(response)
+
+# 요청 URL에서 문자열 쿼리스트링 인코딩
+def encode_querystring(url):
+    url = parse.urlparse(url)
+    query = parse.parse_qs(url.query)
+    query = parse.urlencode(query, doseq=True)
+
+    return query
