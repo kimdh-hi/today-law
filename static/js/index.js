@@ -28,8 +28,25 @@ function open_modal(url) {
             let proposer = response['proposer']
             let content = response['content']
             let date = response['date']
-            let content2 = content.split('제안이유')[1].split('주요내용')[0]
-            let content3 = content.split('주요내용')[1]
+            let subtitle = ''
+            let subtitle2 = ''
+            let content2 = ''
+            let content3 = ''
+            if (content.includes("제안이유 및 주요내용")) {
+                subtitle = '제안이유 및 주요내용'
+                content2 = content.split('주요내용')[1]
+            }
+            else if(content.includes("제안이유")){
+                content2 = content.split('제안이유')[1].split('주요내용')[0]
+                content3 = content.split('주요내용')[1]
+                subtitle = '제안이유'
+                subtitle2 ='주요내용'
+            }
+            else
+            {
+                content2=content
+            }
+
             let temp_html = `<div class="modal is-active">
                                 <div class="modal-background" onclick="close_modal()"></div>
                                 <div class="modal-content">
@@ -45,13 +62,13 @@ function open_modal(url) {
                                             </div>
                                             <hr>
                                             <div class="content">
-                                                <span style="color: cornflowerblue; font-size: 2em; font-weight: bold" >제안이유</span>
+                                                <span id="subtitle_1" style="text-align: left; font-size: 1.5em; font-weight: bold" >${subtitle}</span>
                                                 <br>
                                                 ${content2}
                                                 <br>
                                                 <hr>
                                                 <br>
-                                                <span style="color: cornflowerblue; font-size: 2em; font-weight: bold" >주요내용</span>
+                                                <span id="subtitle_2" style="text-align: left; font-size: 1.5em; font-weight: bold" >${subtitle2}</span>
                                                 <br>
                                                 ${content3}
                                                 <br>
@@ -120,7 +137,7 @@ function add_law_list(res) {
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-content">
-                                        <p class="title is-4" id="title" onclick="open_modal('${res[i].url}')">${res[i].title}</p>
+                                        <a><p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}')">${res[i].title}</p></a>
                                         <p class="subtitle is-6">${res[i].proposer_name}</p>
                                         <p>${res[i].proposer_names}</p>
                                     </div>
