@@ -66,7 +66,6 @@
             height: 50%;
         }
 
-
     </style>
 
     <script>
@@ -89,46 +88,66 @@
         })
 
         //모달 열기 (id를 인자로 받는 함수??)
-        function open_modal(id) {
+        function open_modal() {
+            let url = 'http://likms.assembly.go.kr/bill/billDetail.do?billId=PRC_J2G1Q0J9Y2K3Y1P1E0N5Q1G7Z8N8D5&ageFrom=21&ageTo=21'
             //console.log(this.title)
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/api/laws/details",
-                data: {},
+                data: {url_give: url},
                 success: function (response) {
-
-                }
-            })
-
-            //$(".modal").addClass("is-active");
-            let temp_html = `<div class="modal is-active">
+                    alert('modal ok')
+                    let title = response['title'].split('(')[0]
+                    let proposer = response['proposer']
+                    let content = response['content']
+                    let date = response['date']
+                    console.log(content)
+                    let content2 = content.split('제안이유')[1].split('주요내용')[0]
+                    let content3 = content.split('주요내용')[1]
+                    let temp_html = `<div class="modal is-active">
                                 <div class="modal-background" onclick="close_modal()"></div>
                                 <div class="modal-content">
+
                                         <div class="card-content" style="text-align: center">
                                             <div class="media">
                                                 <div class="media-content">
-                                                    <p class="title is-4">${title}</p>
-                                                    <p class="subtitle is-6">xxx 의원</p>
+                                                    <p class="title is-5">${title}</p>
+                                                    <time style="font-size: 1em" datetime="2016-1-1">${date}</time>
+                                                    <p class="subtitle is-6">${proposer}</p>
+
                                                 </div>
                                             </div>
                                             <hr>
                                             <div class="content">
-                                                ${content}
+                                                <span style="color: cornflowerblue; font-size: 2em; font-weight: bold" >제안이유</span>
                                                 <br>
-                                                <time style="font-size: 0.5em" datetime="2016-1-1">${date}</time>
+                                                ${content2}
+                                                <br>
+                                                <hr>
+                                                <br>
+                                                <span style="color: cornflowerblue; font-size: 2em; font-weight: bold" >주요내용</span>
+                                                <br>
+                                                ${content3}
+                                                <br>
+
                                             </div>
+
                                         </div>
+
                                 </div>
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
                             </div>`
-            $('body').append(temp_html)
+                    $('body').append(temp_html)
+                }
+            })
+            //$(".modal").addClass("is-active");
+
         }
 
         //모달 닫기
         function close_modal() {
             $(".modal").removeClass("is-active");
         }
-
 
         //법안 전체목록 가져오기
         function get_law_list() {
@@ -180,16 +199,13 @@
                                         <p>${res[i].proposer_names}</p>
                                     </div>
                                 </div>
-
                                 <div class="content" id="content">
                                     <time id="date" datetime="2016-1-1">${res[i].date}</time>
                                 </div>
-
                             </div>`
                 $('#laws-box').append(tmp_html)
             }
         }
-
 
     </script>
 </head>
@@ -264,7 +280,6 @@
 
     </div>
 
-
     <div class="card-list on">
         <div class="card">
             <div class="card-content">
@@ -274,13 +289,11 @@
                         <p class="subtitle is-6">발의자</p>
                     </div>
                 </div>
-
                 <div class="content" id="content">
                     법안 내용
                     <br>
                     <time id="date" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                 </div>
-
             </div>
         </div>
         <div class="card">
@@ -291,13 +304,11 @@
                         <p class="subtitle is-6">발의자</p>
                     </div>
                 </div>
-
                 <div class="content" id="content">
                     법안 내용
                     <br>
                     <time id="date" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                 </div>
-
             </div>
         </div>
     </div>
@@ -310,13 +321,11 @@
                         <p class="subtitle is-6">발의자</p>
                     </div>
                 </div>
-
                 <div class="content">
                     법안 내용
                     <br>
                     <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                 </div>
-
             </div>
         </div>
         <div class="card">
@@ -327,18 +336,14 @@
                         <p class="subtitle is-6">발의자</p>
                     </div>
                 </div>
-
                 <div class="content">
                     법안 내용
                     <br>
                     <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
-
 </body>
 </html>
