@@ -17,12 +17,11 @@ $(document).ready(function () {
 })
 
 //모달 열기 (id를 인자로 받는 함수??)
-function open_modal(url) {
-    console.log(url)
+function open_modal(url, id, title) {
     $.ajax({
         type: "POST",
         url: "/api/laws/details",
-        data: {url_give: url},
+        data: {url_give: url, id_give: id, title_give: title},
         success: function (response) {
             let title = response['title'].split('(')[0]
             let proposer = response['proposer']
@@ -131,12 +130,13 @@ function get_law_list_by_proposer_name(name) {
 //법안목록 html 추가
 function add_law_list(res) {
     for (let i = 0; i < res.length; i++) {
-        console.log(res[i].proposer_name)
         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-content">
-                                        <a><p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}')">${res[i].title}</p></a>
+                                        <a>
+                                            <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i].title}</p>
+                                        </a>
                                         <p class="subtitle is-6">${res[i].proposer_name}</p>
                                         <p>${res[i].proposer_names}</p>
                                     </div>
@@ -149,6 +149,7 @@ function add_law_list(res) {
     }
 }
 
+// 조회
 function search() {
     let condition = $('#select-condition option:selected').val()
     let query = $('#search-list').val()

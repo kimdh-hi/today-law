@@ -55,6 +55,7 @@ def get_laws():
         names = get_other_proposer(names)
 
         response.append({
+            'id':d['BILL_ID'],
             'title':d['BILL_NAME'],               # 법안제목
             'proposer_name':d['RST_PROPOSER'],    # 대표제안자
             'proposer_names':names,               # 대표제안자 외 제안자
