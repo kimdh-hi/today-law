@@ -17,12 +17,11 @@ $(document).ready(function () {
 })
 
 //모달 열기 (id를 인자로 받는 함수??)
-function open_modal(url) {
-    console.log(url)
+function open_modal(url, id, title) {
     $.ajax({
         type: "POST",
         url: "/api/laws/details",
-        data: {url_give: url},
+        data: {url_give: url, id_give: id, title_give: title},
         success: function (response) {
             let title = response['title'].split('(')[0]
             let proposer = response['proposer']
@@ -105,9 +104,8 @@ function get_law_list() {
 }
 
 //법안이름으로 조회
-function get_law_list_by_title() {
+function get_law_list_by_title(title) {
     $('#laws-box').empty()
-    let title = ""
     $.ajax({
         type: "GET",
         url: `/api/laws?offset=1&query=${title}&condition=법안명`,
@@ -118,9 +116,8 @@ function get_law_list_by_title() {
 }
 
 //발의자 이름으로 조회
-function get_law_list_by_proposer_name() {
+function get_law_list_by_proposer_name(name) {
     $('#laws-box').empty()
-    let name = ""
     $.ajax({
         type: "GET",
         url: `/api/laws?offset=1&proposer=${name}&condition=제안자`,
@@ -137,7 +134,9 @@ function add_law_list(res) {
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-content">
-                                        <a><p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}')">${res[i].title}</p></a>
+                                        <a>
+                                            <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i].title}</p>
+                                        </a>
                                         <p class="subtitle is-6">${res[i].proposer_name}</p>
                                         <p>${res[i].proposer_names}</p>
                                     </div>
@@ -147,5 +146,17 @@ function add_law_list(res) {
                                 </div>
                             </div>`
         $('#laws-box').append(tmp_html)
+    }
+}
+
+// 조회
+function search() {
+    let condition = $('#select-condition option:selected').val()
+    let query = $('#search-list').val()
+
+    if (condition == 'title') {
+        get_law_list_by_title(query)
+    } else {
+        get_law_list_by_proposer_name(query)
     }
 }
