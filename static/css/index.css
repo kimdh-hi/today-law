@@ -1,0 +1,45 @@
+* {
+    font-family: 'Jua', sans-serif;
+}
+
+.center {
+    text-align: center;
+}
+
+.title:hover {
+    text-decoration: underline;
+}
+
+.hero is-warning {
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+.icon {
+    width: 15em;
+}
+
+.title-logo {
+    width: 20%;
+}
+
+.card {
+    margin-left: 10em;
+    margin-right: 10em;
+}
+
+.card-container div.card-list {
+    display: none;
+}
+
+.card-container div.card-list.on {
+    display: block;
+}
+
+.modal-content {
+    width: 60%;
+    height: 50%;
+}
