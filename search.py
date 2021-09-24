@@ -51,9 +51,18 @@ def get_laws():
 
     response = []
     for d in data:
+        names = d['PUBL_PROPOSER']
+        names = names.split(',')
+        names_len = len(names)
+        names = ','.join(names[:10])
+        if names_len > 10:
+            extra = names_len - 10
+            names = names+f' 외 {extra}명'
+
         response.append({
             'title':d['BILL_NAME'],
-            'name':d['RST_PROPOSER'],
+            'proposer_name':d['RST_PROPOSER'],
+            'proposer_names':names,
             'date':d['PROPOSE_DT']
         })
 

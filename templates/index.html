@@ -136,12 +136,14 @@
                 success: function(res) {
                     console.log(res)
                     for (let i=0;i<res.length;i++) {
+
                         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-content">
                                         <p class="title is-4" id="title" onclick="open_modal()">${res[i].title}</p>
-                                        <p class="subtitle is-6">${res[i].name}</p>
+                                        <p class="subtitle is-6">${res[i].proposer_name}</p>
+                                        <p>${res[i].proposer_names}</p>
                                     </div>
                                 </div>
 
