@@ -8,11 +8,18 @@ bp = Blueprint('ranking', __name__, url_prefix='/')
 
 @bp.route('/api/rank', methods=["GET"])
 def get_ranking():
-    rank_list = db.ranking.find().sort({'count':-1})
-    for rank in rank_list:
-        print(rank)
+    rank_list = db.ranking.find({}).sort([('count',-1)]).limit(5)
+    rank_result = []
 
-    return jsonify({})
+    for idx, rank in enumerate(rank_list):
+        doc = {
+            'rank':idx+1,
+            'title':rank['title'],
+            'count':rank['count']
+        }
+        rank_result.append(doc)
+    print(rank_result)
+    return jsonify(rank_result)
 
 @bp.route('/api/rank', methods=['POST'])
 def increase_click_count():
