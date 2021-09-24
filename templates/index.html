@@ -18,6 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
     <style>
         * {
             font-family: 'Jua', sans-serif;
@@ -67,15 +68,12 @@
 
 
     </style>
+
     <script>
         $(document).ready(function () {
-            $.ajax({
-                type: "GET",
-                url: "/test",
-                success: function (res) {
-                    console.log(res)
-                }
-            })
+
+            // 법안목록 받아오기
+            get_law_list()
 
             //탭 메뉴 전환 ( 전체보기 / 즐겨찾기 )
             $(".tab_title li").click(function () {
@@ -101,17 +99,15 @@
 
                 }
             })
-            
+
             //$(".modal").addClass("is-active");
             let temp_html = `<div class="modal is-active">
                                 <div class="modal-background" onclick="close_modal()"></div>
                                 <div class="modal-content">
-
                                         <div class="card-content" style="text-align: center">
                                             <div class="media">
                                                 <div class="media-content">
                                                     <p class="title is-4">${title}</p>
-
                                                     <p class="subtitle is-6">xxx 의원</p>
                                                 </div>
                                             </div>
@@ -121,19 +117,77 @@
                                                 <br>
                                                 <time style="font-size: 0.5em" datetime="2016-1-1">${date}</time>
                                             </div>
-
                                         </div>
-
                                 </div>
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
                             </div>`
             $('body').append(temp_html)
         }
 
-
         //모달 닫기
         function close_modal() {
             $(".modal").removeClass("is-active");
+        }
+
+
+        //법안 전체목록 가져오기
+        function get_law_list() {
+            $('#laws-box').empty()
+            $.ajax({
+                type: "GET",
+                url: "/api/laws?offset=1",
+                success: function (res) {
+                    add_law_list(res)
+                }
+            })
+        }
+
+        //법안이름으로 조회
+        function get_law_list_by_title() {
+            $('#laws-box').empty()
+            let title = ""
+            $.ajax({
+                type: "GET",
+                url: `/api/laws?offset=1&query=${title}&condition=법안명`,
+                success: function (res) {
+                    add_law_list(res)
+                }
+            })
+        }
+
+        //발의자 이름으로 조회
+        function get_law_list_by_proposer_name() {
+            $('#laws-box').empty()
+            let name = ""
+            $.ajax({
+                type: "GET",
+                url: `/api/laws?offset=1&proposer=${name}&condition=제안자`,
+                success: function (res) {
+                    add_law_list(res)
+                }
+            })
+        }
+
+        //법안목록 html 추가
+        function add_law_list(res) {
+            for (let i = 0; i < res.length; i++) {
+                let tmp_html = `<div class="card">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-content">
+                                        <p class="title is-4" id="title" onclick="open_modal()">${res[i].title}</p>
+                                        <p class="subtitle is-6">${res[i].proposer_name}</p>
+                                        <p>${res[i].proposer_names}</p>
+                                    </div>
+                                </div>
+
+                                <div class="content" id="content">
+                                    <time id="date" datetime="2016-1-1">${res[i].date}</time>
+                                </div>
+
+                            </div>`
+                $('#laws-box').append(tmp_html)
+            }
         }
 
 
@@ -205,6 +259,12 @@
     </div>
 </section>
 <div class="card-container">
+
+    <div class="card-list on" id="laws-box">
+
+    </div>
+
+
     <div class="card-list on">
         <div class="card">
             <div class="card-content">
