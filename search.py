@@ -52,18 +52,13 @@ def get_laws():
     response = []
     for d in data:
         names = d['PUBL_PROPOSER']
-        names = names.split(',')
-        names_len = len(names)
-        names = ','.join(names[:10])
-        if names_len > 10:
-            extra = names_len - 10
-            names = names+f' 외 {extra}명'
+        names = get_other_proposer(names)
 
         response.append({
-            'title':d['BILL_NAME'],
-            'proposer_name':d['RST_PROPOSER'],
-            'proposer_names':names,
-            'date':d['PROPOSE_DT']
+            'title':d['BILL_NAME'],               # 법안제목
+            'proposer_name':d['RST_PROPOSER'],    # 대표제안자
+            'proposer_names':names,               # 대표제안자 외 제안자
+            'date':d['PROPOSE_DT']                # 발의 날짜
         })
 
     return jsonify(response)
@@ -75,3 +70,12 @@ def encode_querystring(url):
     query = parse.urlencode(query, doseq=True)
 
     return query
+
+def get_other_proposer(names):
+    names = names.split(',')
+    names_len = len(names)
+    names = ','.join(names[:10])
+    if names_len > 10:
+        extra = names_len - 10
+        names = names + f' 외 {extra}명'
+    return names

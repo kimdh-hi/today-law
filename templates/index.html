@@ -121,7 +121,6 @@
             $('body').append(temp_html)
         }
 
-
         //모달 닫기
         function close_modal() {
             $(".modal").removeClass("is-active");
@@ -134,9 +133,40 @@
                 type:"GET",
                 url:"/api/laws?offset=1",
                 success: function(res) {
-                    console.log(res)
-                    for (let i=0;i<res.length;i++) {
+                    add_law_list(res)
+                }
+            })
+        }
 
+        //법안이름으로 조회
+        function get_law_list_by_title() {
+            $('#laws-box').empty()
+            let title = ""
+            $.ajax({
+                type: "GET",
+                url: `/api/laws?offset=1&query=${title}&condition=법안명`,
+                success: function(res) {
+                    add_law_list(res)
+                }
+            })
+        }
+
+        //발의자 이름으로 조회
+        function get_law_list_by_proposer_name() {
+            $('#laws-box').empty()
+            let name = ""
+            $.ajax({
+                type: "GET",
+                url: `/api/laws?offset=1&proposer=${name}&condition=제안자`,
+                success: function(res) {
+                    add_law_list(res)
+                }
+            })
+        }
+
+        //법안목록 html 추가
+        function add_law_list(res) {
+            for (let i=0;i<res.length;i++) {
                         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
@@ -154,9 +184,8 @@
                             </div>`
                          $('#laws-box').append(tmp_html)
                     }
-                }
-            })
         }
+
     </script>
 </head>
 
@@ -225,42 +254,11 @@
     </div>
 </section>
 <div class="card-container">
+
     <div class="card-list on" id="laws-box">
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <p class="title is-4" id="title" onclick="open_modal()">법안 제목</p>
-                        <p class="subtitle is-6">발의자</p>
-                    </div>
-                </div>
 
-                <div class="content" id="content">
-                    법안 내용
-                    <br>
-                    <time id="date" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <p class="title is-4" id="title" onclick="open_modal()">법안 제목</p>
-                        <p class="subtitle is-6">발의자</p>
-                    </div>
-                </div>
-
-                <div class="content" id="content">
-                    법안 내용
-                    <br>
-                    <time id="date" datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-
-            </div>
-        </div>
     </div>
+
     <div class="card-list" id="bookmark">
         <div class="card">
             <div class="card-content">

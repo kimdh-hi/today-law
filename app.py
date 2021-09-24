@@ -3,7 +3,7 @@ import search, app
 
 app = Flask(__name__)
 
-app.register_blueprint(search.bp)
+app.register_blueprint(search.bp) # 법안 조회 API
 
 @app.route('/')
 def index():
