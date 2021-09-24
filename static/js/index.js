@@ -137,7 +137,7 @@ function add_law_list(res) {
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-content">
-                                        <p class="title is-4" id="title" onclick="open_modal('${res[i].url}')">${res[i].title}</p>
+                                        <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}')">${res[i].title}</p>
                                         <p class="subtitle is-6">${res[i].proposer_name}</p>
                                         <p>${res[i].proposer_names}</p>
                                     </div>
