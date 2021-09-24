@@ -16,10 +16,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
+    <!-- 폰트 JUA -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- 폰트 Nanum Gothic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <!-- js 불러오기 -->
     <script src="/static/js/index.js"></script>
+
 
     <script>
 
@@ -73,6 +80,16 @@
             <p class="subtitle">
                 국회 발의 법안 간편하게 보자!
             </p>
+            <div class="has-text-centered">
+                <div class="select is-medium">
+                    <select>
+                        <option>법안이름</option>
+                        <option>의원이름</option>
+                    </select>
+                </div>
+                <input class="input is-medium" type="text" style="width: 50%" placeholder="검색어를 입력하세요.">
+                <button class="button is-light is-medium">검색</button>
+            </div>
         </div>
     </div>
 
@@ -89,46 +106,46 @@
                 </ul>
             </div>
         </nav>
+        <div class="card-container">
+
+            <div class="card-list on" id="laws-box">
+            </div>
+            <div class="card-list" id="bookmark">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4" onclick="open_modal()">즐겨찾기한 법안 이름</p>
+                                <p class="subtitle is-6">발의자</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            법안 내용
+                            <br>
+                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4" onclick="open_modal()">즐겨찾기한 법안 이름</p>
+                                <p class="subtitle is-6">발의자</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            법안 내용
+                            <br>
+                            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </section>
-<div class="card-container">
 
-    <div class="card-list on" id="laws-box">
-
-    </div>
-
-    <div class="card-list" id="bookmark">
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <p class="title is-4" onclick="open_modal()">즐겨찾기한 법안 이름</p>
-                        <p class="subtitle is-6">발의자</p>
-                    </div>
-                </div>
-                <div class="content">
-                    법안 내용
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <p class="title is-4" onclick="open_modal()">즐겨찾기한 법안 이름</p>
-                        <p class="subtitle is-6">발의자</p>
-                    </div>
-                </div>
-                <div class="content">
-                    법안 내용
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
