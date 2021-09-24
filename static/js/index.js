@@ -105,9 +105,8 @@ function get_law_list() {
 }
 
 //법안이름으로 조회
-function get_law_list_by_title() {
+function get_law_list_by_title(title) {
     $('#laws-box').empty()
-    let title = ""
     $.ajax({
         type: "GET",
         url: `/api/laws?offset=1&query=${title}&condition=법안명`,
@@ -118,9 +117,8 @@ function get_law_list_by_title() {
 }
 
 //발의자 이름으로 조회
-function get_law_list_by_proposer_name() {
+function get_law_list_by_proposer_name(name) {
     $('#laws-box').empty()
-    let name = ""
     $.ajax({
         type: "GET",
         url: `/api/laws?offset=1&proposer=${name}&condition=제안자`,
@@ -133,6 +131,7 @@ function get_law_list_by_proposer_name() {
 //법안목록 html 추가
 function add_law_list(res) {
     for (let i = 0; i < res.length; i++) {
+        console.log(res[i].proposer_name)
         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
@@ -147,5 +146,16 @@ function add_law_list(res) {
                                 </div>
                             </div>`
         $('#laws-box').append(tmp_html)
+    }
+}
+
+function search() {
+    let condition = $('#select-condition option:selected').val()
+    let query = $('#search-list').val()
+
+    if (condition == 'title') {
+        get_law_list_by_title(query)
+    } else {
+        get_law_list_by_proposer_name(query)
     }
 }
