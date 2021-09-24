@@ -90,35 +90,63 @@
 
         })
 
-        //모달 열기 (id를 인자로 받는 함수??)
-        function open_modal(id) {
-            //console.log(this.title)
+        function Click_Article() {
+            let url = $('#post-url').val()
+            let comment = $('#post-comment').val()
             $.ajax({
-                type: "GET",
-                url: "/api/laws/details",
-                data: {},
-                success: function (response) {
-
+                type: "POST",
+                url: "/memo",
+                data: {url_give: url, comment_give: comment},
+                success: function (response) { // 성공하면
+                    alert(response["msg"]);
+                    window.location.reload()
                 }
             })
-            //$(".modal").addClass("is-active");
-            let temp_html = `<div class="modal is-active">
+        }
+
+        //모달 열기 (id를 인자로 받는 함수??)
+        function open_modal() {
+            let url = 'http://likms.assembly.go.kr/bill/billDetail.do?billId=PRC_J2G1Q0J9Y2K3Y1P1E0N5Q1G7Z8N8D5&ageFrom=21&ageTo=21'
+            //console.log(this.title)
+            $.ajax({
+                type: "POST",
+                url: "/api/laws/details",
+                data: {url_give: url},
+                success: function (response) {
+                    alert('modal ok')
+                    let title = response['title'].split('(')[0]
+                    let proposer = response['proposer']
+                    let content = response['content']
+                    let date = response['date']
+                    console.log(content)
+                    let content2 = content.split('제안이유')[1].split('주요내용')[0]
+                    let content3 = content.split('주요내용')[1]
+                    let temp_html = `<div class="modal is-active">
                                 <div class="modal-background" onclick="close_modal()"></div>
                                 <div class="modal-content">
 
                                         <div class="card-content" style="text-align: center">
                                             <div class="media">
                                                 <div class="media-content">
-                                                    <p class="title is-4">${title}</p>
+                                                    <p class="title is-5">${title}</p>
+                                                    <time style="font-size: 1em" datetime="2016-1-1">${date}</time>
+                                                    <p class="subtitle is-6">${proposer}</p>
 
-                                                    <p class="subtitle is-6">xxx 의원</p>
                                                 </div>
                                             </div>
                                             <hr>
                                             <div class="content">
-                                                ${content}
+                                                <span style="color: cornflowerblue; font-size: 2em; font-weight: bold" >제안이유</span>
                                                 <br>
-                                                <time style="font-size: 0.5em" datetime="2016-1-1">${date}</time>
+                                                ${content2}
+                                                <br>
+                                                <hr>
+                                                <br>
+                                                <span style="color: cornflowerblue; font-size: 2em; font-weight: bold" >주요내용</span>
+                                                <br>
+                                                ${content3}
+                                                <br>
+
                                             </div>
 
                                         </div>
@@ -126,8 +154,13 @@
                                 </div>
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
                             </div>`
-            $('body').append(temp_html)
+                    $('body').append(temp_html)
+                }
+            })
+            //$(".modal").addClass("is-active");
+
         }
+
 
         //모달 닫기
         function close_modal() {
@@ -208,7 +241,7 @@
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <p class="title is-4" id="title" onclick="open_modal()">법안 제목</p>
+                        <p class="title is-4" id="title" data-url="http://likms.assembly.go.kr/bill/billDetail.do?billId=PRC_J2G1Q0J9Y2K3Y1P1E0N5Q1G7Z8N8D5&ageFrom=21&ageTo=21" onclick="open_modal()">법안 제목</p>
                         <p class="subtitle is-6">발의자</p>
                     </div>
                 </div>
