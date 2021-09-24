@@ -1,7 +1,12 @@
 * {
     font-family: 'Jua', sans-serif;
 }
-
+.card-container *{
+    font-family: 'Nanum Gothic', sans-serif;
+}
+.modal *{
+    font-family: 'Nanum Gothic', sans-serif;
+}
 .center {
     text-align: center;
 }
