@@ -13,7 +13,7 @@ $(document).ready(function () {
         $(".card-container > .card-list").eq(idx).show();
         console.log($(".card-container > .card-list").index())
     })
-
+    $('#ranking-box').vTicker();
 })
 
 //모달 열기 (id를 인자로 받는 함수??)
@@ -89,6 +89,7 @@ function open_modal(url, id, title) {
 //모달 닫기
 function close_modal() {
     $(".modal").removeClass("is-active");
+    get_ranking()
 }
 
 //법안 전체목록 가져오기
@@ -99,6 +100,7 @@ function get_law_list() {
         url: "/api/laws?offset=1",
         success: function (res) {
             add_law_list(res)
+            get_ranking()
         }
     })
 }
@@ -159,4 +161,20 @@ function search() {
     } else {
         get_law_list_by_proposer_name(query)
     }
+}
+
+function get_ranking() {
+    console.log('getranking')
+    $('#ranking-list').empty()
+    $.ajax({
+        type: "GET",
+        url: "/api/rank",
+        success: function(res) {
+            console.log(res)
+            for (let i=0;i<res.length;i++) {
+                let tmp_html = `<li>${res[i]['rank']}위  ${res[i]['title']}</li>`
+                $('#ranking-list').append(tmp_html)
+            }
+        }
+    })
 }
