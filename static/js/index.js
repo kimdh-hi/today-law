@@ -23,6 +23,7 @@ function open_modal(url, id, title) {
         url: "/api/laws/details",
         data: {url_give: url, id_give: id, title_give: title},
         success: function (response) {
+            like_show()
             let title = response['title'].split('(')[0]
             let proposer = response['proposer']
             let content = response['content']
@@ -73,6 +74,9 @@ function open_modal(url, id, title) {
                                                 <br>
 
                                             </div>
+                                            <footer class="card-footer" id="card-footer">
+                                            
+                                            </footer>
 
                                         </div>
 
@@ -177,4 +181,63 @@ function get_ranking() {
             }
         }
     })
+}
+
+// 좋아요
+function like_show() {
+    $.ajax({
+            type: 'GET',
+            url: '/api/like',
+            data: {},
+            success: function (response) {
+                let like_list = response['like_list']
+                console.log(like_list)
+
+                let id, like, hate
+
+                for (let i = 0; i < like_list.length; i++){
+                    id = like_list[i]['id']
+                    like = like_list[i]['like']
+                    hate = like_list[i]['hate']
+                    console.log(id, like, hate)
+                }
+
+
+                let temp_html = `<a href="#" onClick="likeLaw('${id}')" class="card-footer-item has-text-info">
+                                                    좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" onClick="hateLaw('${id}')" class="card-footer-item has-text-danger">
+                                                    싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                </a>`
+                $('#card-footer').append(temp_html)
+            }
+
+        }
+    )
+}
+
+// 좋아요 기능
+function likeLaw(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/like',
+        data: {id_give: id},
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload()
+        }
+    })
+}
+
+//싫어요 기능
+function hateLaw(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/hate',
+        data: {id_give: id},
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload()
+        }
+    });
 }

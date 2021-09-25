@@ -15,7 +15,9 @@ def get_ranking():
         doc = {
             'rank':idx+1,
             'title':rank['title'],
-            'count':rank['count']
+            'count':rank['count'],
+            'like':rank['like'],
+            'hate':rank['hate']
         }
         rank_result.append(doc)
     print(rank_result)
@@ -36,7 +38,9 @@ def increase_click_count():
         doc = {
             'id':id,
             'title':title,
-            'count':1
+            'count':1,
+            'like': 0,
+            'hate': 0
         }
         db.ranking.insert_one(doc)
 
