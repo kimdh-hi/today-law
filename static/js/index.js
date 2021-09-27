@@ -207,7 +207,6 @@ function get_ranking() {
     $.ajax({
         type: "GET",
         url: "/api/rank",
-<<<<<<< HEAD
         success: function(res) {
             for (let i=0;i<res.length;i++) {
                 let tmp_html = `<li>${res[i]['rank']}위  ${res[i]['title']}</li>`
@@ -288,7 +287,6 @@ function add_readMore_button() {
 
 // 더보기 기능
 function readMore() {
-<<<<<<< HEAD
     more = true; // 기존 리스트를 유지
 
     //  offset의 끝에 도달한 경우
