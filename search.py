@@ -47,6 +47,8 @@ def get_laws():
         data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
 
     data = data.json()
+    total_count = data['nzmimeepazxkubdpn'][0]['head'][0]['list_total_count']
+    print(total_count)
     data = data['nzmimeepazxkubdpn'][1]['row']
 
     response = []
@@ -60,7 +62,8 @@ def get_laws():
             'proposer_name':d['RST_PROPOSER'],    # 대표제안자
             'proposer_names':names,               # 대표제안자 외 제안자
             'date':d['PROPOSE_DT'],               # 발의 날짜
-            'url':d['DETAIL_LINK']        # 상세내용 크롤링 link
+            'url':d['DETAIL_LINK'],               # 상세내용 크롤링 link
+            'total_count':total_count
         })
 
     return jsonify(response)
