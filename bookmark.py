@@ -9,14 +9,12 @@ bp = Blueprint('bookmark', __name__, url_prefix='/')
 @bp.route('/api/bookmark', methods=['GET'])
 def get_bookmark():
     bookmark_list = list(db.bookmark.find({}, {'_id': False}))
-    print("bookmark_list: ", bookmark_list)
     return jsonify({'bookmark_list':bookmark_list})
 
 # 법안 즐겨찾기
 @bp.route('/api/bookmark', methods=['POST'])
 def bookmark():
     id_receive = request.form['id_give']
-    print(id_receive)
     id = db.ranking.find_one({'id': id_receive})
     point_id = id['id']
     url = id['url']
@@ -31,7 +29,6 @@ def bookmark():
         "proposer": proposer,
         "date": date
     }
-    print("doc",doc)
     db.bookmark.insert_one(doc)
     return jsonify({'result': 'success', 'msg': f'법안 {title} 저장!'})
 
