@@ -6,6 +6,8 @@ $(document).ready(function () {
 
     // 법안목록 받아오기
     get_law_list()
+    // 즐겨찾기
+    bookmark_show()
 
     //탭 메뉴 전환 ( 전체보기 / 즐겨찾기 )
     $(".tab_title li").click(function () {
@@ -28,6 +30,7 @@ function open_modal(url, id, title) {
         data: {url_give: url, id_give: id, title_give: title},
         success: function (response) {
             like_show()
+            let id = response['id']
             let title = response['title'].split('(')[0]
             let proposer = response['proposer']
             let content = response['content']
@@ -39,16 +42,13 @@ function open_modal(url, id, title) {
             if (content.includes("제안이유 및 주요내용")) {
                 subtitle = '제안이유 및 주요내용'
                 content2 = content.split('주요내용')[1]
-            }
-            else if(content.includes("제안이유")){
+            } else if (content.includes("제안이유")) {
                 content2 = content.split('제안이유')[1].split('주요내용')[0]
                 content3 = content.split('주요내용')[1]
                 subtitle = '제안이유'
-                subtitle2 ='주요내용'
-            }
-            else
-            {
-                content2=content
+                subtitle2 = '주요내용'
+            } else {
+                content2 = content
             }
 
             let temp_html = `<div class="modal is-active">
@@ -61,7 +61,14 @@ function open_modal(url, id, title) {
                                                     <p class="title is-5">${title}</p>
                                                     <time style="font-size: 1em" datetime="2016-1-1">${date}</time>
                                                     <p class="subtitle is-6">${proposer}</p>
-
+                                                    <div>
+                                                        <button id="btn-save" class="btn btn-outline-sparta btn-lg" onclick="bookmark('${id}')">
+                                                                <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                                                        </button>
+                                                        <button id="btn-delete" class="btn btn-sparta btn-lg" onclick="delete_bookmark('${id}')">
+                                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <hr>
@@ -179,9 +186,9 @@ function get_ranking() {
     $.ajax({
         type: "GET",
         url: "/api/rank",
-        success: function(res) {
+        success: function (res) {
             console.log(res)
-            for (let i=0;i<res.length;i++) {
+            for (let i = 0; i < res.length; i++) {
                 let tmp_html = `<li>${res[i]['rank']}위  ${res[i]['title']}</li>`
                 $('#ranking-list').append(tmp_html)
             }
@@ -201,7 +208,7 @@ function like_show() {
 
                 let id, like, hate
 
-                for (let i = 0; i < like_list.length; i++){
+                for (let i = 0; i < like_list.length; i++) {
                     id = like_list[i]['id']
                     like = like_list[i]['like']
                     hate = like_list[i]['hate']
@@ -262,8 +269,76 @@ function add_readMore_button() {
 // 검색된 결과에 대한 더보기 처리 필요
 function readMore() {
     more = true;
-    offset = offset+10
+    offset = offset + 10
     get_law_list()
 }
 
+// 법안 즐겨찾기 보여주기
+function bookmark_show() {
+    $.ajax({
+            type: 'GET',
+            url: '/api/bookmark',
+            data: {},
+            success: function (response) {
+                let bookmark_list = response['bookmark_list']
+                console.log("bookmark_list: ", bookmark_list)
+
+                for (let i = 0; i < bookmark_list.length; i++) {
+                    let id = bookmark_list[i]['id']
+                    let url = bookmark_list[i]['url']
+                    let title = bookmark_list[i]['title']
+                    let proposer = bookmark_list[i]['proposer']
+                    let date = bookmark_list[i]['date']
+                    console.log("bookmark_list2: ", id, url, title, proposer, date)
+
+                    let temp_html = `<div class="card">
+                                        <div class="card-content">
+                                            <div class="media">
+                                                <div class="media-content">
+                                                    <a>
+                                                        <p class="title is-4" style="color: black" id="title" onclick="open_modal('${url}', '${id}', '${title}')">${title}</p>
+                                                    </a>
+                                                    <p class="subtitle is-6" style="color: black" >${proposer}</p>
+                                                </div>
+                                            </div>
+                                            <div class="content">
+                                                <time datetime="2016-1-1">${date}</time>
+                                            </div>
+                                        </div>
+                                    </div>`
+                    $('#bookmark').append(temp_html)
+
+                }
+
+
+            }
+
+        }
+    )
+}
+
+// 법안 즐겨찾기 기능
+function bookmark(id) {
+    $.ajax({
+        type: "POST",
+        url: `/api/bookmark`,
+        data: {id_give: id},
+        success: function (response) {
+            alert(response["msg"])
+        }
+    });
+}
+
+// 법안 즐겨찾기 삭제 기능
+function delete_bookmark(id) {
+    $.ajax({
+        type: "POST",
+        url: `/api/delete_bookmark`,
+        data: {id_give: id},
+        success: function (response) {
+            alert(response["msg"])
+            window.location.reload()
+        }
+    });
+}
 

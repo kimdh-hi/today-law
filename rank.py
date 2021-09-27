@@ -14,7 +14,10 @@ def get_ranking():
     for idx, rank in enumerate(rank_list):
         doc = {
             'rank':idx+1,
+            'url':rank['url'],
             'title':rank['title'],
+            'proposer':rank['proposer'],
+            'date':rank['date'],
             'count':rank['count'],
             'like':rank['like'],
             'hate':rank['hate']
@@ -27,7 +30,10 @@ def get_ranking():
 def increase_click_count():
     # 법안ID, 법안제목
     id = request.form['id']
+    url = request.form['url']
     title = request.form['title']
+    proposer = request.form['proposer']
+    date = request.form['date']
 
     count = db.ranking.find_one({'id':id}, {'_id':0, 'title':0, 'id':0})
     if count is not None:
@@ -37,7 +43,10 @@ def increase_click_count():
     else:
         doc = {
             'id':id,
+            'url':url,
             'title':title,
+            'proposer':proposer,
+            'date':date,
             'count':1,
             'like': 0,
             'hate': 0
