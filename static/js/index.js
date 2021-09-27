@@ -164,14 +164,16 @@ function get_law_list_by_proposer_name(name) {
 //법안목록 html 추가
 function add_law_list(res) {
     for (let i = 1; i < res.length; i++) {
+        console.log(res[i].proposer_name)
         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-content">
                                         <a>
                                             <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i].title}</p>
-                                        </a>
-                                        <p class="subtitle is-6">${res[i].proposer_name}</p>
+                                        </a>        
+                                        <br/>                                            
+                                        <p>대표 제안자: ${res[i].proposer_name}</p>
                                         <p>${res[i].proposer_names}</p>
                                     </div>
                                 </div>
@@ -199,6 +201,7 @@ function search() {
     }
 }
 
+// open_modal(url, id, title)
 function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
@@ -206,7 +209,7 @@ function get_ranking() {
         url: "/api/rank",
         success: function(res) {
             for (let i=0;i<res.length;i++) {
-                let tmp_html = `<li>${res[i]['rank']}위  ${res[i]['title']}</li>`
+                let tmp_html = `<li onclick="open_modal('${res[i]['url']}', '${res[i]['id']}', '${res[i]['title']}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
                 $('#ranking-list').append(tmp_html)
             }
         }
@@ -312,7 +315,6 @@ function bookmark_show() {
             data: {},
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
-                console.log("bookmark_list: ", bookmark_list)
 
                 for (let i = 0; i < bookmark_list.length; i++) {
                     let id = bookmark_list[i]['id']
@@ -320,7 +322,6 @@ function bookmark_show() {
                     let title = bookmark_list[i]['title']
                     let proposer = bookmark_list[i]['proposer']
                     let date = bookmark_list[i]['date']
-                    console.log("bookmark_list2: ", id, url, title, proposer, date)
 
                     let temp_html = `<div class="card">
                                         <div class="card-content">
