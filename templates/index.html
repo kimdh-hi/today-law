@@ -10,12 +10,16 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="/static/css/index.css">
+    <!-- img -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8" src="../static/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../static/js/jquery.vticker.min.js"></script>
     <!-- 폰트 JUA -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,14 +91,17 @@
                         <option value="name">의원이름</option>
                     </select>
                 </div>
-                <input id="search-list" class="input is-medium" type="text" style="width: 50%" placeholder="검색어를 입력하세요.">
+                <input id="search-list" class="input is-medium" type="text" style="width: 50%"
+                       placeholder="검색어를 입력하세요.">
                 <button class="button is-light is-medium" onclick="search()">검색</button>
             </div>
         </div>
     </div>
 
     <div class="hero-foot">
+
         <nav class="tabs is-boxed is-fullwidth">
+
             <div class="container">
                 <ul class="tab_title">
                     <li class="is-active">
@@ -107,7 +114,18 @@
             </div>
         </nav>
         <div class="card-container">
-
+            <div style="margin: 0 0 30px 50px">
+                <span style="font-weight: bold; font-size: large">이번주 조회수 순위</span>
+                <div id="ranking-box">
+                    <ul id="ranking-list">
+                        <li>이번주 순위가 없습니다.</li>
+                        <li>이번주 순위가 없습니다.</li>
+                        <li>이번주 순위가 없습니다.</li>
+                        <li>이번주 순위가 없습니다.</li>
+                        <li>이번주 순위가 없습니다.</li>
+                    </ul>
+                </div>
+            </div>
             <div class="card-list on" id="laws-box">
             </div>
             <div class="card-list" id="bookmark">
@@ -144,8 +162,10 @@
             </div>
         </div>
     </div>
-
 </section>
+
+
+
 
 </body>
 </html>

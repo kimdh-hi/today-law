@@ -41,7 +41,9 @@ def saving():
         doc = {
             'id': id_receive,
             'title': title,
-            'count': 1
+            'count': 1,
+            'like': 0,
+            'hate': 0
         }
         db.ranking.insert_one(doc)
 

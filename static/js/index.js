@@ -13,7 +13,7 @@ $(document).ready(function () {
         $(".card-container > .card-list").eq(idx).show();
         console.log($(".card-container > .card-list").index())
     })
-
+    $('#ranking-box').vTicker();
 })
 
 //모달 열기 (id를 인자로 받는 함수??)
@@ -23,6 +23,7 @@ function open_modal(url, id, title) {
         url: "/api/laws/details",
         data: {url_give: url, id_give: id, title_give: title},
         success: function (response) {
+            like_show()
             let title = response['title'].split('(')[0]
             let proposer = response['proposer']
             let content = response['content']
@@ -73,6 +74,9 @@ function open_modal(url, id, title) {
                                                 <br>
 
                                             </div>
+                                            <footer class="card-footer" id="card-footer">
+                                            
+                                            </footer>
 
                                         </div>
 
@@ -89,6 +93,7 @@ function open_modal(url, id, title) {
 //모달 닫기
 function close_modal() {
     $(".modal").removeClass("is-active");
+    get_ranking()
 }
 
 //법안 전체목록 가져오기
@@ -99,6 +104,7 @@ function get_law_list() {
         url: "/api/laws?offset=1",
         success: function (res) {
             add_law_list(res)
+            get_ranking()
         }
     })
 }
@@ -159,4 +165,79 @@ function search() {
     } else {
         get_law_list_by_proposer_name(query)
     }
+}
+
+function get_ranking() {
+    console.log('getranking')
+    $('#ranking-list').empty()
+    $.ajax({
+        type: "GET",
+        url: "/api/rank",
+        success: function(res) {
+            console.log(res)
+            for (let i=0;i<res.length;i++) {
+                let tmp_html = `<li>${res[i]['rank']}위  ${res[i]['title']}</li>`
+                $('#ranking-list').append(tmp_html)
+            }
+        }
+    })
+}
+
+// 좋아요
+function like_show() {
+    $.ajax({
+            type: 'GET',
+            url: '/api/like',
+            data: {},
+            success: function (response) {
+                let like_list = response['like_list']
+                console.log(like_list)
+
+                let id, like, hate
+
+                for (let i = 0; i < like_list.length; i++){
+                    id = like_list[i]['id']
+                    like = like_list[i]['like']
+                    hate = like_list[i]['hate']
+                    console.log(id, like, hate)
+                }
+
+
+                let temp_html = `<a href="#" onClick="likeLaw('${id}')" class="card-footer-item has-text-info">
+                                                    좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" onClick="hateLaw('${id}')" class="card-footer-item has-text-danger">
+                                                    싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                </a>`
+                $('#card-footer').append(temp_html)
+            }
+
+        }
+    )
+}
+
+// 좋아요 기능
+function likeLaw(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/like',
+        data: {id_give: id},
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload()
+        }
+    })
+}
+
+//싫어요 기능
+function hateLaw(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/api/hate',
+        data: {id_give: id},
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload()
+        }
+    });
 }
