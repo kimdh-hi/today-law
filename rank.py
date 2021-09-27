@@ -23,7 +23,6 @@ def get_ranking():
             'hate':rank['hate']
         }
         rank_result.append(doc)
-    print(rank_result)
     return jsonify(rank_result)
 
 @bp.route('/api/rank', methods=['POST'])

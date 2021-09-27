@@ -32,7 +32,7 @@ $(document).ready(function () {
     $('#ranking-box').vTicker();
 })
 
-//모달 열기 (id를 인자로 받는 함수??)
+//모달 열기 (법안 상세내용)
 function open_modal(url, id, title) {
     $.ajax({
         type: "POST",
@@ -107,8 +107,6 @@ function open_modal(url, id, title) {
             $('body').append(temp_html)
         }
     })
-    //$(".modal").addClass("is-active");
-
 }
 
 //모달 닫기
@@ -125,7 +123,6 @@ function get_law_list() {
         url: `/api/laws?offset=${offset}`,
         success: function (res) {
             total_count = res[0].total_count
-            console.log(total_count)
             add_law_list(res)
             get_ranking()
         }

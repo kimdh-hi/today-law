@@ -47,9 +47,7 @@ def get_laws():
         data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
 
     data = data.json()
-    print(data)
     total_count = data['nzmimeepazxkubdpn'][0]['head'][0]['list_total_count']
-    print(total_count)
     data = data['nzmimeepazxkubdpn'][1]['row']
 
     response = []
