@@ -40,14 +40,17 @@ def saving():
     else:
         doc = {
             'id': id_receive,
+            'url': url_receive,
             'title': title,
+            'proposer': proposer,
+            'date': date,
             'count': 1,
             'like': 0,
             'hate': 0
         }
         db.ranking.insert_one(doc)
 
-    return jsonify({'content': content, 'title':title, 'date':date, 'proposer':proposer})
+    return jsonify({'content': content, 'title':title, 'date':date, 'proposer':proposer, 'id':id_receive})
 
 def clean_text(text):
     content = text.get_text()
