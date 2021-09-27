@@ -43,8 +43,18 @@ h1 {
 .card-container div.card-list.on {
     display: block;
 }
-subtitle
+.subtitle,
 .modal-content {
+    margin-top: 2em;
     width: 60%;
-    height: 50%;
+    height: 80%;
+    line-height: 1.8em;
+}
+
+.rank-list li:hover{
+    cursor: pointer;
+}
+
+#read-more-box{
+    cursor: pointer;
 }
