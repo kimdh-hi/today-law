@@ -1,9 +1,20 @@
-let offset = 1;
-let total_count;
+let offset = 1; // 페이징 시작위치
+let total_count; // api호출시 반한받는 아이템의 수
+
+// 더보기로 인한 법안목록 추가인지 체크하기 위함
+// false인 경우 리스트를 지우고 새로 html을 생성
+// true인 경우 기존 리스트를 유지하고 뒤에 새로 html을 append
 let more = false;
 
-$(document).ready(function () {
+let g_condition // 현재 검색조건이 법안이름인지 의원이름인지 구분 (all, title, name)
+let g_title // 현재 검색되고 있는 법안이름
+let g_name // 현재 검색되고 있는 의원이름
+let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판단
 
+$(document).ready(function () {
+    g_condition = "all"
+    g_title = ""
+    g_name = ""
     // 법안목록 받아오기
     get_law_list()
     // 즐겨찾기
@@ -17,7 +28,6 @@ $(document).ready(function () {
         $(".tab_title li").eq(idx).addClass("is-active");
         $(".card-container > .card-list").hide();
         $(".card-container > .card-list").eq(idx).show();
-        console.log($(".card-container > .card-list").index())
     })
     $('#ranking-box').vTicker();
 })
@@ -114,7 +124,8 @@ function get_law_list() {
         type: "GET",
         url: `/api/laws?offset=${offset}`,
         success: function (res) {
-            total_count = res.total_count
+            total_count = res[0].total_count
+            console.log(total_count)
             add_law_list(res)
             get_ranking()
         }
@@ -123,11 +134,15 @@ function get_law_list() {
 
 //법안이름으로 조회
 function get_law_list_by_title(title) {
-    $('#laws-box').empty()
+    g_title = title
+    g_condition = "title"
+    if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
         url: `/api/laws?offset=${offset}&query=${title}&condition=법안명`,
         success: function (res) {
+            total_count = res[0].total_count
+            if (!more) g_readmore_button_show = total_count > 10 ? true : false
             add_law_list(res)
         }
     })
@@ -135,11 +150,15 @@ function get_law_list_by_title(title) {
 
 //발의자 이름으로 조회
 function get_law_list_by_proposer_name(name) {
-    $('#laws-box').empty()
+    g_name = name
+    g_condition = "name"
+    if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `/api/laws?offset=&proposer=${name}&condition=제안자`,
+        url: `/api/laws?offset=${offset}&proposer=${name}&condition=제안자`,
         success: function (res) {
+            total_count = res[0].total_count
+            if (!more) g_readmore_button_show = total_count > 10 ? true : false
             add_law_list(res)
         }
     })
@@ -147,7 +166,7 @@ function get_law_list_by_proposer_name(name) {
 
 //법안목록 html 추가
 function add_law_list(res) {
-    for (let i = 0; i < res.length; i++) {
+    for (let i = 1; i < res.length; i++) {
         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
@@ -170,6 +189,9 @@ function add_law_list(res) {
 
 // 조회
 function search() {
+    more = false
+    offset = 1
+
     let condition = $('#select-condition option:selected').val()
     let query = $('#search-list').val()
 
@@ -181,14 +203,12 @@ function search() {
 }
 
 function get_ranking() {
-    console.log('getranking')
     $('#ranking-list').empty()
     $.ajax({
         type: "GET",
         url: "/api/rank",
-        success: function (res) {
-            console.log(res)
-            for (let i = 0; i < res.length; i++) {
+        success: function(res) {
+            for (let i=0;i<res.length;i++) {
                 let tmp_html = `<li>${res[i]['rank']}위  ${res[i]['title']}</li>`
                 $('#ranking-list').append(tmp_html)
             }
@@ -204,7 +224,6 @@ function like_show() {
             data: {},
             success: function (response) {
                 let like_list = response['like_list']
-                console.log(like_list)
 
                 let id, like, hate
 
@@ -212,7 +231,6 @@ function like_show() {
                     id = like_list[i]['id']
                     like = like_list[i]['like']
                     hate = like_list[i]['hate']
-                    console.log(id, like, hate)
                 }
 
 
@@ -259,18 +277,34 @@ function hateLaw(id) {
 function add_readMore_button() {
     $('#read-more-box').remove()
 
-    $('#laws-box')
-        .append(
-            '<div id="read-more-box" style="width: 100px; margin: 50px auto 50px auto;"><i onclick="readMore()" class="fas fa-chevron-circle-down fa-5x"></i></div>'
-        )
+    if (total_count > 10 && g_readmore_button_show) {
+        $('#laws-box')
+            .append(
+                '<div id="read-more-box" style="width: 100px; margin: 50px auto 50px auto;"><i onclick="readMore()" class="fas fa-chevron-circle-down fa-5x"></i></div>'
+            )
+    }
 }
 
-// 더보기 기능 (검색조건 없음)
-// 검색된 결과에 대한 더보기 처리 필요
+// 더보기 기능
 function readMore() {
-    more = true;
-    offset = offset + 10
-    get_law_list()
+    more = true; // 기존 리스트를 유지
+
+    //  offset의 끝에 도달한 경우
+    if ((offset+1)*10 >= total_count) {
+        g_readmore_button_show = false
+    }
+    offset+=1
+
+    // 현재 검색조건이 의원이름인 경우 더보기 처리
+    if (g_condition == "name")
+        get_law_list_by_proposer_name(g_name)
+    // 현재 검색조건이 법안이름인 경우 더보기 처리
+    else if (g_condition == "title") {
+        get_law_list_by_title(g_title)
+    }
+    // 현재 검색조건이 없는 경우 더보기 처리
+    else
+        get_law_list()
 }
 
 // 법안 즐겨찾기 보여주기
