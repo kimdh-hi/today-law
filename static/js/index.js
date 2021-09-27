@@ -1,3 +1,7 @@
+let offset = 1;
+let total_count;
+let more = false;
+
 $(document).ready(function () {
 
     // 법안목록 받아오기
@@ -98,11 +102,12 @@ function close_modal() {
 
 //법안 전체목록 가져오기
 function get_law_list() {
-    $('#laws-box').empty()
+    if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: "/api/laws?offset=1",
+        url: `/api/laws?offset=${offset}`,
         success: function (res) {
+            total_count = res.total_count
             add_law_list(res)
             get_ranking()
         }
@@ -114,7 +119,7 @@ function get_law_list_by_title(title) {
     $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `/api/laws?offset=1&query=${title}&condition=법안명`,
+        url: `/api/laws?offset=${offset}&query=${title}&condition=법안명`,
         success: function (res) {
             add_law_list(res)
         }
@@ -126,7 +131,7 @@ function get_law_list_by_proposer_name(name) {
     $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `/api/laws?offset=1&proposer=${name}&condition=제안자`,
+        url: `/api/laws?offset=&proposer=${name}&condition=제안자`,
         success: function (res) {
             add_law_list(res)
         }
@@ -152,6 +157,7 @@ function add_law_list(res) {
                                 </div>
                             </div>`
         $('#laws-box').append(tmp_html)
+        add_readMore_button()
     }
 }
 
@@ -241,3 +247,23 @@ function hateLaw(id) {
         }
     });
 }
+
+// 더보기 버튼 추가
+function add_readMore_button() {
+    $('#read-more-box').remove()
+
+    $('#laws-box')
+        .append(
+            '<div id="read-more-box" style="width: 100px; margin: 50px auto 50px auto;"><i onclick="readMore()" class="fas fa-chevron-circle-down fa-5x"></i></div>'
+        )
+}
+
+// 더보기 기능 (검색조건 없음)
+// 검색된 결과에 대한 더보기 처리 필요
+function readMore() {
+    more = true;
+    offset = offset+10
+    get_law_list()
+}
+
+
