@@ -35,6 +35,16 @@ $(document).ready(function () {
             pause: 1000,
             showItems: 1
         });
+
+    //랭킹 hover
+    $('.box').hover(function () {
+        console.log(123)
+        $('.box').css("height", "15em");
+        $('.box > .rank-board').css("height", "12em");
+    },function (){
+        $('.box').css("height", "5em");
+        $('.box > .rank-board').css("height", "1.2em");
+    })
 })
 
 //모달 열기 (법안 상세내용)
@@ -385,10 +395,10 @@ function delete_bookmark(id) {
 }
 
 //위 아래
-$(document).ready(function(){
-  var currentPosition = parseInt($(".quickmenu").css("top"));
-  $(window).scroll(function() {
-    var position = $(window).scrollTop();
-    $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},500);
-  });
+$(document).ready(function () {
+    var currentPosition = parseInt($(".quickmenu").css("top"));
+    $(window).scroll(function () {
+        var position = $(window).scrollTop();
+        $(".quickmenu").stop().animate({"top": position + currentPosition + "px"}, 500);
+    });
 });
