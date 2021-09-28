@@ -19,7 +19,8 @@ def saving():
     url_receive = request.form['url_give']
     id_receive = request.form['id_give']
     title = request.form['title_give']
-    # print(url_receive)
+    proposer_name = request.form['proposer_name_give']
+    proposer_names = request.form['proposer_names_give']
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (HTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
@@ -27,7 +28,7 @@ def saving():
 
     soup = BeautifulSoup(data.text, 'html.parser')
     #title = soup.select_one('body > div > div.contentWrap > div.subContents > h3').text
-    proposer= soup.select_one('body > div > div.contentWrap > div.subContents > div > div.contIn > div.tableCol01 > table > tbody > tr > td:nth-child(3)').text
+    # proposer= soup.select_one('body > div > div.contentWrap > div.subContents > div > div.contIn > div.tableCol01 > table > tbody > tr > td:nth-child(3)').text
     content = soup.select_one('#summaryContentDiv').text
     date = soup.select_one('body > div > div.contentWrap > div.subContents > div > div.contIn > div.tableCol01 > table > tbody > tr > td:nth-child(2)').text
 
@@ -42,7 +43,8 @@ def saving():
             'id': id_receive,
             'url': url_receive,
             'title': title,
-            'proposer': proposer,
+            'proposer_name': proposer_name,
+            'proposer_names': proposer_names,
             'date': date,
             'count': 1,
             'like': 0,
@@ -50,7 +52,7 @@ def saving():
         }
         db.ranking.insert_one(doc)
 
-    return jsonify({'content': content, 'title':title, 'date':date, 'proposer':proposer, 'id':id_receive})
+    return jsonify({'content': content, 'title':title, 'date':date, 'proposer_name':proposer_name, 'proposer_names':proposer_names, 'id':id_receive})
 
 def clean_text(text):
     content = text.get_text()

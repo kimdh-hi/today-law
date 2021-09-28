@@ -19,7 +19,8 @@ def bookmark():
     point_id = id['id']
     url = id['url']
     title = id['title']
-    proposer = id['proposer']
+    proposer_name = id['proposer_name']
+    proposer_names = id['proposer_names']
     date = id['date']
 
     bookmark_id = db.bookmark.find_one({'id': point_id})
@@ -31,7 +32,8 @@ def bookmark():
             "id": point_id,
             "url": url,
             "title": title,
-            "proposer": proposer,
+            "proposer_name": proposer_name,
+            "proposer_names": proposer_names,
             "date": date
         }
 

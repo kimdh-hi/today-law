@@ -50,16 +50,17 @@ $(document).ready(function () {
 })
 
 //모달 열기 (법안 상세내용)
-function open_modal(url, id, title) {
+function open_modal(url, id, title, proposer_name, proposer_names) {
     $.ajax({
         type: "POST",
         url: "/api/laws/details",
-        data: {url_give: url, id_give: id, title_give: title},
+        data: {url_give: url, id_give: id, title_give: title, proposer_name_give: proposer_name, proposer_names_give: proposer_names},
         success: function (response) {
             like_show()
             let id = response['id']
             let title = response['title'].split('(')[0]
-            let proposer = response['proposer']
+            let proposer_name = response['proposer_name']
+            let proposer_names = response['proposer_names']
             let content = response['content']
             let date = response['date']
             let subtitle = ''
@@ -87,7 +88,8 @@ function open_modal(url, id, title) {
                                                 <div class="media-content">
                                                     <p class="title is-5">${title}</p>
                                                     <time style="font-size: 1em" datetime="2016-1-1">${date}</time>
-                                                    <p class="subtitle is-6">${proposer}</p>
+                                                    <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${proposer_name} 의원</p>
+                                                    <p>공동발의자: ${proposer_names}</p>
                                                     <div>
                                                         <button id="btn-save" class="btn btn-outline-sparta btn-lg" onclick="bookmark('${id}')">
                                                                 <i class="fa fa-bookmark-o" aria-hidden="true"></i>
@@ -189,7 +191,7 @@ function add_law_list(res) {
                                 <div class="media">
                                     <div class="media-content">
                                         <a>
-                                            <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i].title}</p>
+                                            <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}','${res[i].proposer_name}', '${res[i].proposer_names}')">${res[i].title}</p>
                                         </a>
                                         <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${res[i].proposer_name} 의원</p>
                                         <p>공동발의자: ${res[i].proposer_names}</p>
@@ -353,7 +355,8 @@ function bookmark_show() {
                     let id = bookmark_list[i]['id']
                     let url = bookmark_list[i]['url']
                     let title = bookmark_list[i]['title']
-                    let proposer = bookmark_list[i]['proposer']
+                    let proposer_name = bookmark_list[i]['proposer_name']
+                    let proposer_names = bookmark_list[i]['proposer_names']
                     let date = bookmark_list[i]['date']
 
                     let temp_html = `<div class="card">
@@ -361,9 +364,10 @@ function bookmark_show() {
                                             <div class="media">
                                                 <div class="media-content">
                                                     <a>
-                                                        <p class="title is-4" style="color: black" id="title" onclick="open_modal('${url}', '${id}', '${title}')">${title}</p>
+                                                        <p class="title is-5" style="color: black" id="title" onclick="open_modal('${url}', '${id}', '${title}', '${proposer_name}', '${proposer_names}')">${title}</p>
                                                     </a>
-                                                    <p class="subtitle is-6" style="color: black" >${proposer}</p>
+                                                    <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${proposer_name} 의원</p>
+                                                    <p>공동발의자: ${proposer_names}</p>
                                                 </div>
                                             </div>
                                             <div class="content">
@@ -432,7 +436,8 @@ function likes_show() {
                     let id = likes_list[i]['id']
                         let url = likes_list[i]['url']
                         let title = likes_list[i]['title']
-                        let proposer = likes_list[i]['proposer']
+                        let proposer_name = likes_list[i]['proposer_name']
+                        let proposer_names = likes_list[i]['proposer_names']
                         let date = likes_list[i]['date']
 
                         let temp_html = `<div class="card">
@@ -440,9 +445,10 @@ function likes_show() {
                                             <div class="media">
                                                 <div class="media-content">
                                                     <a>
-                                                        <p class="title is-4" style="color: black" id="title" onclick="open_modal('${url}', '${id}', '${title}')">${title}</p>
+                                                        <p class="title is-5" style="color: black" id="title" onclick="open_modal('${url}', '${id}', '${title}', '${proposer_name}', '${proposer_names}')">${title}</p>
                                                     </a>
-                                                    <p class="subtitle is-6" style="color: black" >${proposer}</p>
+                                                    <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${proposer_name} 의원</p>
+                                                    <p>공동발의자: ${proposer_names}</p>
                                                 </div>
                                             </div>
                                             <div class="content">
