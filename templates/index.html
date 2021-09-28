@@ -34,12 +34,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <!-- js 불러오기 -->
     <script src="/static/js/index.js"></script>
-
-
-    <script>
-
-
-    </script>
+    <script src="/static/js/scroll.js"></script>
 </head>
 
 <body>
@@ -92,7 +87,10 @@
             </ul>
         </div>
     </div>
-
+<div style="text-align: end; margin: 0; position: sticky; top: 200px; display: flex; flex-direction: column" class="is-ri">
+    <i onclick="scrollToTop()" class="far fa-caret-square-up fa-2x"></i>
+    <i onclick="scrollToBottom()" class="far fa-caret-square-down fa-2x"></i>
+</div>
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
