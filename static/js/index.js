@@ -117,6 +117,8 @@ function open_modal(url, id, title) {
 //모달 닫기
 function close_modal() {
     $(".modal").removeClass("is-active");
+    //모달을 비워주지 않으면 두번째 창부터 좋아요 버튼이 생기지 않음
+    $(".modal").empty();
     get_ranking()
 }
 
@@ -315,6 +317,7 @@ function readMore() {
 
 // 법안 즐겨찾기 보여주기
 function bookmark_show() {
+    $('#bookmark').empty() // 수정
     $.ajax({
             type: 'GET',
             url: '/api/bookmark',
@@ -363,6 +366,7 @@ function bookmark(id) {
         data: {id_give: id},
         success: function (response) {
             alert(response["msg"])
+            bookmark_show()
         }
     });
 }
