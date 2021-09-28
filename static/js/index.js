@@ -25,7 +25,6 @@ $(document).ready(function () {
     //탭 메뉴 전환 ( 전체보기 / 즐겨찾기 )
     $(".tab_title li").click(function () {
         let idx = $(this).index();
-        //console.log(idx)
         $(".tab_title li").removeClass("is-active");
         $(".tab_title li").eq(idx).addClass("is-active");
         $(".card-container > .card-list").hide();
@@ -40,7 +39,6 @@ $(document).ready(function () {
 
     //랭킹 hover
     $('.box').hover(function () {
-        console.log(123)
         $('.box').css("height", "15em");
         $('.box > .rank-board').css("height", "12em");
     },function (){
@@ -183,7 +181,6 @@ function get_law_list_by_proposer_name(name) {
 //법안목록 html 추가
 function add_law_list(res) {
     for (let i = 1; i < res.length; i++) {
-        console.log(res[i].proposer_name)
         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
@@ -228,8 +225,12 @@ function get_ranking() {
         type: "GET",
         url: "/api/rank",
         success: function (res) {
+            if (res.length == 0) {
+                $('#ranking-list').append('<li>조회된 법안이 없습니다.</li>')
+            }
             for (let i = 0; i < res.length; i++) {
-                let tmp_html = `<li onclick="open_modal('${res[i]['url']}','${res[i]['id']}','${res[i]['title']}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
+                let tmp_html = `<li onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
+
                 $('#ranking-list').append(tmp_html)
             }
         }
@@ -418,7 +419,6 @@ $(document).ready(function () {
     });
 });
 
-
 // 인기순
 function likes_show() {
     $.ajax({
@@ -427,7 +427,6 @@ function likes_show() {
             data: {},
             success: function (response) {
                 let likes_list = response['likes_list']
-                console.log(likes_list)
                 for(i = 0; i < likes_list.length; i++){
                     let id = likes_list[i]['id']
                         let url = likes_list[i]['url']
