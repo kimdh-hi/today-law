@@ -1,12 +1,15 @@
 * {
     font-family: 'Jua', sans-serif;
 }
-.card-container *{
+
+.card-container * {
     font-family: 'Nanum Gothic', sans-serif;
 }
-.modal *{
+
+.modal * {
     font-family: 'Nanum Gothic', sans-serif;
 }
+
 .center {
     text-align: center;
 }
@@ -43,6 +46,7 @@ h1 {
 .card-container div.card-list.on {
     display: block;
 }
+
 .subtitle,
 .modal-content {
     margin-top: 2em;
@@ -51,10 +55,19 @@ h1 {
     line-height: 1.8em;
 }
 
-.rank-list li:hover{
+.rank-list li:hover {
     cursor: pointer;
 }
 
-#read-more-box{
+#read-more-box {
     cursor: pointer;
 }
+
+.quickmenu {position:absolute;width:90px;top:50%;margin-top:-50px;right:2em;background:#fff;}
+.quickmenu ul {position:relative;float:left;width:100%;display:inline-block;*display:inline;border:1px solid #ddd;}
+.quickmenu ul li {float:left;width:100%;border-bottom:1px solid #ddd;text-align:center;display:inline-block;*display:inline;}
+.quickmenu ul li a {position:relative;float:left;width:100%;height:30px;line-height:30px;text-align:center;color:#999;font-size:9.5pt;}
+.quickmenu ul li a:hover {color:#000;}
+.quickmenu ul li:last-child {border-bottom:0;}
+
+
