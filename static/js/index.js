@@ -220,7 +220,7 @@ function search() {
 }
 
 // open_modal(url, id, title)
-//랭킹
+//랭
 function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
@@ -231,7 +231,7 @@ function get_ranking() {
                 $('#ranking-list').append('<li>조회된 법안이 없습니다.</li>')
             }
             for (let i = 0; i < res.length; i++) {
-                let tmp_html = `<li onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
+                let tmp_html = `<li onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}', '${res[i].proposer_name}', '${res[i].proposer_names}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
 
                 $('#ranking-list').append(tmp_html)
             }
