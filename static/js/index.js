@@ -315,6 +315,7 @@ function readMore() {
 
 // 법안 즐겨찾기 보여주기
 function bookmark_show() {
+    $('#bookmark').empty() // 수정
     $.ajax({
             type: 'GET',
             url: '/api/bookmark',
@@ -363,6 +364,7 @@ function bookmark(id) {
         data: {id_give: id},
         success: function (response) {
             alert(response["msg"])
+            bookmark_show()
         }
     });
 }
