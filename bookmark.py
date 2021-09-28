@@ -38,9 +38,15 @@ def bookmark():
 def delete_bookmark():
 
     id_receive = request.form['id_give']
-    db.bookmark.delete_one({"id": id_receive})
+    bookmark_id = db.bookmark.find_one({'id': id_receive})
 
-    return jsonify({'result': 'success', 'msg': f'법안 삭제!'})
+    if bookmark_id is not None:
+        db.bookmark.delete_one({"id": id_receive})
+        msg = "법안이 삭제 되었습니다."
+    else:
+        msg = "즐겨찾기에 없는 법안입니다."
+
+    return jsonify({'result': 'success', 'msg': f'{msg}'})
 
 
 
