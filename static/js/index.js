@@ -29,7 +29,12 @@ $(document).ready(function () {
         $(".card-container > .card-list").hide();
         $(".card-container > .card-list").eq(idx).show();
     })
-    $('#ranking-box').vTicker();
+    $('#ranking-box').vTicker(
+        'init', {
+            speed: 2000,
+            pause: 1000,
+            showItems: 1
+        });
 })
 
 //모달 열기 (법안 상세내용)
@@ -171,16 +176,16 @@ function add_law_list(res) {
                                     <div class="media-content">
                                         <a>
                                             <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i].title}</p>
-                                        </a>        
-                                        <br/>                                            
-                                        <p>대표 제안자: ${res[i].proposer_name}</p>
-                                        <p>${res[i].proposer_names}</p>
+                                        </a>
+                                        <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${res[i].proposer_name}의원</p>
+                                        <p>공동발의자: ${res[i].proposer_names}</p>
                                     </div>
                                 </div>
                                 <div class="content" id="content">
                                     <time id="date" datetime="2016-1-1">${res[i].date}</time>
                                 </div>
-                            </div>`
+                            </div>
+                        </div>`
         $('#laws-box').append(tmp_html)
         add_readMore_button()
     }
@@ -202,14 +207,15 @@ function search() {
 }
 
 // open_modal(url, id, title)
+//랭킹
 function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
         type: "GET",
         url: "/api/rank",
-        success: function(res) {
-            for (let i=0;i<res.length;i++) {
-                let tmp_html = `<li onclick="open_modal('${res[i]['url']}', '${res[i]['id']}', '${res[i]['title']}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
+        success: function (res) {
+            for (let i = 0; i < res.length; i++) {
+                let tmp_html = `<li onclick="open_modal('${res[i]['url']}','${res[i]['id']}','${res[i]['title']}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
                 $('#ranking-list').append(tmp_html)
             }
         }
@@ -290,10 +296,10 @@ function readMore() {
     more = true; // 기존 리스트를 유지
 
     //  offset의 끝에 도달한 경우
-    if ((offset+1)*10 >= total_count) {
+    if ((offset + 1) * 10 >= total_count) {
         g_readmore_button_show = false
     }
-    offset+=1
+    offset += 1
 
     // 현재 검색조건이 의원이름인 경우 더보기 처리
     if (g_condition == "name")

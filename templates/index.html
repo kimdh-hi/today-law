@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="/static/css/index.css">
     <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     />
     <!-- img -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -43,7 +43,8 @@
 </head>
 
 <body>
-<section class="hero is-info is-medium">
+
+<section class="hero is-info is-small">
     <div class="hero-head">
         <nav class="navbar">
             <div class="container">
@@ -79,15 +80,29 @@
         </nav>
     </div>
 
+    <div class="box" style="width: 25%; margin-left: 10em;">
+        <span style="font-weight: bold; font-size: large">이번주 조회수 순위</span>
+        <div class="rank-board" id="ranking-box">
+            <ul class="rank-list" id="ranking-list">
+                <li>이번주 순위가 없습니다.</li>
+                <li>이번주 순위가 없습니다.</li>
+                <li>이번주 순위가 없습니다.</li>
+                <li>이번주 순위가 없습니다.</li>
+                <li>이번주 순위가 없습니다.</li>
+            </ul>
+        </div>
+    </div>
+
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
                 Today 국회
             </p>
-            <img onclick="window.location.reload()" class="title-logo" src="/static/congress.png" alt="Logo"/>
-            <p class="subtitle">
+            <img class="title-logo" src="/static/congress.png" alt="Logo"/>
+            <p class="subtitle" style="margin: auto">
                 국회 발의 법안 간편하게 보자!
             </p>
+            <br><br>
             <div class="has-text-centered">
                 <div class="select is-medium">
                     <select id="select-condition">
@@ -98,15 +113,15 @@
                 <input id="search-list" class="input is-medium" type="text" style="width: 50%"
                        placeholder="검색어를 입력하세요.">
                 <button class="button is-light is-medium" onclick="search()">검색</button>
+
             </div>
         </div>
     </div>
 
     <div class="hero-foot">
+        <div class="card" style="padding-left: 0em">
+            <nav class="tabs is-boxed">
 
-        <nav class="tabs is-boxed is-fullwidth">
-
-            <div class="container">
                 <ul class="tab_title">
                     <li class="is-active">
                         <a>전체 보기</a>
@@ -115,27 +130,62 @@
                         <a>⭐ 즐겨찾기</a>
                     </li>
                 </ul>
-            </div>
-        </nav>
+
+            </nav>
+        </div>
+
         <div class="card-container">
-            <div style="margin: 0 0 30px 50px">
-                <span style="font-weight: bold; font-size: large">이번주 조회수 순위</span>
-                <div id="ranking-box">
-                    <ul id="ranking-list">
-                        <li>이번주 순위가 없습니다.</li>
-                        <li>이번주 순위가 없습니다.</li>
-                        <li>이번주 순위가 없습니다.</li>
-                        <li>이번주 순위가 없습니다.</li>
-                        <li>이번주 순위가 없습니다.</li>
-                    </ul>
-                </div>
-            </div>
 
             <div class="card-list on" id="laws-box">
 
             </div>
 
             <div class="card-list" id="bookmark">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                즐겨찾기한 항목이 없습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                즐겨찾기한 항목이 없습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                즐겨찾기한 항목이 없습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                즐겨찾기한 항목이 없습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                즐겨찾기한 항목이 없습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
