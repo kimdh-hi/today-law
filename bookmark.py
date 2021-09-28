@@ -34,7 +34,7 @@ def bookmark():
             "proposer": proposer,
             "date": date
         }
-        print("doc", doc)
+
         db.bookmark.insert_one(doc)
         msg = "즐겨찾기에 저장되었습니다."
 

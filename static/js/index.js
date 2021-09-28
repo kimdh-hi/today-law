@@ -179,7 +179,7 @@ function add_law_list(res) {
                                         <a>
                                             <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i].title}</p>
                                         </a>
-                                        <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${res[i].proposer_name}의원</p>
+                                        <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${res[i].proposer_name} 의원</p>
                                         <p>공동발의자: ${res[i].proposer_names}</p>
                                     </div>
                                 </div>

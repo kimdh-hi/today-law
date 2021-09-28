@@ -22,6 +22,7 @@ def get_ranking():
             'like':rank['like'],
             'hate':rank['hate']
         }
+        print(doc)
         rank_result.append(doc)
     return jsonify(rank_result)
 
