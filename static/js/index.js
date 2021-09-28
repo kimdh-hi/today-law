@@ -19,6 +19,8 @@ $(document).ready(function () {
     get_law_list()
     // 즐겨찾기
     bookmark_show()
+    // 인기순
+    likes_show()
 
     //탭 메뉴 전환 ( 전체보기 / 즐겨찾기 )
     $(".tab_title li").click(function () {
@@ -189,7 +191,7 @@ function add_law_list(res) {
                                         <a>
                                             <p class="title is-5" style="color: black" id="title" onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i].title}</p>
                                         </a>
-                                        <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${res[i].proposer_name}의원</p>
+                                        <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${res[i].proposer_name} 의원</p>
                                         <p>공동발의자: ${res[i].proposer_names}</p>
                                     </div>
                                 </div>
@@ -335,7 +337,19 @@ function bookmark_show() {
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
 
-                for (let i = 0; i < bookmark_list.length; i++) {
+                if (bookmark_list == "" ){
+                    let temp_html = `<div class="card" id="non-temp">
+                                        <div class="card-content" >
+                                            <div class="media">
+                                                <div class="media-content">
+                                                    즐겨찾기한 항목이 없습니다.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`
+                    $('#bookmark').append(temp_html)
+                } else {
+                    for (let i = 0; i < bookmark_list.length; i++) {
                     let id = bookmark_list[i]['id']
                     let url = bookmark_list[i]['url']
                     let title = bookmark_list[i]['title']
@@ -359,6 +373,7 @@ function bookmark_show() {
                                     </div>`
                     $('#bookmark').append(temp_html)
 
+                 }
                 }
 
 
@@ -402,3 +417,46 @@ $(document).ready(function () {
         $(".quickmenu").stop().animate({"top": position + currentPosition + "px"}, 500);
     });
 });
+
+
+// 인기순
+function likes_show() {
+    $.ajax({
+            type: 'GET',
+            url: '/api/likes_list',
+            data: {},
+            success: function (response) {
+                let likes_list = response['likes_list']
+                console.log(likes_list)
+                for(i = 0; i < likes_list.length; i++){
+                    let id = likes_list[i]['id']
+                        let url = likes_list[i]['url']
+                        let title = likes_list[i]['title']
+                        let proposer = likes_list[i]['proposer']
+                        let date = likes_list[i]['date']
+
+                        let temp_html = `<div class="card">
+                                        <div class="card-content">
+                                            <div class="media">
+                                                <div class="media-content">
+                                                    <a>
+                                                        <p class="title is-4" style="color: black" id="title" onclick="open_modal('${url}', '${id}', '${title}')">${title}</p>
+                                                    </a>
+                                                    <p class="subtitle is-6" style="color: black" >${proposer}</p>
+                                                </div>
+                                            </div>
+                                            <div class="content">
+                                                <time datetime="2016-1-1">${date}</time>
+                                            </div>
+                                        </div>
+                                    </div>`
+                        $('#likes').append(temp_html)
+
+
+                }
+
+            }
+
+        }
+    )
+}

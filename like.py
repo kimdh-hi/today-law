@@ -32,3 +32,8 @@ def delete_star():
 
     db.ranking.update_one({'id': id_receive}, {'$set': {'hate': new_hate}})
     return jsonify({'msg': '싫어요를 선택해주셨습니다.'})
+
+@bp.route('/api/likes_list', methods=['GET'])
+def show_like_list():
+    likes_list = list(db.ranking.find({}, {'_id': False}).sort('like', -1))
+    return jsonify({'likes_list': likes_list})

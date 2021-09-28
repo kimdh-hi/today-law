@@ -12,16 +12,18 @@ def get_ranking():
     rank_result = []
 
     for idx, rank in enumerate(rank_list):
+        title = title_row_check(rank['title'])
         doc = {
             'rank':idx+1,
             'url':rank['url'],
-            'title':rank['title'],
+            'title':title,
             'proposer':rank['proposer'],
             'date':rank['date'],
             'count':rank['count'],
             'like':rank['like'],
             'hate':rank['hate']
         }
+        print(doc)
         rank_result.append(doc)
     return jsonify(rank_result)
 
@@ -53,5 +55,13 @@ def increase_click_count():
         db.ranking.insert_one(doc)
 
     return jsonify({'result':'success'})
+
+
+def title_row_check(title):
+    title_max_length = 15
+    if len(title) >= title_max_length:
+        title = title[:title_max_length]
+        title = title + " ..."
+    return title
 
 
