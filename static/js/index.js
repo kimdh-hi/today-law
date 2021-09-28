@@ -325,7 +325,19 @@ function bookmark_show() {
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
 
-                for (let i = 0; i < bookmark_list.length; i++) {
+                if (bookmark_list == "" ){
+                    let temp_html = `<div class="card" id="non-temp">
+                                        <div class="card-content" >
+                                            <div class="media">
+                                                <div class="media-content">
+                                                    즐겨찾기한 항목이 없습니다.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`
+                    $('#bookmark').append(temp_html)
+                } else {
+                    for (let i = 0; i < bookmark_list.length; i++) {
                     let id = bookmark_list[i]['id']
                     let url = bookmark_list[i]['url']
                     let title = bookmark_list[i]['title']
@@ -349,6 +361,7 @@ function bookmark_show() {
                                     </div>`
                     $('#bookmark').append(temp_html)
 
+                 }
                 }
 
 
