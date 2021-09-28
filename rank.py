@@ -18,7 +18,8 @@ def get_ranking():
             'rank':idx+1,
             'url':rank['url'],
             'title':title,
-            'proposer':rank['proposer'],
+            'proposer_name': rank['proposer_name'],
+            'proposer_names': rank['proposer_names'],
             'date':rank['date'],
             'count':rank['count'],
             'like':rank['like'],
@@ -34,7 +35,8 @@ def increase_click_count():
     id = request.form['id']
     url = request.form['url']
     title = request.form['title']
-    proposer = request.form['proposer']
+    proposer_name = request.form['proposer_name']
+    proposer_names = request.form['proposer_names']
     date = request.form['date']
 
     ranking = db.ranking.find_one({'id':id}, {'_id':0, 'title':0, 'id':0})
@@ -47,7 +49,8 @@ def increase_click_count():
             'id':id,
             'url':url,
             'title':title,
-            'proposer':proposer,
+            'proposer_name': proposer_name,
+            'proposer_names': proposer_names,
             'date':date,
             'count':1,
             'like': 0,
