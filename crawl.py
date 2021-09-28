@@ -32,10 +32,10 @@ def saving():
     content = soup.select_one('#summaryContentDiv').text
     date = soup.select_one('body > div > div.contentWrap > div.subContents > div > div.contIn > div.tableCol01 > table > tbody > tr > td:nth-child(2)').text
 
-
-    count = db.ranking.find_one({'id': id_receive}, {'_id': 0, 'title': 0, 'id': 0})
-    if count is not None:
-        count = count['count']
+    print(id_receive)
+    ranking = db.ranking.find_one({'id': id_receive}, {'_id': False})
+    if ranking is not None:
+        count = ranking['count']
         new_count = count + 1
         db.ranking.update_one({'id': id_receive}, {'$set': {'count': new_count}})
     else:

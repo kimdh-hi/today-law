@@ -8,12 +8,13 @@ bp = Blueprint('ranking', __name__, url_prefix='/')
 
 @bp.route('/api/rank', methods=["GET"])
 def get_ranking():
-    rank_list = db.ranking.find({}).sort([('count',-1)]).limit(5)
+    rank_list = db.ranking.find({}).sort([('count',-1), ('title',1)]).limit(5)
     rank_result = []
 
     for idx, rank in enumerate(rank_list):
         title = title_row_check(rank['title'])
         doc = {
+            'id':rank['id'],
             'rank':idx+1,
             'url':rank['url'],
             'title':title,
@@ -38,9 +39,9 @@ def increase_click_count():
     proposer_names = request.form['proposer_names']
     date = request.form['date']
 
-    count = db.ranking.find_one({'id':id}, {'_id':0, 'title':0, 'id':0})
-    if count is not None:
-        count = count['count']
+    ranking = db.ranking.find_one({'id':id}, {'_id':0, 'title':0, 'id':0})
+    if ranking is not None:
+        count = ranking['count']
         new_count = count+1
         db.ranking.update_one({'id':id}, {'$set':{'count':new_count}})
     else:
