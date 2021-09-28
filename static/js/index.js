@@ -171,6 +171,7 @@ function get_law_list_by_proposer_name(name) {
 //법안목록 html 추가
 function add_law_list(res) {
     for (let i = 1; i < res.length; i++) {
+        console.log(res[i].proposer_name)
         let tmp_html = `<div class="card">
                             <div class="card-content">
                                 <div class="media">
@@ -207,6 +208,7 @@ function search() {
     }
 }
 
+// open_modal(url, id, title)
 //랭킹
 function get_ranking() {
     $('#ranking-list').empty()
@@ -321,7 +323,6 @@ function bookmark_show() {
             data: {},
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
-                console.log("bookmark_list: ", bookmark_list)
 
                 for (let i = 0; i < bookmark_list.length; i++) {
                     let id = bookmark_list[i]['id']
@@ -329,7 +330,6 @@ function bookmark_show() {
                     let title = bookmark_list[i]['title']
                     let proposer = bookmark_list[i]['proposer']
                     let date = bookmark_list[i]['date']
-                    console.log("bookmark_list2: ", id, url, title, proposer, date)
 
                     let temp_html = `<div class="card">
                                         <div class="card-content">
