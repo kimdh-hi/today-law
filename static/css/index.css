@@ -59,10 +59,6 @@ h1 {
     cursor: pointer;
 }
 
-.is-ri > i{
-    cursor: pointer;
-}
-
 .quickmenu {position:absolute;width:auto;top:60%;margin-top:-50px;right:3em;background:#fff;}
 .quickmenu ul {position:relative;float:left;width:100%;display:inline-block;*display:inline;border:1px solid #ddd;}
 .quickmenu ul li {float:left;width:100%;text-align:center;display:inline-block;*display:inline; cursor: pointer;}
@@ -70,6 +66,15 @@ h1 {
 .quickmenu ul li a:hover {color:#000;}
 .quickmenu ul li:last-child {border-bottom:0;}
 
+.box{
+    width: 25%;
+    margin-top: 5%;
+    margin-left: 10em;
+    position: absolute;
+    z-index: 1;
+}
+
 .hero-foot{
     padding-bottom: 365px
 }
+
