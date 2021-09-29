@@ -30,5 +30,5 @@ def delete_star():
 
 @bp.route('/api/likes_list', methods=['GET'])
 def show_like_list():
-    likes_list = list(db.ranking.find({}, {'_id': False}).sort('like', -1))
+    likes_list = list(db.ranking.find({}, {'_id': False}).sort([('like',-1), ('title',1)]).limit(50))
     return jsonify({'likes_list': likes_list})
