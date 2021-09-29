@@ -120,7 +120,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                                     좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                 </a>
                                                 <a href="#" onClick="hateLaw('${id}')" class="card-footer-item has-text-danger">
-                                                    좋아요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                    싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                                 </a>
                                             </footer>
 
@@ -408,13 +408,26 @@ function likes_show() {
             data: {},
             success: function (response) {
                 let likes_list = response['likes_list']
-                for (i = 0; i < likes_list.length; i++) {
+                if (likes_list == "") {
+                    let temp_html = `<div class="card" id="non-temp">
+                                        <div class="card-content" >
+                                            <div class="media">
+                                                <div class="media-content">
+                                                    인기순 항목이 없습니다.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`
+                    $('#likes').append(temp_html)
+                } else {
+                    for (i = 0; i < likes_list.length; i++) {
                     let id = likes_list[i]['id']
                     let url = likes_list[i]['url']
                     let title = likes_list[i]['title']
                     let proposer_name = likes_list[i]['proposer_name']
                     let proposer_names = likes_list[i]['proposer_names']
                     let date = likes_list[i]['date']
+
                     // 순위
                     let num = i + 1
                     if (num == 1){
@@ -447,6 +460,7 @@ function likes_show() {
                     $('#likes').append(temp_html)
 
 
+                }
                 }
 
             }
