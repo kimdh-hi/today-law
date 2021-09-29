@@ -52,7 +52,13 @@ def saving():
         }
         db.ranking.insert_one(doc)
 
-    return jsonify({'content': content, 'title':title, 'date':date, 'proposer_name':proposer_name, 'proposer_names':proposer_names, 'id':id_receive})
+    # 좋아요, 싫어요 DB에서 찾아서 보내주기
+    like = db.ranking.find_one({'id': id_receive}, {'_id': False})
+    like_like = like['like']
+    hate = db.ranking.find_one({'id': id_receive}, {'_id': False})
+    hate_hate = hate['hate']
+
+    return jsonify({'content': content, 'title':title, 'date':date, 'proposer_name':proposer_name, 'proposer_names':proposer_names, 'id':id_receive, 'like':like_like, 'hate':hate_hate})
 
 def clean_text(text):
     content = text.get_text()
