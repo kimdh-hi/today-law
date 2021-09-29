@@ -30,20 +30,22 @@ $(document).ready(function () {
         $(".card-container > .card-list").hide();
         $(".card-container > .card-list").eq(idx).show();
     })
-    $('#ranking-box').vTicker(
-        'init', {
-            speed: 2000,
-            pause: 1000,
-            showItems: 1
-        });
+    // $('#ranking-box').vTicker(
+    //     'init', {
+    //         speed: 2000,
+    //         pause: 1000,
+    //         showItems: 1
+    //     });
 
     //랭킹 hover
     $('.box').hover(function () {
-        $('.box').css("height", "15em");
-        $('.box > .rank-board').css("height", "12em");
+        $('.box').css("height", "12em");
+        $('.box > .rank-board').css("height", "4em");
+        $('#ranking-list').removeClass("is-hidden")
     },function (){
-        $('.box').css("height", "5em");
-        $('.box > .rank-board').css("height", "1.2em");
+        $('#ranking-list').addClass("is-hidden")
+        $('.box').css("height", "4em");
+        $('.box > .rank-board').css("height", "4em");
     })
 })
 
@@ -220,7 +222,7 @@ function search() {
 }
 
 // open_modal(url, id, title)
-//랭킹
+//랭
 function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
@@ -231,7 +233,7 @@ function get_ranking() {
                 $('#ranking-list').append('<li>조회된 법안이 없습니다.</li>')
             }
             for (let i = 0; i < res.length; i++) {
-                let tmp_html = `<li onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
+                let tmp_html = `<li onclick="open_modal('${res[i].url}', '${res[i].id}', '${res[i].title}', '${res[i].proposer_name}', '${res[i].proposer_names}')">${res[i]['rank']}위  ${res[i]['title']}</li>`
 
                 $('#ranking-list').append(tmp_html)
             }
