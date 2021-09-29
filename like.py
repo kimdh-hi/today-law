@@ -6,11 +6,6 @@ db = client.todaylaw
 
 bp = Blueprint('like', __name__, url_prefix='/')
 
-@bp.route('/api/like', methods=['GET'])
-def get_like():
-    like_list = list(db.ranking.find({}, {'_id': False}))
-    return jsonify({'like_list':like_list})
-
 
 @bp.route('/api/like', methods=['POST'])
 def like_star():

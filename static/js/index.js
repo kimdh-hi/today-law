@@ -42,7 +42,7 @@ $(document).ready(function () {
         $('.box').css("height", "12em");
         $('.box > .rank-board').css("height", "4em");
         $('#ranking-list').removeClass("is-hidden")
-    },function (){
+    }, function () {
         $('#ranking-list').addClass("is-hidden")
         $('.box').css("height", "4em");
         $('.box > .rank-board').css("height", "4em");
@@ -54,15 +54,22 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
     $.ajax({
         type: "POST",
         url: "/api/laws/details",
-        data: {url_give: url, id_give: id, title_give: title, proposer_name_give: proposer_name, proposer_names_give: proposer_names},
+        data: {
+            url_give: url,
+            id_give: id,
+            title_give: title,
+            proposer_name_give: proposer_name,
+            proposer_names_give: proposer_names
+        },
         success: function (response) {
-            like_show()
             let id = response['id']
             let title = response['title'].split('(')[0]
             let proposer_name = response['proposer_name']
             let proposer_names = response['proposer_names']
             let content = response['content']
             let date = response['date']
+            let like = response['like']
+            let hate = response['hate']
             let subtitle = ''
             let subtitle2 = ''
             let content2 = ''
@@ -115,7 +122,12 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
 
                                             </div>
                                             <footer class="card-footer" id="card-footer">
-                                            
+                                                <a href="#" onClick="likeLaw('${id}')" class="card-footer-item has-text-info">
+                                                    좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                </a>
+                                                <a href="#" onClick="hateLaw('${id}')" class="card-footer-item has-text-danger">
+                                                    좋아요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                </a>
                                             </footer>
 
                                         </div>
@@ -241,37 +253,6 @@ function get_ranking() {
     })
 }
 
-// 좋아요
-function like_show() {
-    $.ajax({
-            type: 'GET',
-            url: '/api/like',
-            data: {},
-            success: function (response) {
-                let like_list = response['like_list']
-
-                let id, like, hate
-
-                for (let i = 0; i < like_list.length; i++) {
-                    id = like_list[i]['id']
-                    like = like_list[i]['like']
-                    hate = like_list[i]['hate']
-                }
-
-
-                let temp_html = `<a href="#" onClick="likeLaw('${id}')" class="card-footer-item has-text-info">
-                                                    좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                                                </a>
-                                                <a href="#" onClick="hateLaw('${id}')" class="card-footer-item has-text-danger">
-                                                    싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                                                </a>`
-                $('#card-footer').append(temp_html)
-            }
-
-        }
-    )
-}
-
 // 좋아요 기능
 function likeLaw(id) {
     $.ajax({
@@ -342,7 +323,7 @@ function bookmark_show() {
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
 
-                if (bookmark_list == "" ){
+                if (bookmark_list == "") {
                     let temp_html = `<div class="card" id="non-temp">
                                         <div class="card-content" >
                                             <div class="media">
@@ -355,14 +336,14 @@ function bookmark_show() {
                     $('#bookmark').append(temp_html)
                 } else {
                     for (let i = 0; i < bookmark_list.length; i++) {
-                    let id = bookmark_list[i]['id']
-                    let url = bookmark_list[i]['url']
-                    let title = bookmark_list[i]['title']
-                    let proposer_name = bookmark_list[i]['proposer_name']
-                    let proposer_names = bookmark_list[i]['proposer_names']
-                    let date = bookmark_list[i]['date']
+                        let id = bookmark_list[i]['id']
+                        let url = bookmark_list[i]['url']
+                        let title = bookmark_list[i]['title']
+                        let proposer_name = bookmark_list[i]['proposer_name']
+                        let proposer_names = bookmark_list[i]['proposer_names']
+                        let date = bookmark_list[i]['date']
 
-                    let temp_html = `<div class="card">
+                        let temp_html = `<div class="card">
                                         <div class="card-content">
                                             <div class="media">
                                                 <div class="media-content">
@@ -378,9 +359,9 @@ function bookmark_show() {
                                             </div>
                                         </div>
                                     </div>`
-                    $('#bookmark').append(temp_html)
+                        $('#bookmark').append(temp_html)
 
-                 }
+                    }
                 }
 
 
@@ -433,15 +414,15 @@ function likes_show() {
             data: {},
             success: function (response) {
                 let likes_list = response['likes_list']
-                for(i = 0; i < likes_list.length; i++){
+                for (i = 0; i < likes_list.length; i++) {
                     let id = likes_list[i]['id']
-                        let url = likes_list[i]['url']
-                        let title = likes_list[i]['title']
-                        let proposer_name = likes_list[i]['proposer_name']
-                        let proposer_names = likes_list[i]['proposer_names']
-                        let date = likes_list[i]['date']
+                    let url = likes_list[i]['url']
+                    let title = likes_list[i]['title']
+                    let proposer_name = likes_list[i]['proposer_name']
+                    let proposer_names = likes_list[i]['proposer_names']
+                    let date = likes_list[i]['date']
 
-                        let temp_html = `<div class="card">
+                    let temp_html = `<div class="card">
                                         <div class="card-content">
                                             <div class="media">
                                                 <div class="media-content">
@@ -457,7 +438,7 @@ function likes_show() {
                                             </div>
                                         </div>
                                     </div>`
-                        $('#likes').append(temp_html)
+                    $('#likes').append(temp_html)
 
 
                 }
