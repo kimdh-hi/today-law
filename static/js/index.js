@@ -415,11 +415,23 @@ function likes_show() {
                     let proposer_name = likes_list[i]['proposer_name']
                     let proposer_names = likes_list[i]['proposer_names']
                     let date = likes_list[i]['date']
+                    // 순위
+                    let num = i + 1
+                    if (num == 1){
+                        num = "🥇 " + num
+                    }else if (num == 2){
+                        num = "🥈 " + num
+                    }else if (num == 3){
+                        num = "🥉 " + num
+                    }else{
+                        num = num
+                    }
 
                     let temp_html = `<div class="card">
                                         <div class="card-content">
                                             <div class="media">
                                                 <div class="media-content">
+                                                    ${num}위
                                                     <a>
                                                         <p class="title is-5" style="color: black" id="title" onclick="open_modal('${url}', '${id}', '${title}', '${proposer_name}', '${proposer_names}')">${title}</p>
                                                     </a>
