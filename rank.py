@@ -62,7 +62,7 @@ def increase_click_count():
 
 
 def title_row_check(title):
-    title_max_length = 15
+    title_max_length = 14
     if len(title) >= title_max_length:
         title = title[:title_max_length]
         title = title + " ..."
