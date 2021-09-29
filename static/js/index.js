@@ -30,21 +30,15 @@ $(document).ready(function () {
         $(".card-container > .card-list").hide();
         $(".card-container > .card-list").eq(idx).show();
     })
-    // $('#ranking-box').vTicker(
-    //     'init', {
-    //         speed: 2000,
-    //         pause: 1000,
-    //         showItems: 1
-    //     });
 
     //랭킹 hover
     $('.box').hover(function () {
         $('.box').css("height", "12em");
-        $('.box > .rank-board').css("height", "4em");
+        $('.box > .rank-board').css("height", "4em")
         $('#ranking-list').removeClass("is-hidden")
     }, function () {
         $('#ranking-list').addClass("is-hidden")
-        $('.box').css("height", "4em");
+        $('.box').css("height", "4em")
         $('.box > .rank-board').css("height", "4em");
     })
 })
