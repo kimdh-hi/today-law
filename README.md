@@ -6,33 +6,52 @@
 
 ![](https://i.imgur.com/o1BYqk9.png)
 
+<br/>
+<br/>
+
+
 ### 🔗 라이브
 > 유튜브 링크 
 
+<br/>
+<br/>
+
 ### 🏠 소개
 
-![](https://i.imgur.com/UtPYM7X.png)
-<h6 style="text-align:center">[ 보기 불편한 국회 발의 법안 조회 사이트 ]</h6>
+| ![](https://i.imgur.com/UtPYM7X.png) | 
+|:--:| 
+| *보기 불편한 국회 발의 법안 조회 사이트* |
 
 <br/>
 
-![](https://imgur.com/M2ulAGA.gif)
-
-<h6 style="text-align:center">[ API를 이용해 개선 ]</h6>
-
+| ![](https://imgur.com/M2ulAGA.gif) | 
+|:--:| 
+| *API를 이용해 개선* |
 
 
 국회 법안 발의 내용을 쉽고 편하게 확인 할 수 있는 서비스
 
+<br/>
+<br/>
+
 ### ⏲️ 개발기간
 2021년 09월 23일(목) ~ 2021년 09월 30일(목) 
+
+<br/>
+<br/>
 
 ### 🧙 맴버구성
 [김대현](https://github.com/kimdh-hi) [김은아](https://github.com/eunag63) [심은철](https://github.com/scm1400)
 
+<br/>
+<br/>
+
 ### 📌 기술 선택 이유!
 - 중요한 국회 발의 법안을 쉽게 알아보기 위함
 - 발의된 법안 호불호를 통해 반응 확인 가능
+
+<br/>
+<br/>
 
 ### 📌 주요 기능
 - API를 이용한 국회 발의법안 리스트 보기
@@ -43,11 +62,15 @@
 - 발의법안에 대한 즐겨찾기 추가/삭제 기능
 - 더보기 버튼 이용한 페이징 기능
 
+<br/>
+<br/>
+
 ### 📌 문제를 이렇게 해결했어요!
 1. Git 충돌 
     Blueprint를 이용한 파일분리 (모듈화)
 
-
+<br/>
+<br/>
 
 ### Environment
 
