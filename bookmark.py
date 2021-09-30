@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
-#client = MongoClient('3.37.138.98', 27017, username="todaylawdb", password="sparta8")
+
 client = MongoClient('localhost',27017)
 db = client.todaylaw
 
