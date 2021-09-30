@@ -115,6 +115,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                                 <br>
 
                                             </div>
+                                            
                                             <footer class="card-footer" id="card-footer">
                                                 <a href="#" onClick="likeLaw('${id}')" class="card-footer-item has-text-info">
                                                     좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
