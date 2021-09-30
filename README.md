@@ -1,7 +1,8 @@
 ![](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white) ![](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white) ![](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white) 
 ## 스파르타 내일배움캠프 1차 프로젝트
+## 1회차_8색조
 
-## 오늘의 법 ⚖️
+## Project: 오늘의 법(Today 국회) ⚖️
 
 ![](https://i.imgur.com/o1BYqk9.png)
 
@@ -15,7 +16,7 @@
 
 <br/>
 
-![](https://i.imgur.com/Ge0mXtL.gif)
+![](https://imgur.com/M2ulAGA.gif)
 
 <h6 style="text-align:center">[ API를 이용해 개선 ]</h6>
 
@@ -49,6 +50,7 @@
 
 
 ### Environment
+
 - `Python 3.8`
 
 ### Prerequisite
@@ -63,7 +65,6 @@
     - `parse`
 - `xml.etree.ElementTree`
 
-작성한 코드를 실행하기 전에 설치해야할 pakage나 의존성이 걸리는 문제들을 설명하면 된다.
 
 <!-- 
 ### Files
