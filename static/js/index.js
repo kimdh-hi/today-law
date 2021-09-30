@@ -140,6 +140,7 @@ function close_modal() {
     //모달을 비워주지 않으면 두번째 창부터 좋아요 버튼이 생기지 않음
     $(".modal").empty();
     get_ranking()
+    likes_show()
 }
 
 //법안 전체목록 가져오기
@@ -227,8 +228,7 @@ function search() {
     }
 }
 
-// open_modal(url, id, title)
-//랭
+// 조회수 순위
 function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
@@ -386,7 +386,7 @@ function delete_bookmark(id) {
         data: {id_give: id},
         success: function (response) {
             alert(response["msg"])
-            window.location.reload()
+            bookmark_show()
         }
     });
 }
@@ -402,6 +402,7 @@ $(document).ready(function () {
 
 // 인기순
 function likes_show() {
+    $('#likes').empty()
     $.ajax({
             type: 'GET',
             url: '/api/likes_list',
