@@ -64,6 +64,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
             let date = response['date']
             let like = response['like']
             let hate = response['hate']
+            console.log(content)
             let subtitle = ''
             let subtitle2 = ''
             let content2 = ''
@@ -80,6 +81,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                 content2 = content
             }
 
+
             let temp_html = `<div class="modal is-active">
                                 <div class="modal-background" onclick="close_modal()"></div>
                                 <div class="modal-content">
@@ -89,7 +91,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                                 <div class="media-content">
                                                     <p class="title is-5">${title}</p>
                                                     <time style="font-size: 1em" datetime="2016-1-1">${date}</time>
-                                                    <p class="subtitle is-6" style="color: black; margin: 0.5em 0 0.5em">대표발의자: ${proposer_name} 의원</p>
+                                                    <p class="subtitle is-6" style="margin: auto; color: black;">대표발의자: ${proposer_name} 의원</p>
                                                     <p>공동발의자: ${proposer_names}</p>
                                                     <div>
                                                         <button id="btn-save" class="btn btn-outline-sparta btn-lg" onclick="bookmark('${id}')">
@@ -105,14 +107,15 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                             <div class="content">
                                                 <span id="subtitle_1" style="text-align: left; font-size: 1.5em; font-weight: bold" >${subtitle}</span>
                                                 <br>
-                                                ${content2}
+                                                <textarea readonly style="margin-top: 2em;  resize: none; height: 25em" class="textarea" placeholder="Info textarea">${content2}</textarea>
                                                 <br>
-                                                <hr>
+                                                ${subtitle2 ? `<hr>
                                                 <br>
                                                 <span id="subtitle_2" style="text-align: left; font-size: 1.5em; font-weight: bold" >${subtitle2}</span>
                                                 <br>
-                                                ${content3}
-                                                <br>
+                                                <textarea readonly style="margin-top: 2em;  resize: none; height: 25em" class="textarea" placeholder="Info textarea">${content3}</textarea>
+                                                <br>` : ``}
+
 
                                             </div>
                                             
@@ -423,26 +426,26 @@ function likes_show() {
                     $('#likes').append(temp_html)
                 } else {
                     for (i = 0; i < likes_list.length; i++) {
-                    let id = likes_list[i]['id']
-                    let url = likes_list[i]['url']
-                    let title = likes_list[i]['title']
-                    let proposer_name = likes_list[i]['proposer_name']
-                    let proposer_names = likes_list[i]['proposer_names']
-                    let date = likes_list[i]['date']
+                        let id = likes_list[i]['id']
+                        let url = likes_list[i]['url']
+                        let title = likes_list[i]['title']
+                        let proposer_name = likes_list[i]['proposer_name']
+                        let proposer_names = likes_list[i]['proposer_names']
+                        let date = likes_list[i]['date']
 
-                    // 순위
-                    let num = i + 1
-                    if (num == 1){
-                        num = "🥇 " + num
-                    }else if (num == 2){
-                        num = "🥈 " + num
-                    }else if (num == 3){
-                        num = "🥉 " + num
-                    }else{
-                        num = num
-                    }
+                        // 순위
+                        let num = i + 1
+                        if (num == 1) {
+                            num = "🥇 " + num
+                        } else if (num == 2) {
+                            num = "🥈 " + num
+                        } else if (num == 3) {
+                            num = "🥉 " + num
+                        } else {
+                            num = num
+                        }
 
-                    let temp_html = `<div class="card">
+                        let temp_html = `<div class="card">
                                         <div class="card-content">
                                             <div class="media">
                                                 <div class="media-content">
@@ -459,10 +462,10 @@ function likes_show() {
                                             </div>
                                         </div>
                                     </div>`
-                    $('#likes').append(temp_html)
+                        $('#likes').append(temp_html)
 
 
-                }
+                    }
                 }
 
             }
