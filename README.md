@@ -12,7 +12,6 @@
 ### 🔗 라이브
 > http://todaylaw.dhk-99.shop/
 
-> [유튜브 링크](https://www.youtube.com/watch?v=PJDZKuvqwgU)
 
 <br/>
 <br/>
