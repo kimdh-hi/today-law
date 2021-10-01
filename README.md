@@ -1,6 +1,5 @@
 ![](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white) ![](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white) ![](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white) 
-## 스파르타 내일배움캠프 1차 프로젝트
-## 1회차_8색조
+## 스파르타 내일배움캠프 1회차_8색조 1차 프로젝트 
 
 ## Project: 오늘의 법(Today 국회) ⚖️
 
@@ -12,6 +11,7 @@
 
 ### 🔗 라이브
 > http://todaylaw.dhk-99.shop/
+
 > [유튜브 링크](https://www.youtube.com/watch?v=PJDZKuvqwgU)
 
 <br/>
