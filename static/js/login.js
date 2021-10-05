@@ -29,7 +29,10 @@ function close_modal() {
 
 
 function logout() {
-    $.removeCookie('mytoken');
+
+    $.removeCookie("mytoken");
+    alert('로그아웃')
+    window.location.href = '/'
 }
 
 

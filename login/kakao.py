@@ -37,17 +37,19 @@ def access():
         # DB에 user 정보를 넣어주고 jwt를 생성해서 쿠키에 넣어서 클라이언트에게 넘겨준다.
         kakao_account = user_info['kakao_account']
 
-        user_info_doc = {
-            "id":user_info['id'],
-            "username":kakao_account['email'],
-            "name":kakao_account['profile']['nickname'],
-            "profile_image":kakao_account['profile']['profile_image_url'],
-            "like_laws":[],
-            "hate_laws":[],
-            "bookmarks":[]
-        }
+        find_user = db.users.find_one({'id':user_info['id']})
+        if find_user == None:
+            user_info_doc = {
+                "id":user_info['id'],
+                "username":kakao_account['email'],
+                "name":kakao_account['profile']['nickname'],
+                "profile_image":kakao_account['profile']['profile_image_url'],
+                "like_laws":[],
+                "hate_laws":[],
+                "bookmarks":[]
+            }
 
-        db.users.insert_one(user_info_doc)
+            db.users.insert_one(user_info_doc)
     except:
         return jsonify({"result":"fail"})
 
@@ -59,8 +61,8 @@ def login(id, name):
     payload = {
         "id":id,
         "name":name,
-        "exp": datetime.utcnow() + timedelta(seconds=10) # 테스트용으로 10초만 유효한 토큰 생성
-        #"exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
+        "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
+        # "exp": datetime.utcnow() + timedelta(seconds=60) # 테스트용으로 10초만 유효한 토큰 생성
     }
 
     # JWT 토큰 생성
