@@ -15,13 +15,12 @@
           crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="/static/css/index.css">
-    <link rel="stylesheet" href="/static/css/login.css">
+
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
     <!-- img -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -42,12 +41,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <!-- js 불러오기 -->
     <script src="/static/js/index.js"></script>
-    <script src="/static/js/scroll.js"></script>
-    <script src="/static/js/login.js"></script>
+    <script src="/static/js/category.js"></script>
+
+    <style>
+
+        .btn-category:hover {
+            transform: scale(1.5);
+        }
+
+        .column {
+            height: 150px;
+            margin: 10px;
+            font-size: 1.2em;
+            -webkit-box-shadow: -7px 11px 25px -9px rgba(0, 0, 0, 1);
+            -moz-box-shadow: -7px 11px 25px -9px rgba(0, 0, 0, 1);
+            box-shadow: -7px 11px 25px -9px rgba(0, 0, 0, 1);
+        }
+
+    </style>
 </head>
-
 <body>
-
 <section class="hero is-info is-small">
     <div class="hero-head">
         <nav class="navbar">
@@ -74,7 +87,7 @@
                             메뉴2
                         </a>
                         <span class="navbar-item">
-              <a onclick="show_login_modal()" class="button is-info is-inverted">
+              <a class="button is-info is-inverted">
                 <span>로그인</span>
               </a>
             </span>
@@ -82,27 +95,6 @@
                 </div>
             </div>
         </nav>
-    </div>
-
-    <div class="box">
-        <span style="font-weight: bold; font-size: large;">이번주 조회수 순위</span>
-        <div class="rank-board" id="ranking-box">
-            <ul class="rank-list is-hidden" id="ranking-list">
-                <li>조회된 법안이 없습니다.</li>
-                <li>조회된 법안이 없습니다.</li>
-                <li>조회된 법안이 없습니다.</li>
-                <li>조회된 법안이 없습니다.</li>
-                <li>조회된 법안이 없습니다.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="quickmenu">
-        <ul>
-            <li onclick="scrollToTop()" class="far fa-caret-square-up fa-2x" style="color: rgb(62,142,208)">
-            </li>
-            <li onclick="scrollToBottom()" class="far fa-caret-square-down fa-2x" style="color: rgb(62,142,208)"></li>
-        </ul>
     </div>
     <div class="hero-body">
         <div class="container has-text-centered">
@@ -114,55 +106,55 @@
                 국회 발의 법안 간편하게 보자!
             </p>
             <br><br>
-            <div class="has-text-centered">
-                <div class="select is-medium">
-                    <select id="select-condition">
-                        <option value="title">법안이름</option>
-                        <option value="name">의원이름</option>
-                    </select>
+
+            <div class="field is-grouped is-grouped-multiline" style="width: 500px; margin: auto">
+                <div class="control">
+                    <div class="tags has-addons btn-category">
+                        <a class="tag is-link is-medium" onclick='get_categorized_laws("건설")'>건설</a>
+                    </div>
                 </div>
-                <input id="search-list" class="input is-medium" type="text" style="width: 50%"
-                       placeholder="검색어를 입력하세요.">
-                <button class="button is-light is-medium" onclick="search()">검색</button>
 
-            </div>
-        </div>
-    </div>
+                <div class="control">
+                    <div class="tags has-addons btn-category">
+                        <a class="tag is-link is-medium" onclick='get_categorized_laws("노동")'>노동</a>
+                    </div>
+                </div>
 
-    <div class="hero-foot">
-        <div class="card" style="padding-left: 0em">
-            <nav class="tabs is-boxed">
+                <div class="control">
+                    <div class="tags has-addons btn-category">
+                        <a class="tag is-link is-medium" onclick='get_categorized_laws("문화")'>문화</a>
+                    </div>
+                </div>
 
-                <ul class="tab_title">
-                    <li class="is-active">
-                        <a>전체 보기</a>
-                    </li>
-                    <li>
-                        <a>⭐ 즐겨찾기</a>
-                    </li>
-                    <li style="margin-left: auto;">
-                        <a>👍🏻 인기순</a>
-                    </li>
-                </ul>
+                <div class="control">
+                    <div class="tags has-addons btn-category">
+                        <a class="tag is-link is-medium" onclick='get_categorized_laws("부동산")'>부동산</a>
+                    </div>
+                </div>
 
-            </nav>
-        </div>
+                <div class="control">
+                    <div class="tags has-addons btn-category">
+                        <a class="tag is-link is-medium" onclick='get_categorized_laws("범죄")'>범죄</a>
+                    </div>
+                </div>
 
-        <div class="card-container">
-
-            <div class="card-list on" id="laws-box">
-
-            </div>
-
-            <div class="card-list" id="bookmark">
-
-            </div>
-            <div class="card-list" id="likes">
-
+                <div class="control">
+                    <div class="tags has-addons btn-category">
+                        <a class="tag is-link is-medium" onclick='get_categorized_laws("의료/보건")'>의료/보건</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
+
+<section class="section cards">
+    <div class="container">
+        <div class="columns is-multiline is-centered" id="law-card-box">
+
+        </div>
+    </div>
+</section>
 </body>
 </html>
