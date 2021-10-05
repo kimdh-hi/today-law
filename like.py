@@ -14,8 +14,10 @@ def like_star():
     current_like = likes['like']
     new_like = current_like + 1
 
+    current_hate = likes['hate']
+
     db.ranking.update_one({'id':id_receive}, {'$set': {'like': new_like}})
-    return jsonify({'msg': '좋아요를 선택해주셨습니다.'})
+    return jsonify({'msg': '좋아요를 선택해주셨습니다.', 'id': id_receive, 'like': new_like, 'hate':current_hate})
 
 
 @bp.route('/api/hate', methods=['POST'])
@@ -25,8 +27,10 @@ def delete_star():
     current_hate = likes['hate']
     new_hate = current_hate + 1
 
+    current_like = likes['like']
+
     db.ranking.update_one({'id': id_receive}, {'$set': {'hate': new_hate}})
-    return jsonify({'msg': '싫어요를 선택해주셨습니다.'})
+    return jsonify({'msg': '싫어요를 선택해주셨습니다.', 'id': id_receive, 'like': current_like, 'hate':new_hate})
 
 @bp.route('/api/likes_list', methods=['GET'])
 def show_like_list():
