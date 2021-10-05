@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import search, app, crawl, rank, like, bookmark, category
+from login import kakao
 
 app = Flask(__name__)
 
@@ -10,6 +11,8 @@ app.register_blueprint(like.bp) # 좋아요
 app.register_blueprint(bookmark.bp) # 즐겨찾기
 
 app.register_blueprint(category.bp)
+
+app.register_blueprint(kakao.bp)
 
 @app.route('/')
 def index():

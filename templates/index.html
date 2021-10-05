@@ -16,10 +16,12 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/login.css">
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
     />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
     <!-- img -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -41,6 +43,7 @@
     <!-- js 불러오기 -->
     <script src="/static/js/index.js"></script>
     <script src="/static/js/scroll.js"></script>
+    <script src="/static/js/login.js"></script>
 </head>
 
 <body>
@@ -71,7 +74,7 @@
                             메뉴2
                         </a>
                         <span class="navbar-item">
-              <a class="button is-info is-inverted">
+              <a onclick="show_login_modal()" class="button is-info is-inverted">
                 <span>로그인</span>
               </a>
             </span>
