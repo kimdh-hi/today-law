@@ -25,7 +25,7 @@ def get_ranking():
             'like':rank['like'],
             'hate':rank['hate']
         }
-        print(doc)
+
         rank_result.append(doc)
     return jsonify(rank_result)
 
@@ -62,7 +62,7 @@ def increase_click_count():
 
 
 def title_row_check(title):
-    title_max_length = 14
+    title_max_length = 22
     if len(title) >= title_max_length:
         title = title[:title_max_length]
         title = title + " ..."
