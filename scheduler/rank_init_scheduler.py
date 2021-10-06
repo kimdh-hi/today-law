@@ -15,7 +15,7 @@ def init_ranking_collection():
     print(f"조회수 순위 DB 초기화 종료 {result.deleted_count}건 삭제")
 
 # 매달 매주 일요일 오전 3시 정각
-cron = "00 03 * * sun"
+cron = "00 03 * * mon"
 
 scheduler = BackgroundScheduler(daemon=True)
 scheduler.add_job(init_ranking_collection, CronTrigger.from_crontab(cron))
