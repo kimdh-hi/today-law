@@ -106,7 +106,8 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                                     <p class="subtitle is-6" style="margin: auto; color: black;">대표발의자: ${proposer_name} 의원</p>
                                                     <p>공동발의자: ${proposer_names}</p>
                                                     <div>
-                                                        <button id="btn-save" class="btn btn-outline-sparta btn-lg" onclick="bookmark('${id}')">
+                                                        <button id="btn-save" class="btn btn-outline-sparta btn-lg" 
+                                                            onclick="bookmark('${id}', '${title}', '${proposer_name}', '${proposer_names}', '${url}', '${date}')">
                                                                 <i class="fa fa-bookmark-o" aria-hidden="true"></i>
                                                         </button>
                                                         <button id="btn-delete" class="btn btn-sparta btn-lg" onclick="delete_bookmark('${id}')">
@@ -356,7 +357,7 @@ function bookmark_show() {
                     $('#bookmark').append(temp_html)
                 } else {
                     for (let i = 0; i < bookmark_list.length; i++) {
-                        let id = bookmark_list[i]['id']
+                        let id = bookmark_list[i]['law_id']
                         let url = bookmark_list[i]['url']
                         let title = bookmark_list[i]['title']
                         let proposer_name = bookmark_list[i]['proposer_name']
@@ -392,11 +393,19 @@ function bookmark_show() {
 }
 
 // 법안 즐겨찾기 기능
-function bookmark(id) {
+function bookmark(id, title, proposer_name, proposer_names, url, date) {
+    let data = {
+        "id_give":id,
+        "title":title,
+        "proposer_name":proposer_name,
+        "proposer_names":proposer_names,
+        "url":url,
+        "date":date
+    }
     $.ajax({
         type: "POST",
         url: `/api/bookmark`,
-        data: {id_give: id},
+        data: data,
         success: function (response) {
             alert(response["msg"])
             bookmark_show()
@@ -407,8 +416,8 @@ function bookmark(id) {
 // 법안 즐겨찾기 삭제 기능
 function delete_bookmark(id) {
     $.ajax({
-        type: "POST",
-        url: `/api/delete_bookmark`,
+        type: "DELETE",
+        url: `/api/bookmark`,
         data: {id_give: id},
         success: function (response) {
             alert(response["msg"])
