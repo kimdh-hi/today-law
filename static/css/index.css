@@ -78,3 +78,19 @@ h1 {
     padding-bottom: 365px
 }
 
+.category-title:hover {
+    text-decoration: underline;
+}
+
+.category-title {
+    font-size: 1em;
+}
+
+.category-subtitle {
+    font-size: 0.8em;
+}
+
+.category-tag {
+    margin: 0 0 10px 10px;
+}
+

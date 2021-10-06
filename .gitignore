@@ -1,4 +1,9 @@
-keys.xml
-__pycache__/
 .DS_Store
 venv
+
+.idea
+__pycache__/
+*.py[cod]
+
+settings.ini
+keys.xml
