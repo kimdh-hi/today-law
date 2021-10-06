@@ -12,6 +12,19 @@ let g_name // 현재 검색되고 있는 의원이름
 let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판단
 
 $(document).ready(function () {
+    $.ajax({
+        type:"GET",
+        url:"/login-check",
+        success: function(res) {
+            if(res['result'] == 'success') {
+                $('#login_button').addClass("is-hidden")
+                $('#logout_button').removeClass("is-hidden")
+            } else {
+                $('#login_button').removeClass("is-hidden")
+                $('#logout_button').addClass("is-hidden")
+            }
+        }
+    })
     g_condition = "all"
     g_title = ""
     g_name = ""
@@ -64,7 +77,6 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
             let date = response['date']
             let like = response['like']
             let hate = response['hate']
-            console.log(content)
             let subtitle = ''
             let subtitle2 = ''
             let content2 = ''
