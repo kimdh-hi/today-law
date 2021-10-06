@@ -20,7 +20,7 @@ type = 'json'
 
 g_categories = [
     {"건설":["건설"]},
-    {"노동/근로":["노동", "근로"]},
+    {"노동/근로":["노동", "근로"]}, # 노동/근로 카테고리 클릭시 [노동, 근로]가 검색되도록 처리
     {"문화":["문화"]},
     {"부동산":["범죄"]},
     {"의료/보건":["의료","보건"]},
@@ -29,18 +29,20 @@ g_categories = [
     {"조세":["조세"]},
     {"교육":["교육"]},
     {"선거":["선거"]},
-    {"농수산물":["농산물","수산물"]},
+    {"농수산물":["농산물","수산물"]}, # 농수산물 카테고리 검색시 [농산물, 수산물]이 검색되도록 처리
     {"병역":["병역"]},
     {"범죄":["범죄"]}
 ]
 
+# 카테고리 데이터 저장 스케줄러 job 메서드
 def set_category_data():
+    # 카테고리 데이터 DB 데이터 삭제
     db.category.delete_many({})
+
     for g_category in g_categories:
         for category in g_category:
             detail_categories = g_category[category]
             for keyword in detail_categories:
-                print(keyword)
                 url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&BILL_NAME={keyword}&pIndex=1&pSize=50'
                 query = encode_querystring(url)
                 data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
@@ -49,18 +51,18 @@ def set_category_data():
                 data = data['nzmimeepazxkubdpn'][1]['row']
 
                 for d in data:
-                    now = datetime.now() - timedelta(days=90)
+                    now = datetime.now() - timedelta(days=90) # 90일 전
                     target_date = now.strftime('%Y-%m-%d')
                     propose_date = d['PROPOSE_DT']
+                    names = d['PUBL_PROPOSER']
+                    names = get_other_proposer(names)
+                    # 발의날짜가 90일 이내인 것만 DB에 저장
                     if propose_date >= target_date:
-                        names = d['PUBL_PROPOSER']
-                        names = get_other_proposer(names)
-
                         doc = {
                             'id': d['BILL_ID'],
                             'title': d['BILL_NAME'],  # 법안제목
-                            'proposer_name': d['RST_PROPOSER'],  # 대표제안자
                             'proposer_names': names,  # 대표제안자 외 제안자
+                            'proposer_name': d['RST_PROPOSER'],  # 대표제안자
                             'date': d['PROPOSE_DT'],  # 발의 날짜
                             'url': d['DETAIL_LINK'],  # 상세내용 크롤링 link
                             'category': category,   # 카테고리
@@ -70,7 +72,7 @@ def set_category_data():
                         break
 
 # 매일 오전 3시
-cron = "19 10 * * *"
+cron = "00 03 * * *"
 
 scheduler = BackgroundScheduler(daemon=True)
 scheduler.add_job(set_category_data, CronTrigger.from_crontab(cron))

@@ -20,7 +20,6 @@ def category_view():
 def get_laws_by_category():
     query = request.args.get('query')
     law_list = list(db.category.find({'category':query}, {'_id':False}))
-    print(law_list)
     return jsonify(law_list)
 
 
