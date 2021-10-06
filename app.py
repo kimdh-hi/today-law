@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 import search, crawl, rank, like, bookmark, category
 from scheduler import category_data_scheduler
-from login import kakao
+from login import kakao, google
 
 app = Flask(__name__)
 
@@ -14,6 +14,7 @@ app.register_blueprint(bookmark.bp) # 즐겨찾기
 app.register_blueprint(category.bp)
 
 app.register_blueprint(kakao.bp)
+app.register_blueprint(google.bp)
 
 app.register_blueprint(category_data_scheduler.bp)
 
