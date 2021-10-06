@@ -5,7 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as et
-tree = et.parse('../keys.xml')
+tree = et.parse('keys.xml')
 apiKey = tree.find('string[@name="api-key"]').text
 
 from pymongo import MongoClient
@@ -13,7 +13,7 @@ from pymongo import MongoClient
 client = MongoClient('localhost',27017)
 db = client.todaylaw
 
-bp = Blueprint("category_scheduler", __name__, url_prefix='/')
+bp = Blueprint("category_data_scheduler", __name__, url_prefix='/')
 
 age = 21
 type = 'json'
@@ -72,6 +72,7 @@ def set_category_data():
                         break
 
 # 매일 오전 3시
+# 00분 03시 매일 매달 매주
 cron = "00 03 * * *"
 
 scheduler = BackgroundScheduler(daemon=True)

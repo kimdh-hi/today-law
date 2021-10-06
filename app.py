@@ -9,11 +9,9 @@ app.register_blueprint(crawl.bp) # 법안 상세페이지 크롤링 API
 app.register_blueprint(rank.bp) # 순위
 app.register_blueprint(like.bp) # 좋아요
 app.register_blueprint(bookmark.bp) # 즐겨찾기
-
 app.register_blueprint(category.bp) # 카테고리별 조회 API
 
 app.register_blueprint(kakao.bp) # 카카오 로그인 API
-
 
 @app.route('/')
 def index():

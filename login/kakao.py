@@ -37,10 +37,13 @@ def access():
         # DB에 user 정보를 넣어주고 jwt를 생성해서 쿠키에 넣어서 클라이언트에게 넘겨준다.
         kakao_account = user_info['kakao_account']
 
-        find_user = db.users.find_one({'id':user_info['id']})
+        id = str(user_info['id'])
+
+        find_user = db.users.find_one({'user_id':id})
+
         if find_user == None:
             user_info_doc = {
-                "id":user_info['id'],
+                "user_id":id,
                 "username":kakao_account['email'],
                 "name":kakao_account['profile']['nickname'],
                 "profile_image":kakao_account['profile']['profile_image_url'],
@@ -53,13 +56,12 @@ def access():
     except:
         return jsonify({"result":"fail"})
 
-    return login(user_info['id'], kakao_account['profile']['nickname'])
+    return login(id, kakao_account['profile']['nickname'])
 
 def login(id, name):
-
     # JWT 토큰 구성
     payload = {
-        "id":id,
+        "user_id":id,
         "name":name,
         "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
         # "exp": datetime.utcnow() + timedelta(seconds=60) # 테스트용으로 10초만 유효한 토큰 생성
@@ -83,7 +85,7 @@ def login_check():
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
 
-        user = db.users.find_one({'id':payload['id']}, {'_id':False})
+        user = db.users.find_one({'user_id':payload['user_id']}, {'_id':False})
         return jsonify({'result':'success', 'name':user['name']})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
