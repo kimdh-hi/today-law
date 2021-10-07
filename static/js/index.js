@@ -41,6 +41,8 @@ $(document).ready(function () {
     bookmark_show()
     // 인기순
     likes_show()
+    // 청원
+    wish_list()
 
     //탭 메뉴 전환 ( 전체보기 / 즐겨찾기 )
     $(".tab_title li").click(function () {
