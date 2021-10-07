@@ -1,4 +1,4 @@
-from flask import redirect, request, jsonify, Blueprint, make_response, render_template
+from flask import redirect, request, jsonify, Blueprint, make_response
 import requests
 from decouple import config
 from pymongo import MongoClient
@@ -63,7 +63,7 @@ def login(id, name):
     payload = {
         "user_id":id,
         "name":name,
-        "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
+        "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 1)
         # "exp": datetime.utcnow() + timedelta(seconds=60) # 테스트용으로 10초만 유효한 토큰 생성
     }
 
@@ -84,6 +84,7 @@ def login_check():
     token = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
+        exp = payload['exp']
 
         user = db.users.find_one({'user_id':payload['user_id']}, {'_id':False})
         return jsonify({'result':'success', 'name':user['name']})
