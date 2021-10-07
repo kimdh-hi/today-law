@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import search, crawl, rank, like, bookmark, category
+import search, crawl, rank, like, bookmark, category, wish
 from login import naver, kakao, google
 import category_data_scheduler, rank_init_scheduler
 
@@ -12,6 +12,7 @@ app.register_blueprint(rank.bp) # 순위
 app.register_blueprint(like.bp) # 좋아요
 app.register_blueprint(bookmark.bp) # 즐겨찾기
 app.register_blueprint(category.bp) # 카테고리별 조회 API
+app.register_blueprint(wish.bp) # 청원
 
 app.register_blueprint(kakao.bp) # 카카오 로그인 API
 app.register_blueprint(google.bp) # 구글 로그인 API
