@@ -45,6 +45,7 @@
     <script src="/static/js/index.js"></script>
     <script src="/static/js/scroll.js"></script>
     <script src="/static/js/login.js"></script>
+    <script src="/static/js/wish.js"></script>
 </head>
 
 <body>
@@ -176,36 +177,36 @@
                             <div>
                                 <div class="form-group">
                                     <label for="post-comment">청원 제목</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1"
+                                    <input type="email" class="form-control" id="wish_title"
                                            aria-describedby="emailHelp" placeholder="청원제목을 입력해주세요">
                                 </div>
                                 <div class="form-group">
                                     <label for="post-comment">카테고리</label>
-                                    <select class="form-select" aria-label="Default select example">
+                                    <select class="form-select" aria-label="Default select example" id="category">
                                         <option selected>카테고리를 선택해주세요</option>
-                                        <option value="1">정치</option>
-                                        <option value="2">수사</option>
-                                        <option value="3">재정</option>
-                                        <option value="4">교육</option>
-                                        <option value="5">외교</option>
-                                        <option value="6">재난</option>
-                                        <option value="7">행정</option>
-                                        <option value="8">문화</option>
-                                        <option value="9">농업</option>
-                                        <option value="10">소비자</option>
-                                        <option value="11">산업</option>
-                                        <option value="12">보건의료</option>
-                                        <option value="13">복지</option>
-                                        <option value="14">국토</option>
-                                        <option value="15">인권</option>
-                                        <option value="16">기타</option>
+                                        <option value="정치">정치</option>
+                                        <option value="수사">수사</option>
+                                        <option value="재정">재정</option>
+                                        <option value="교육">교육</option>
+                                        <option value="외교">외교</option>
+                                        <option value="재난">재난</option>
+                                        <option value="행정">행정</option>
+                                        <option value="문화">문화</option>
+                                        <option value="농업">농업</option>
+                                        <option value="소비자">소비자</option>
+                                        <option value="산업">산업</option>
+                                        <option value="보건의료">보건의료</option>
+                                        <option value="복지">복지</option>
+                                        <option value="국토">국토</option>
+                                        <option value="인권">인권</option>
+                                        <option value="기타">기타</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="post-comment">청원 내용</label>
-                                    <textarea id="post-comment" class="form-control" rows="3"></textarea>
+                                    <textarea id="contents" class="form-control" rows="3"></textarea>
                                 </div>
-                                <button type="button" class="btn btn-primary" id onclick="postArticle()">작성완료</button>
+                                <button type="button" class="btn btn-primary" onclick="post_wish()">작성완료</button>
                             </div>
 
                         </div>
@@ -215,19 +216,12 @@
                             <tr>
                                 <th scope="col">분류</th>
                                 <th scope="col">제목</th>
+                                <th scope="col">날짜</th>
                                 <th scope="col">참여인원</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">보건의료</th>
-                                <td>간호사 1인당 담당 환자수 축소해주세요!</td>
-                                <td>17,339명</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">국토</th>
-                                <td>선원법 제62조제5항 개정</td>
-                                <td>162명</td>
+                            <tbody id="wish_tr">
+
                             </tbody>
                         </table>
                     </div>
