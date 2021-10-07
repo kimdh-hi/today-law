@@ -8,7 +8,7 @@ db = client.todaylaw
 
 bp = Blueprint('bookmark', __name__, url_prefix='/')
 
-# jwt_secret = config('JWT_SECRET')
+jwt_secret = config('JWT_SECRET')
 
 # 즐겨찾기 목록 가져오기
 @bp.route('/api/bookmark', methods=['GET'])
