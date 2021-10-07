@@ -11,9 +11,10 @@ let g_title // 현재 검색되고 있는 법안이름
 let g_name // 현재 검색되고 있는 의원이름
 let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판단
 
-let is_authenticated = false
+let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
 $(document).ready(function () {
+    // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type:"GET",
         url:"/login-check",

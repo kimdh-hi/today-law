@@ -49,7 +49,6 @@ def bookmark():
         if exist_id is not None:
             msg = "이미 즐겨찾기에 저장된 법안입니다."
         else:
-
             bookmark_doc = {
                 "law_id": law_id,
                 "url": url,

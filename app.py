@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import search, crawl, rank, like, bookmark, category
 from login import kakao, google
+import category_data_scheduler, rank_init_scheduler
 
 app = Flask(__name__)
 
@@ -13,6 +14,8 @@ app.register_blueprint(category.bp) # 카테고리별 조회 API
 
 app.register_blueprint(kakao.bp) # 카카오 로그인 API
 app.register_blueprint(google.bp) # 구글 로그인 API
+
+app.register_blueprint(category_data_scheduler.bp)
 
 @app.route('/')
 def index():
