@@ -8,7 +8,7 @@ db = client.todaylaw
 
 bp = Blueprint('bookmark', __name__, url_prefix='/')
 
-jwt_secret = config('JWT_SECRET')
+# jwt_secret = config('JWT_SECRET')
 
 # 즐겨찾기 목록 가져오기
 @bp.route('/api/bookmark', methods=['GET'])
@@ -90,7 +90,7 @@ def delete_bookmark():
             # users DB의 bookmark 필드에서 삭제 (이것도 필요한 부분인지 아직 모르겠음)
             db.users.update(
                 {'user_id':user['user_id']},
-                {'$unset': {'bookmark_id':id_receive}}
+                {'$pull': {'bookmark_id':id_receive}}
             )
             # bookmark db에서 삭제
             db.bookmark.delete_one({"law_id": id_receive, "user_id":user['user_id']})

@@ -20,13 +20,11 @@ $(document).ready(function () {
         url:"/login-check",
         success: function(res) {
             if(res['result'] == 'success') {
-                console.log('login success')
                 $('#login_button').addClass("is-hidden")
                 $('#logout_button').removeClass("is-hidden")
                 $('#bookmark-tab').removeClass("is-hidden")
                 is_authenticated = true
             } else {
-                console.log('login failed')
                 $('#login_button').removeClass("is-hidden")
                 $('#logout_button').addClass("is-hidden")
                 $('#bookmark-tab').addClass("is-hidden")
@@ -285,9 +283,7 @@ function likeLaw(id) {
         url: '/api/like',
         data: {id_give: id},
         success: function (response) {
-            alert(response['msg']);
             add_like_hate_button(response.id, response.like, response.hate)
-            //window.location.reload()
         }
     })
 }
@@ -299,9 +295,7 @@ function hateLaw(id) {
         url: '/api/hate',
         data: {id_give: id},
         success: function (response) {
-            alert(response['msg']);
             add_like_hate_button(response.id, response.like, response.hate)
-            //window.location.reload()
         }
     });
 }
@@ -361,7 +355,6 @@ function bookmark_show() {
             data: {},
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
-                console.log(bookmark_list)
                 if (bookmark_list == "") {
                     let temp_html = `<div class="card" id="non-temp">
                                         <div class="card-content" >
@@ -402,10 +395,7 @@ function bookmark_show() {
 
                     }
                 }
-
-
             }
-
         }
     )
 }

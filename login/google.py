@@ -122,7 +122,7 @@ def login_check():
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
 
-        user = db.users.find_one({'id':payload['id']}, {'_id':False})
+        user = db.users.find_one({'user_id':payload['user_id']}, {'_id':False})
         return jsonify({'result':'success', 'name':user['name']})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
