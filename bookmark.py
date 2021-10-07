@@ -25,7 +25,7 @@ def get_bookmark():
 
         return jsonify({'bookmark_list':bookmark_list})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return jsonify({"result": "허용되지 않은 접근입니다."})
+        return jsonify({"result": "허용되지 않은 접근입니다.", 'bookmark_list':[]})
 
 # 법안 즐겨찾기
 @bp.route('/api/bookmark', methods=['POST'])
@@ -49,7 +49,6 @@ def bookmark():
         if exist_id is not None:
             msg = "이미 즐겨찾기에 저장된 법안입니다."
         else:
-
             bookmark_doc = {
                 "law_id": law_id,
                 "url": url,
