@@ -31,16 +31,20 @@ g_categories = [
     {"선거":["선거"]},
     {"농수산물":["농산물","수산물"]}, # 농수산물 카테고리 검색시 [농산물, 수산물]이 검색되도록 처리
     {"병역":["병역"]},
-    {"범죄":["범죄"]}
+    {"범죄":["범죄"]},
+    {"금융":["금융", "은행"]},
+    {"정보통신":["정보통신", "정보보호"]},
 ]
 
 # 카테고리 데이터 저장 스케줄러 job 메서드
+@bp.route('/category/data')
 def set_category_data():
     # 카테고리 데이터 DB 데이터 삭제
     db.category.delete_many({})
 
     for g_category in g_categories:
         for category in g_category:
+            print(f"데이터 수집 : {category}")
             detail_categories = g_category[category]
             for keyword in detail_categories:
                 url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&BILL_NAME={keyword}&pIndex=1&pSize=50'
@@ -70,6 +74,7 @@ def set_category_data():
                         db.category.insert_one(doc)
                     else:
                         break
+    return "ok"
 
 # 매일 오전 3시
 # 00분 03시 매일 매달 매주

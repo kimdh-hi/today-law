@@ -11,17 +11,26 @@ let g_title // 현재 검색되고 있는 법안이름
 let g_name // 현재 검색되고 있는 의원이름
 let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판단
 
+let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
+
 $(document).ready(function () {
+    // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type:"GET",
         url:"/login-check",
         success: function(res) {
             if(res['result'] == 'success') {
+                console.log('login success')
                 $('#login_button').addClass("is-hidden")
                 $('#logout_button').removeClass("is-hidden")
+                $('#bookmark-tab').removeClass("is-hidden")
+                is_authenticated = true
             } else {
+                console.log('login failed')
                 $('#login_button').removeClass("is-hidden")
                 $('#logout_button').addClass("is-hidden")
+                $('#bookmark-tab').addClass("is-hidden")
+                is_authenticated = false
             }
         }
     })
@@ -105,7 +114,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                                     <time style="font-size: 1em" datetime="2016-1-1">${date}</time>
                                                     <p class="subtitle is-6" style="margin: auto; color: black;">대표발의자: ${proposer_name} 의원</p>
                                                     <p>공동발의자: ${proposer_names}</p>
-                                                    <div>
+                                                    <div id="bookmark-box">
                                                         <button id="btn-save" class="btn btn-outline-sparta btn-lg" 
                                                             onclick="bookmark('${id}', '${title}', '${proposer_name}', '${proposer_names}', '${url}', '${date}')">
                                                                 <i class="fa fa-bookmark-o" aria-hidden="true"></i>
@@ -143,6 +152,15 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                             </div>`
             $('body').append(temp_html)
             add_like_hate_button(id, like, hate)
+
+            // 인증된 사용자에게만 즐겨찾기, 좋아요/싫어요 버튼을 보이도록 처리
+            if (is_authenticated == false) {
+                $('#bookmark-box').addClass("is-hidden")
+                $('#card-footer').addClass("is-hidden")
+            } else {
+                $('#bookmark-box').removeClass("is-hidden")
+                $('#card-footer').removeClass("is-hidden")
+            }
         }
     })
 }
@@ -343,7 +361,7 @@ function bookmark_show() {
             data: {},
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
-
+                console.log(bookmark_list)
                 if (bookmark_list == "") {
                     let temp_html = `<div class="card" id="non-temp">
                                         <div class="card-content" >
