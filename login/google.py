@@ -79,7 +79,7 @@ def callback():
     find_user = db.users.find_one({'id': unique_id})
     if find_user == None:
         user_info_doc = {
-            "id": unique_id,
+            "user_id": unique_id,
             "username": users_email,
             "name": users_name,
             "profile_image": picture,
@@ -98,7 +98,7 @@ def login(id, name):
 
     # JWT 토큰 구성
     payload = {
-        "id":id,
+        "user_id":id,
         "name":name,
         "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
         # "exp": datetime.utcnow() + timedelta(seconds=60) # 테스트용으로 10초만 유효한 토큰 생성
