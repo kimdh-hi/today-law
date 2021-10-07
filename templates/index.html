@@ -144,6 +144,9 @@
                     <li id="bookmark-tab">
                         <a>⭐ 즐겨찾기</a>
                     </li>
+                    <li id="wish">
+                        <a>💡 청원</a>
+                    </li>
                     <li style="margin-left: auto;">
                         <a>👍🏻 인기순</a>
                     </li>
@@ -160,6 +163,75 @@
 
             <div class="card-list" id="bookmark">
 
+            </div>
+            <div class="card-list" id="wish">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">당신의 의견을</h5>
+                        <h3 class="card-title">국회에 전달하세요!</h3><br>
+                        <button onclick="openClose()" id="btn-post-box" type="button" class="btn btn-primary">지금
+                            청원하기
+                        </button>
+                        <div id="post-box" class="form-post" style="display:none">
+                            <div>
+                                <div class="form-group">
+                                    <label for="post-comment">청원 제목</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1"
+                                           aria-describedby="emailHelp" placeholder="청원제목을 입력해주세요">
+                                </div>
+                                <div class="form-group">
+                                    <label for="post-comment">카테고리</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>카테고리를 선택해주세요</option>
+                                        <option value="1">정치</option>
+                                        <option value="2">수사</option>
+                                        <option value="3">재정</option>
+                                        <option value="4">교육</option>
+                                        <option value="5">외교</option>
+                                        <option value="6">재난</option>
+                                        <option value="7">행정</option>
+                                        <option value="8">문화</option>
+                                        <option value="9">농업</option>
+                                        <option value="10">소비자</option>
+                                        <option value="11">산업</option>
+                                        <option value="12">보건의료</option>
+                                        <option value="13">복지</option>
+                                        <option value="14">국토</option>
+                                        <option value="15">인권</option>
+                                        <option value="16">기타</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="post-comment">청원 내용</label>
+                                    <textarea id="post-comment" class="form-control" rows="3"></textarea>
+                                </div>
+                                <button type="button" class="btn btn-primary" id onclick="postArticle()">작성완료</button>
+                            </div>
+
+                        </div>
+                        <hr>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">분류</th>
+                                <th scope="col">제목</th>
+                                <th scope="col">참여인원</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">보건의료</th>
+                                <td>간호사 1인당 담당 환자수 축소해주세요!</td>
+                                <td>17,339명</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">국토</th>
+                                <td>선원법 제62조제5항 개정</td>
+                                <td>162명</td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="card-list" id="likes">
 

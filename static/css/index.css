@@ -94,3 +94,9 @@ h1 {
     margin: 0 0 10px 10px;
 }
 
+#post-box {
+    width: 500px;
+    margin: 20px auto;
+    border-radius: 5px;
+    text-align: left !important;
+}

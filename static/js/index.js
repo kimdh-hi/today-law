@@ -63,6 +63,16 @@ $(document).ready(function () {
     })
 })
 
+function openClose() {
+    if ($("#post-box").css("display") == "block") {
+        $("#post-box").hide();
+        $("#btn-post-box").text("지금 청원하기");
+    } else {
+        $("#post-box").show();
+        $("#btn-post-box").text("닫기");
+    }
+}
+
 //모달 열기 (법안 상세내용)
 function open_modal(url, id, title, proposer_name, proposer_names) {
     $.ajax({
