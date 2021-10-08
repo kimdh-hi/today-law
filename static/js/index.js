@@ -16,15 +16,41 @@ let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 �
 $(document).ready(function () {
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
-        type:"GET",
-        url:"/login-check",
-        success: function(res) {
-            if(res['result'] == 'success') {
+        type: "GET",
+        url: "/login-check",
+        success: function (res) {
+            console.log(res)
+            if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
                 $('#logout_button').removeClass("is-hidden")
                 $('#bookmark-tab').removeClass("is-hidden")
                 $('#btn-post-box').removeClass("is-hidden")
                 $('#login_warning').addClass("is-hidden")
+
+                let temp_html = `<div onclick="dpmenu()" class = "dropdown" >
+                                    <div class = "dropdown-trigger" >
+                                        <button style="padding-left: 0" class = "button" aria-haspopup = "true" aria-controls = "dropdown-menu3" >
+                                        <img alt="profile_image" src="${res['profile_image']}">
+                                            <span > ${res['name']} </span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                                        <div class="dropdown-content">
+                                            <a href="#" class="dropdown-item">
+                                                마이페이지
+                                            </a>
+                                            <hr class="dropdown-divider">
+                                                <a onclick="logout()" class="dropdown-item">
+                                                    로그아웃
+                                                </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+                $('#navbar').append(temp_html)
+
+
                 is_authenticated = true
             } else {
                 $('#login_button').removeClass("is-hidden")
@@ -48,6 +74,7 @@ $(document).ready(function () {
     // 청원
     wish_list()
 
+
     //탭 메뉴 전환 ( 전체보기 / 즐겨찾기 )
     $(".tab_title li").click(function () {
         let idx = $(this).index();
@@ -68,6 +95,17 @@ $(document).ready(function () {
         $('.box > .rank-board').css("height", "4em");
     })
 })
+
+function dpmenu(){
+    if($(".dropdown").hasClass("is-active"))
+    {
+        $(".dropdown").removeClass("is-active")
+    }
+    else
+    {
+        $(".dropdown").addClass("is-active")
+    }
+}
 
 function openClose() {
     if ($("#post-box").css("display") == "block") {
@@ -420,12 +458,12 @@ function bookmark_show() {
 // 법안 즐겨찾기 기능
 function bookmark(id, title, proposer_name, proposer_names, url, date) {
     let data = {
-        "id_give":id,
-        "title":title,
-        "proposer_name":proposer_name,
-        "proposer_names":proposer_names,
-        "url":url,
-        "date":date
+        "id_give": id,
+        "title": title,
+        "proposer_name": proposer_name,
+        "proposer_names": proposer_names,
+        "url": url,
+        "date": date
     }
     $.ajax({
         type: "POST",
