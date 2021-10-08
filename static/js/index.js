@@ -23,11 +23,15 @@ $(document).ready(function () {
                 $('#login_button').addClass("is-hidden")
                 $('#logout_button').removeClass("is-hidden")
                 $('#bookmark-tab').removeClass("is-hidden")
+                $('#btn-post-box').removeClass("is-hidden")
+                $('#login_warning').addClass("is-hidden")
                 is_authenticated = true
             } else {
                 $('#login_button').removeClass("is-hidden")
                 $('#logout_button').addClass("is-hidden")
                 $('#bookmark-tab').addClass("is-hidden")
+                $('#btn-post-box').addClass("is-hidden")
+                $('#login_warning').removeClass("is-hidden")
                 is_authenticated = false
             }
         }
