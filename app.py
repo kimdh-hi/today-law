@@ -3,7 +3,6 @@ import search, crawl, rank, like, bookmark, category, wish
 from login import naver, kakao, google
 import category_data_scheduler, rank_init_scheduler
 
-
 app = Flask(__name__)
 
 app.register_blueprint(search.bp) # 법안 조회 API

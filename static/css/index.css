@@ -74,6 +74,10 @@ h1 {
     z-index: 1;
 }
 
+.hero {
+    padding-bottom: 30px;
+}
+
 .category-title:hover {
     text-decoration: underline;
 }
