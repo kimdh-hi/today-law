@@ -74,20 +74,16 @@ h1 {
     z-index: 1;
 }
 
-.hero-foot{
-    padding-bottom: 365px
-}
-
 .category-title:hover {
     text-decoration: underline;
 }
 
 .category-title {
-    font-size: 1em;
+    font-size: 0.9em;
 }
 
 .category-subtitle {
-    font-size: 0.8em;
+    font-size: 0.6em;
 }
 
 .category-tag {

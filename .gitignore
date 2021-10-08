@@ -2,6 +2,8 @@
 venv
 
 .idea
+.idea/*.xml
+*.iml
 __pycache__/
 *.py[cod]
 

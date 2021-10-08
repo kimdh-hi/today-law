@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 
     <title>Today 국회</title>
-    <link rel="shortcut icon" href="static/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
     <meta property="og:title" content="오늘의 법"/>
     <meta property="og:description" content="오늘도 발의되는 여러 법안들 간편하게 살펴보자!!"/>
     <meta property="og:image" content="{{ url_for('static', filename='congress.png') }}"/>
@@ -118,7 +118,11 @@
             <p class="subtitle" style="margin: auto">
                 국회 발의 법안 간편하게 보자!
             </p>
-            <br><br>
+            <br>
+            <div>
+                <h2 style="font-size: 1.5em">21대 국회 총 발의법안 <span id="total_count" style="color: deepskyblue; font-size: 2em;">0</span> 건</h2>
+            </div>
+            <br>
             <div class="has-text-centered">
                 <div class="select is-medium">
                     <select id="select-condition">
@@ -233,6 +237,15 @@
         </div>
     </div>
 </section>
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+      <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+      is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+    </p>
+  </div>
+</footer>
 
 </body>
 </html>

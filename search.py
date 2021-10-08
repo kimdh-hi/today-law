@@ -55,7 +55,6 @@ def get_laws():
     for d in data:
         names = d['PUBL_PROPOSER']
         names = get_other_proposer(names)
-
         response.append({
             'id':d['BILL_ID'],
             'title':d['BILL_NAME'],               # 법안제목
@@ -63,6 +62,7 @@ def get_laws():
             'proposer_names':names,               # 대표제안자 외 제안자
             'date':d['PROPOSE_DT'],               # 발의 날짜
             'url':d['DETAIL_LINK'],               # 상세내용 크롤링 link
+            'total_count':total_count
         })
 
     return jsonify(response)
