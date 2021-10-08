@@ -41,10 +41,8 @@ def access():
         user_info_request_url = "https://openapi.naver.com/v1/nid/me"
         user_info_response = requests.get(user_info_request_url, headers={"Authorization": f"Bearer {token}"})
         user_info = user_info_response.json()
-        print(user_info)
         # DB에 user 정보를 넣어주고 jwt를 생성해서 쿠키에 넣어서 클라이언트에게 넘겨준다.
         naver_account = user_info['response']
-        print(naver_account)
 
         id = str(naver_account['id'])
 
@@ -96,6 +94,6 @@ def login_check():
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
 
         user = db.users.find_one({'user_id': payload['user_id']}, {'_id': False})
-        return jsonify({'result': 'success', 'name': user['name']})
+        return jsonify({'result': 'success', 'name': user['name'],'profile_image': user['profile_image'] } )
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
