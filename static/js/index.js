@@ -192,6 +192,7 @@ function get_law_list() {
         url: `/api/laws?offset=${offset}`,
         success: function (res) {
             total_count = res[0].total_count
+            $('#total_count').text(total_count)
             add_law_list(res)
             get_ranking()
         }
