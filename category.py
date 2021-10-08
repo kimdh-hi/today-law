@@ -20,6 +20,9 @@ def category_view():
 def get_laws_by_category():
     query = request.args.get('query')
     law_list = list(db.category.find({'category':query}, {'_id':False}))
+    for law in law_list:
+        if len(law['title']) > 42:
+            law['title'] = law['title'][:42] + "..."
     return jsonify(law_list)
 
 
