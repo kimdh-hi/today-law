@@ -56,7 +56,8 @@ def access():
                 "profile_image": naver_account['profile_image'],
                 "like_laws": [],
                 "hate_laws": [],
-                "bookmarks": []
+                "bookmarks": [],
+                "receive_mail": False
             }
 
             db.users.insert_one(user_info_doc)

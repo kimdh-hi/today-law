@@ -49,7 +49,8 @@ def access():
                 "profile_image":kakao_account['profile']['profile_image_url'],
                 "like_laws":[],
                 "hate_laws":[],
-                "bookmarks":[]
+                "bookmarks":[],
+                "receive_mail": False
             }
 
             db.users.insert_one(user_info_doc)

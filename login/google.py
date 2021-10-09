@@ -85,7 +85,8 @@ def callback():
             "profile_image": picture,
             "like_laws": [],
             "hate_laws": [],
-            "bookmarks": []
+            "bookmarks": [],
+            "receive_mail":False
         }
 
         db.users.insert_one(user_info_doc)
