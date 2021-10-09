@@ -1,4 +1,4 @@
-name: my-front
+name: frontend
 
 on:
   push:
