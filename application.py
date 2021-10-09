@@ -24,21 +24,11 @@ application.register_blueprint(mail.bp)
 
 application.register_blueprint(category_data_scheduler.bp)
 
-application.config['MAIL_SERVER']='smtp.gmail.com'
-application.config['MAIL_PORT'] = 465
-application.config['MAIL_USERNAME'] = 'zbeld123@gmail.com'
-application.config['MAIL_PASSWORD'] = '@@kimd6704'
-application.config['MAIL_USE_TLS'] = False
-application.config['MAIL_USE_SSL'] = True
 
 mail = Mail(application)
 
 @application.route('/')
 def index():
-    msg = Message("test mail", sender='zbeld123@gmail.com', recipients=["zbeld123@naver.com"])
-    msg.html = '<h1>TEST</h1>'
-
-    mail.send(msg)
 
     return render_template('index.html')
 
