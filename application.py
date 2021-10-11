@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, jsonify, redirect
 import search, crawl, rank, like, bookmark, category, wish
 from login import naver, kakao, google
@@ -70,7 +71,7 @@ def mail_send():
 
     mail.send(msg)
 
-    return return jsonify({"success":True,"msg":"알림 메일 발송이 완료되었습니다."})
+    return jsonify({"success":True,"msg":"알림 메일 발송이 완료되었습니다."})
 
 # 발의된 날짜가 어제인 법안을 받아온다.
 def get_laws():

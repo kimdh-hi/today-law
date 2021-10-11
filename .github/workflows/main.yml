@@ -1,5 +1,4 @@
 name: backend
-
 on:
   push:
     branches:
@@ -38,8 +37,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: today-law
-          environment_name: Todaylaw-env
+          application_name: python-app
+          environment_name: Pythonapp-env
           version_label: "python-${{ steps.format-time.outputs.replaced }}"
           region: ap-northeast-2
           deployment_package: deploy.zip
