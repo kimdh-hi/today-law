@@ -4,12 +4,9 @@ from urllib import parse
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
-import xml.etree.ElementTree as et
-tree = et.parse('keys.xml')
-apiKey = tree.find('string[@name="api-key"]').text
-
+from decouple import config
+api_key = config('API_KEY')
 from pymongo import MongoClient
-
 client = MongoClient('localhost',27017)
 db = client.todaylaw
 

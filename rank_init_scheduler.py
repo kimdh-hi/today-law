@@ -1,9 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from flask import Blueprint
-
 from pymongo import MongoClient
-
 client = MongoClient('localhost',27017)
 db = client.todaylaw
 

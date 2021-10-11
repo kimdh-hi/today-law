@@ -1,8 +1,5 @@
 from flask import jsonify, request, Blueprint, render_template
 from urllib import parse
-import xml.etree.ElementTree as et
-tree = et.parse('keys.xml')
-apiKey = tree.find('string[@name="api-key"]').text
 from pymongo import MongoClient
 
 client = MongoClient('localhost',27017)

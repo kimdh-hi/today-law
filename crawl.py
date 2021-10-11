@@ -4,13 +4,8 @@ from flask import Flask, jsonify, request, Blueprint
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
-
 client = MongoClient('localhost',27017)
 db = client.todaylaw
-
-import xml.etree.ElementTree as et
-tree = et.parse('keys.xml')
-apiKey = tree.find('string[@name="api-key"]').text
 
 bp = Blueprint('crawl', __name__, url_prefix='/')
 

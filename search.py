@@ -3,9 +3,8 @@ import base64
 from flask import Flask, jsonify, request, Blueprint
 import requests
 from urllib import parse
-import xml.etree.ElementTree as et
-tree = et.parse('keys.xml')
-apiKey = tree.find('string[@name="api-key"]').text
+from decouple import config
+api_key = config('API_KEY')
 
 bp = Blueprint('search', __name__, url_prefix='/')
 
@@ -31,17 +30,17 @@ def get_laws():
     #== 검색조건이 없는 경우 ==#
     if query is None and condition is None:
         data = requests.get(
-            f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&pIndex={pIndex}&pSize=10')
+            f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={api_key}&Type={type}&AGE={age}&pIndex={pIndex}&pSize=10')
     #== 법안명으로 검색 ==#
     elif condition == '법안명':
-        url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&BILL_NAME={query}&pIndex={pIndex}&pSize=10'
+        url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={api_key}&Type={type}&AGE={age}&BILL_NAME={query}&pIndex={pIndex}&pSize=10'
         query = encode_querystring(url)
 
         data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
     #== 법안발의 제안자명으로 검색==#
     # http://localhost:5000/api/laws?offset=1&proposer=%EA%B9%80%EA%B4%91%EB%A6%BC&condition=%EC%A0%9C%EC%95%88%EC%9E%90
     elif condition == '제안자':
-        url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&PROPOSER={proposer_name}&pIndex={pIndex}&pSize=10'
+        url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={api_key}&Type={type}&AGE={age}&PROPOSER={proposer_name}&pIndex={pIndex}&pSize=10'
         query = encode_querystring(url)
 
         data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
