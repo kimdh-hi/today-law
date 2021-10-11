@@ -1,8 +1,8 @@
-import os
-from flask import Flask, render_template, jsonify, redirect
+from flask import Flask, render_template, jsonify
 import search, crawl, rank, like, bookmark, category, wish
 from login import naver, kakao, google
-import category_data_scheduler, rank_init_scheduler
+from urllib import parse
+import category_data_scheduler
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -11,7 +11,9 @@ from flask_cors import CORS
 from decouple import config
 from flask_mail import Mail, Message
 from pymongo import MongoClient
-client = MongoClient('localhost',27017)
+
+host = config('MONGO_DB_CLIENT')
+client = MongoClient(host, 27017)
 db = client.todaylaw
 
 application = Flask(__name__)

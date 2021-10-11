@@ -4,7 +4,8 @@ from datetime import datetime
 from decouple import config
 import jwt
 
-client = MongoClient('localhost', 27017)
+host = config('MONGO_DB_CLIENT')
+client = MongoClient(host, 27017)
 db = client.todaylaw
 
 bp = Blueprint('wish', __name__, url_prefix='/')

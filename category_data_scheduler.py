@@ -5,10 +5,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
 from decouple import config
-api_key = config('API_KEY')
 from pymongo import MongoClient
-client = MongoClient('localhost',27017)
+host = config('MONGO_DB_CLIENT')
+client = MongoClient(host, 27017)
 db = client.todaylaw
+
+api_key = config('API_KEY')
 
 bp = Blueprint("category_data_scheduler", __name__, url_prefix='/')
 

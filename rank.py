@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
-client = MongoClient('localhost',27017)
+from decouple import config
+host = config('MONGO_DB_CLIENT')
+client = MongoClient(host, 27017)
 db = client.todaylaw
 
 bp = Blueprint('ranking', __name__, url_prefix='/')

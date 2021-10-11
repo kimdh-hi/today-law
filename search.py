@@ -1,6 +1,4 @@
-import base64
-
-from flask import Flask, jsonify, request, Blueprint
+from flask import jsonify, request, Blueprint
 import requests
 from urllib import parse
 from decouple import config

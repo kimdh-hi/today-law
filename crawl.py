@@ -3,8 +3,10 @@ import re
 from flask import Flask, jsonify, request, Blueprint
 import requests
 from bs4 import BeautifulSoup
+from decouple import config
 from pymongo import MongoClient
-client = MongoClient('localhost',27017)
+host = config('MONGO_DB_CLIENT')
+client = MongoClient(host, 27017)
 db = client.todaylaw
 
 bp = Blueprint('crawl', __name__, url_prefix='/')

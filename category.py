@@ -1,8 +1,10 @@
 from flask import jsonify, request, Blueprint, render_template
 from urllib import parse
+from decouple import config
 from pymongo import MongoClient
 
-client = MongoClient('localhost',27017)
+host = config('MONGO_DB_CLIENT')
+client = MongoClient(host, 27017)
 db = client.todaylaw
 
 bp = Blueprint("category", __name__, url_prefix='/')

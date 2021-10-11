@@ -3,7 +3,8 @@ from pymongo import MongoClient
 import jwt
 from decouple import config
 
-client = MongoClient('localhost',27017)
+host = config('MONGO_DB_CLIENT')
+client = MongoClient(host, 27017)
 db = client.todaylaw
 
 bp = Blueprint('bookmark', __name__, url_prefix='/')
