@@ -2,11 +2,11 @@ from urllib.parse import quote
 
 from flask import redirect, request, jsonify, Blueprint, make_response, render_template
 import requests
-from decouple import config
 from pymongo import MongoClient
 from datetime import datetime, timedelta
-from urllib import parse
 import jwt
+from decouple import config
+TOKEN_KEY = config('TOKEN_KEY')
 
 client = MongoClient('localhost', 27017)
 db = client.todaylaw
@@ -82,7 +82,7 @@ def login(id, name):
     # 쿠키를 담은 response를 구성하기 위해 make_response 사용
     response = make_response(redirect('/'))
     # 쿠키에 토큰 세팅
-    response.set_cookie('mytoken', token)
+    response.set_cookie(TOKEN_KEY, token)
 
     return response
 

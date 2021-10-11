@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 import jwt
 from decouple import config
+TOKEN_KEY = config('TOKEN_KEY')
 host = config('MONGO_DB_CLIENT')
 client = MongoClient(host, 27017)
 db = client.todaylaw
@@ -14,7 +15,7 @@ jwt_secret = config('JWT_SECRET')
 def like_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get('mytoken')
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
@@ -60,7 +61,7 @@ def like_star():
 def delete_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get('mytoken')
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']

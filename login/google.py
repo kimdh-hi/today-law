@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 import jwt
 from oauthlib.oauth2 import WebApplicationClient
 from pymongo import MongoClient
+from decouple import config
+TOKEN_KEY = config('TOKEN_KEY')
 
 bp = Blueprint("google", __name__, url_prefix='/')
 
@@ -74,7 +76,6 @@ def callback():
     else:
         return "User email not available or not verified by Google.", 400
 
-    print(users_name, users_email, unique_id, picture)
 
     find_user = db.users.find_one({'id': unique_id})
     if find_user == None:
@@ -111,7 +112,7 @@ def login(id, name):
     # 쿠키를 담은 response를 구성하기 위해 make_response 사용
     response = make_response(redirect('/'))
     # 쿠키에 토큰 세팅
-    response.set_cookie('mytoken', token)
+    response.set_cookie(TOKEN_KEY, token)
 
     return response
 

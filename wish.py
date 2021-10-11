@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from datetime import datetime
 from decouple import config
 import jwt
-
+TOKEN_KEY = config('TOKEN_KEY')
 host = config('MONGO_DB_CLIENT')
 client = MongoClient(host, 27017)
 db = client.todaylaw
@@ -24,7 +24,7 @@ def show_wish():
 @bp.route('/wish', methods=['POST'])
 def save_wish():
     try:
-        mytoken = request.cookies.get('mytoken')
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         title_receive = request.form['title_give']
