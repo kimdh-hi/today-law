@@ -1,9 +1,11 @@
+import os
+host = os.environ['MONGO_DB_CLIENT']
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from flask import Blueprint
 from decouple import config
 from pymongo import MongoClient
-host = config('MONGO_DB_CLIENT')
+#host = config('MONGO_DB_CLIENT')
 client = MongoClient(host, 27017)
 db = client.todaylaw
 

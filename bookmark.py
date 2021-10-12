@@ -1,9 +1,11 @@
+import os
+host = os.environ['MONGO_DB_CLIENT']
+jwt_secret = os.environ['JWT_SECRET']
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 import jwt
 from decouple import config
-
-host = config('MONGO_DB_CLIENT')
+#host = config('MONGO_DB_CLIENT')
 client = MongoClient(host, 27017)
 db = client.todaylaw
 

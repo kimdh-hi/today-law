@@ -1,9 +1,11 @@
+import os
+host = os.environ['MONGO_DB_CLIENT']
 from flask import jsonify, request, Blueprint, render_template
 from urllib import parse
 from decouple import config
 from pymongo import MongoClient
 
-host = config('MONGO_DB_CLIENT')
+#host = config('MONGO_DB_CLIENT')
 client = MongoClient(host, 27017)
 db = client.todaylaw
 
