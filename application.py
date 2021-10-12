@@ -45,7 +45,8 @@ mail = Mail(application)
 
 @application.route('/')
 def index():
-    return render_template('index.html')
+    #return render_template('index.html')
+    return 'index'
 
 @application.route('/mail-test')
 def mail_send():
