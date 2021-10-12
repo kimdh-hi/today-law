@@ -41,8 +41,8 @@ application.register_blueprint(category_data_scheduler.bp)
 
 application.config['MAIL_SERVER']='smtp.gmail.com'
 application.config['MAIL_PORT'] = 465 # SMTP-TLS 포트
-application.config['MAIL_USERNAME'] = config('SENDER_MAIL_ID')
-application.config['MAIL_PASSWORD'] = config('SENDER_MAIL_PASSWORD')
+application.config['MAIL_USERNAME'] = os.environ['SENDER_MAIL_ID']
+application.config['MAIL_PASSWORD'] = os.environ['SENDER_MAIL_PASSWORD']
 application.config['MAIL_USE_TLS'] = False
 application.config['MAIL_USE_SSL'] = True
 
@@ -95,7 +95,7 @@ def get_laws():
 
         for d in data:
             propose_date = str(d['PROPOSE_DT'])
-            target_date = str(datetime.now().date() - timedelta(days=1))
+            target_date = str(datetime.now().date() - timedelta(days=2))
             if propose_date >= target_date:
                 names = d['PUBL_PROPOSER']
                 names = get_other_proposer(names)
