@@ -1,10 +1,11 @@
+const EB_URL='http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com'
 
 function get_categorized_laws(category) {
     $('#law-card-box').empty()
     $.ajax({
         type: "GET",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: `/api/category?query=${category}`,
+        url: `${EB_URL}/api/category?query=${category}`,
         success: function(res) {
 
             for (let i=0;i<res.length;i++) {

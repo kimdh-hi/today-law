@@ -1,7 +1,9 @@
+const EB_URL='http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com'
+
 function wish_list() {
     $.ajax({
         type: "GET",
-        url: "/wish",
+        url: `${EB_URL}/wish`,
         data: {},
         success: function (response) {
             let wishes = response['wish_list']
@@ -38,7 +40,7 @@ function post_wish() {
 
     $.ajax({
         type: "POST",
-        url: "/wish",
+        url: `${EB_URL}/wish`,
         data: {title_give: title, category_give: category, contents_give: contents},
         success: function (response) {
             alert(response['msg'])
