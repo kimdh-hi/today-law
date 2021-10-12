@@ -16,7 +16,7 @@ from pymongo import MongoClient
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
-client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 db = client.todaylaw
 
 api_key = os.environ['API_KEY']
