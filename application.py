@@ -9,7 +9,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
 from flask_cors import CORS
-from decouple import config
 from flask_mail import Mail, Message
 from pymongo import MongoClient
 

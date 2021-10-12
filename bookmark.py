@@ -12,14 +12,14 @@ db = client.todaylaw
 
 bp = Blueprint('bookmark', __name__, url_prefix='/')
 
-jwt_secret = os.environ['JWT_SECRET']
+TOKEN_KEY = os.environ['TOKEN_KEY']
 
 # 즐겨찾기 목록 가져오기
 @bp.route('/api/bookmark', methods=['GET'])
 def get_bookmark():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         # 즐겨찾기 db에서 현재 user의 id에 해당하는 데이터만 가져온다.
@@ -36,7 +36,7 @@ def get_bookmark():
 def bookmark():
     try:
         # jwt 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         # 즐겨찾기 추가를 위한 파라미터
@@ -83,7 +83,7 @@ def bookmark():
 def delete_bookmark():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
@@ -109,7 +109,7 @@ def delete_bookmark():
 # 토큰 검증 메서드
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
-    token = jwt.decode(mytoken, jwt_secret, algorithms=['HS256'])
+    token = jwt.decode(mytoken, TOKEN_KEY, algorithms=['HS256'])
     # 디코딩된 payload의 user_id가 users DB에 있는지 확인
     user = db.users.find_one({'user_id': token['user_id']}, {'_id': False})
 

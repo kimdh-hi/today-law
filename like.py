@@ -12,13 +12,13 @@ db = client.todaylaw
 
 bp = Blueprint('like', __name__, url_prefix='/')
 
-jwt_secret = os.environ['JWT_SECRET']
+TOKEN_KEY = os.environ['TOKEN_KEY']
 
 @bp.route('/api/like', methods=['POST'])
 def like_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
@@ -64,7 +64,7 @@ def like_star():
 def delete_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
@@ -111,7 +111,7 @@ def show_like_list():
 # 토큰 검증 메서드
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
-    token = jwt.decode(mytoken, jwt_secret, algorithms=['HS256'])
+    token = jwt.decode(mytoken, TOKEN_KEY, algorithms=['HS256'])
     # 디코딩된 payload의 user_id가 users DB에 있는지 확인
     user = db.users.find_one({'user_id': token['user_id']}, {'_id': False})
 

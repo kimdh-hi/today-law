@@ -119,7 +119,6 @@ function openClose() {
 
 //모달 열기 (법안 상세내용)
 function open_modal(url, id, title, proposer_name, proposer_names) {
-    console.log('OPEN_MODAL')
     $.ajax({
         type: "POST",
         url: 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws/details',
@@ -334,7 +333,6 @@ function get_ranking() {
 
 // 좋아요 기능
 function likeLaw(id) {
-    console.log(id)
     $.ajax({
         type: 'POST',
         url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/like`,
@@ -348,7 +346,6 @@ function likeLaw(id) {
 
 //싫어요 기능
 function hateLaw(id) {
-    console.log(id)
     $.ajax({
         type: 'POST',
         url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/hate`,

@@ -13,7 +13,7 @@ db = client.todaylaw
 
 bp = Blueprint('wish', __name__, url_prefix='/')
 
-jwt_secret = os.environ['JWT_SECRET']
+TOKEN_KEY = os.environ['TOKEN_KEY']
 
 # 청원 목록 가져오기
 # 로그인 하지 않아도 보여야 함
@@ -27,7 +27,7 @@ def show_wish():
 @bp.route('/wish', methods=['POST'])
 def save_wish():
     try:
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         title_receive = request.form['title_give']
@@ -77,7 +77,7 @@ def save_wish_comment():
 
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
-    token = jwt.decode(mytoken, jwt_secret, algorithms=['HS256'])
+    token = jwt.decode(mytoken, TOKEN_KEY, algorithms=['HS256'])
     # 디코딩된 payload의 user_id가 users DB에 있는지 확인
     user = db.users.find_one({'user_id': token['user_id']}, {'_id': False})
 
