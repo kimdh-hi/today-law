@@ -122,7 +122,7 @@ function openClose() {
 function open_modal(url, id, title, proposer_name, proposer_names) {
     $.ajax({
         type: "POST",
-        url: `${EB_URL}api/laws/details`,
+        url: `${EB_URL}/api/laws/details`,
         data: {
             url_give: url,
             id_give: id,
