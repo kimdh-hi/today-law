@@ -1,4 +1,3 @@
-let EB_URL="http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com"
 
 function wish_list() {
     $.ajax({
@@ -49,7 +48,7 @@ function open_modal_wish(title, category, time, agree, contents) {
 
     $.ajax({
         type: "POST",
-        url: "/wish/details",
+        url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/details",
         data: {
             title_give: title,
             category_give: category,
@@ -103,7 +102,7 @@ function open_modal_wish(title, category, time, agree, contents) {
 function post_comment(title) {
     $.ajax({
         type: "POST",
-        url: "/wish/comment",
+        url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/comment",
         data: {
             title_give: title
         },
