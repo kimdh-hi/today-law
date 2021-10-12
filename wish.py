@@ -14,6 +14,7 @@ db = client.todaylaw
 bp = Blueprint('wish', __name__, url_prefix='/')
 
 TOKEN_KEY = os.environ['TOKEN_KEY']
+JWT_SECRET = os.environ['JWT_SECRET']
 
 # 청원 목록 가져오기
 # 로그인 하지 않아도 보여야 함
@@ -77,7 +78,7 @@ def save_wish_comment():
 
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
-    token = jwt.decode(mytoken, TOKEN_KEY, algorithms=['HS256'])
+    token = jwt.decode(mytoken, JWT_SECRET, algorithms=['HS256'])
     # 디코딩된 payload의 user_id가 users DB에 있는지 확인
     user = db.users.find_one({'user_id': token['user_id']}, {'_id': False})
 
