@@ -1,6 +1,6 @@
 import os
 host = os.environ['MONGO_DB_CLIENT']
-api_ket = os.environ['API_KEY']
+api_key = os.environ['API_KEY']
 from flask import Flask, render_template, jsonify
 import search, crawl, rank, like, bookmark, category, wish
 from login import naver, kakao, google
