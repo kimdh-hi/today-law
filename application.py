@@ -95,7 +95,7 @@ def get_laws():
 
         for d in data:
             propose_date = str(d['PROPOSE_DT'])
-            target_date = str(datetime.now().date() - timedelta(days=2))
+            target_date = str(datetime.now().date() - timedelta(days=5))
             if propose_date >= target_date:
                 names = d['PUBL_PROPOSER']
                 names = get_other_proposer(names)
