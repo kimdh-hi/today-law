@@ -1,12 +1,14 @@
+import os
 import re
-
-from flask import Flask, jsonify, request, Blueprint
+from flask import jsonify, request, Blueprint
 import requests
 from bs4 import BeautifulSoup
-from decouple import config
 from pymongo import MongoClient
-host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 db = client.todaylaw
 
 bp = Blueprint('crawl', __name__, url_prefix='/')
@@ -24,8 +26,6 @@ def saving():
     data = requests.get(url_receive, headers=headers)
 
     soup = BeautifulSoup(data.text, 'html.parser')
-    #title = soup.select_one('body > div > div.contentWrap > div.subContents > h3').text
-    # proposer= soup.select_one('body > div > div.contentWrap > div.subContents > div > div.contIn > div.tableCol01 > table > tbody > tr > td:nth-child(3)').text
     content = soup.select_one('#summaryContentDiv').text
     date = soup.select_one('body > div > div.contentWrap > div.subContents > div > div.contIn > div.tableCol01 > table > tbody > tr > td:nth-child(2)').text
 

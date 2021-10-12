@@ -1,21 +1,25 @@
+import os
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 import jwt
-from decouple import config
-TOKEN_KEY = config('TOKEN_KEY')
-host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
+
 db = client.todaylaw
+
+jwt_secret = os.environ['JWT_SECRET']
 
 bp = Blueprint('like', __name__, url_prefix='/')
 
-jwt_secret = config('JWT_SECRET')
 
 @bp.route('/api/like', methods=['POST'])
 def like_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(TOKEN_KEY)
+        mytoken = request.cookies.get(jwt_secret)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
@@ -61,7 +65,7 @@ def like_star():
 def delete_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(TOKEN_KEY)
+        mytoken = request.cookies.get(jwt_secret)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
