@@ -1,32 +1,32 @@
-name: frontend
-
-on:
-  push:
-    branches:
-      - main
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      # IAM key 세팅 [ repo - settings - secrets - new repository secret ]
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: 'ap-northeast-2'
-
-    steps:
-      - name: Checkout source code.
-        uses: actions/checkout@master
-
-      # templates, static 이하 파일 및 폴더 S3로 업로드
-      - name: upload html css js file to S3
-        run: |
-          aws s3 sync ./templates s3://todaylaw-s3/templates --acl public-read
-          aws s3 sync ./static s3://todaylaw-s3/static --acl public-read
-
-      # 기존에 CloudFront에 캐싱된 리소스 제거
-      - name: Invalidate cache CloudFront
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
+#name: frontend
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    env:
+#      # IAM key 세팅 [ repo - settings - secrets - new repository secret ]
+#      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#      AWS_REGION: 'ap-northeast-2'
+#
+#    steps:
+#      - name: Checkout source code.
+#        uses: actions/checkout@master
+#
+#      # templates, static 이하 파일 및 폴더 S3로 업로드
+#      - name: upload html css js file to S3
+#        run: |
+#          aws s3 sync ./templates s3://todaylaw-s3/templates --acl public-read
+#          aws s3 sync ./static s3://todaylaw-s3/static --acl public-read
+#
+#      # 기존에 CloudFront에 캐싱된 리소스 제거
+#      - name: Invalidate cache CloudFront
+#        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#        run: |
+#          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"

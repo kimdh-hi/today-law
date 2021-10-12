@@ -2,4 +2,4 @@ version: 1
 cron:
   — name: "category_data_init"
     url: "/api/category/data-initialize"
-    schedule: "40 14 * * *"
+    schedule: "47 14 * * *"
