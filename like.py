@@ -10,11 +10,9 @@ client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_P
 
 db = client.todaylaw
 
-jwt_secret = os.environ['JWT_SECRET']
-
 bp = Blueprint('like', __name__, url_prefix='/')
 
-#jwt_secret = config('JWT_SECRET')
+jwt_secret = os.environ['JWT_SECRET']
 
 @bp.route('/api/like', methods=['POST'])
 def like_star():

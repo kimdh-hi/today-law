@@ -2,19 +2,17 @@ import os
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 import jwt
-from decouple import config
 
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
 client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
-db = client.todaylaw
 
-jwt_secret = os.environ['JWT_SECRET']
+db = client.todaylaw
 
 bp = Blueprint('bookmark', __name__, url_prefix='/')
 
-jwt_secret = config('JWT_SECRET')
+jwt_secret = os.environ['JWT_SECRET']
 
 # 즐겨찾기 목록 가져오기
 @bp.route('/api/bookmark', methods=['GET'])
