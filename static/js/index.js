@@ -119,9 +119,10 @@ function openClose() {
 
 //모달 열기 (법안 상세내용)
 function open_modal(url, id, title, proposer_name, proposer_names) {
+    console.log('OPEN_MODAL')
     $.ajax({
         type: "POST",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws/details`,
+        url: 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws/details',
         data: {
             url_give: url,
             id_give: id,
@@ -229,6 +230,7 @@ function close_modal() {
 
 //법안 전체목록 가져오기
 function get_law_list() {
+    console.log("GET_LAW_LIST")
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
