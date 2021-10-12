@@ -131,7 +131,6 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
             proposer_names_give: proposer_names
         },
         success: function (response) {
-            console.log(response)
             let id = response['id']
             let title = response['title'].split('(')[0]
             let proposer_name = response['proposer_name']
@@ -230,7 +229,6 @@ function close_modal() {
 
 //법안 전체목록 가져오기
 function get_law_list() {
-    console.log("GET_LAW_LIST")
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
@@ -336,11 +334,13 @@ function get_ranking() {
 
 // 좋아요 기능
 function likeLaw(id) {
+    console.log(id)
     $.ajax({
         type: 'POST',
         url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/like`,
         data: {id_give: id},
         success: function (response) {
+            console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
         }
     })
@@ -348,11 +348,13 @@ function likeLaw(id) {
 
 //싫어요 기능
 function hateLaw(id) {
+    console.log(id)
     $.ajax({
         type: 'POST',
         url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/hate`,
         data: {id_give: id},
         success: function (response) {
+            console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
         }
     });
@@ -468,6 +470,7 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
         "url": url,
         "date": date
     }
+    console.log(data)
     $.ajax({
         type: "POST",
         url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/bookmark`,
