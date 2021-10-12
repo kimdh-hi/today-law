@@ -1,8 +1,7 @@
 import os
 import json
-
 import requests
-from flask import Blueprint,redirect, request, jsonify, make_response
+from flask import Blueprint, redirect, request, jsonify, make_response
 from datetime import datetime, timedelta
 import jwt
 from oauthlib.oauth2 import WebApplicationClient
@@ -10,15 +9,13 @@ from pymongo import MongoClient
 
 bp = Blueprint("google", __name__, url_prefix='/')
 
-# key 관리
-from decouple import config
-GOOGLE_CLIENT_ID = config('Google_API')
-GOOGLE_CLIENT_SECRET = config('Google_SECRET')
-jwt_secret = config('JWT_SECRET')
+GOOGLE_CLIENT_ID = os.environ['Google_API']
+GOOGLE_CLIENT_SECRET = os.environ['Google_SECRET']
+jwt_secret = os.environ['JWT_SECRET']
+
 GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
 )
-
 
 client = MongoClient('localhost', 27017)
 db = client.todaylaw
@@ -26,6 +23,7 @@ db = client.todaylaw
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
 
 @bp.route("/login_google", methods=["GET"])
 def login():
@@ -38,8 +36,6 @@ def login():
         scope=["openid", "email", "profile"],
     )
     return redirect(request_uri)
-
-
 
 
 @bp.route("/login_google/callback")
@@ -77,7 +73,7 @@ def callback():
     print(users_name, users_email, unique_id, picture)
 
     find_user = db.users.find_one({'id': unique_id})
-    if find_user == None:
+    if find_user is None:
         user_info_doc = {
             "user_id": unique_id,
             "username": users_email,
@@ -86,7 +82,7 @@ def callback():
             "like_laws": [],
             "hate_laws": [],
             "bookmarks": [],
-            "receive_mail":False
+            "receive_mail": False
         }
 
         db.users.insert_one(user_info_doc)
@@ -94,13 +90,11 @@ def callback():
     return login(unique_id, users_name)
 
 
-
 def login(id, name):
-
     # JWT 토큰 구성
     payload = {
-        "user_id":id,
-        "name":name,
+        "user_id": id,
+        "name": name,
         "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
         # "exp": datetime.utcnow() + timedelta(seconds=60) # 테스트용으로 10초만 유효한 토큰 생성
     }
@@ -118,19 +112,15 @@ def login(id, name):
 
 @bp.route('/login-check')
 def login_check():
-
     token = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
 
-        user = db.users.find_one({'user_id':payload['user_id']}, {'_id':False})
-        return jsonify({'result': 'success', 'name': user['name'],'profile_image': user['profile_image'] } )
+        user = db.users.find_one({'user_id': payload['user_id']}, {'_id': False})
+        return jsonify({'result': 'success', 'name': user['name'], 'profile_image': user['profile_image']})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
 
 
-
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
-
-
