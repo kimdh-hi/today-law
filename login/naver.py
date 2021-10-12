@@ -1,6 +1,6 @@
+import os
 from urllib.parse import quote
-
-from flask import redirect, request, jsonify, Blueprint, make_response, render_template
+from flask import redirect, request, jsonify, Blueprint, make_response
 import requests
 from pymongo import MongoClient
 from datetime import datetime, timedelta
@@ -8,16 +8,19 @@ import jwt
 from decouple import config
 TOKEN_KEY = config('TOKEN_KEY')
 
-client = MongoClient('localhost', 27017)
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 db = client.todaylaw
 
 bp = Blueprint("naver_login", __name__, url_prefix='/')
 
-naver_client_key = config('NAVER_CLIENT_ID')
-naver_client_secret = config('NAVER_CLIENT_SECRET')
-jwt_secret = config('JWT_SECRET')
+naver_client_key = os.environ['NAVER_CLIENT_ID']
+naver_client_secret = os.environ['NAVER_CLIENT_SECRET']
+jwt_secret = os.environ['JWT_SECRET']
 # UTF-8로 URL Encoding
-redirect_uri = quote("http://localhost:5000/oauth/naver/callback", encoding='UTF-8')
+redirect_uri = quote("http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/naver/callback", encoding='UTF-8')
 
 
 # 사용자가 네이버 로그인 요청시 네이버 로그인 페이지로 이동

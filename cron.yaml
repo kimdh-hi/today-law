@@ -1,0 +1,5 @@
+version: 1
+cron:
+  - name: "category-data-init"
+    url: "/api/category/data-initialize"
+    schedule: "5 16 * * *"
