@@ -40,7 +40,7 @@ application.register_blueprint(naver.bp)
 application.register_blueprint(category_data_scheduler.bp)
 
 application.config['MAIL_SERVER']='smtp.gmail.com'
-application.config['MAIL_PORT'] = 465 # SMTP-TLS 포트
+application.config['MAIL_PORT'] = 465
 application.config['MAIL_USERNAME'] = os.environ['SENDER_MAIL_ID']
 application.config['MAIL_PASSWORD'] = os.environ['SENDER_MAIL_PASSWORD']
 application.config['MAIL_USE_TLS'] = False
