@@ -1,5 +1,5 @@
 version: 1
 cron:
-  — name: "category_data_init"
-    url: "/api/category/data-initialize"
-    schedule: "47 14 * * *"
+ - name: "category-data-init"
+   url: "/api/category/data-initialize"
+   schedule: "53 14 * * *"

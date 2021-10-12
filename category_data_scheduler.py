@@ -83,11 +83,11 @@ def set_category_data():
 # 매일 오전 3시
 # 00분 03시 매일 매달 매주
 # cron = "00 03 * * *"
-cron = "10 14 * * *"
-
-scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(set_category_data, CronTrigger.from_crontab(cron))
-scheduler.start()
+# cron = "10 14 * * *"
+#
+# scheduler = BackgroundScheduler(daemon=True)
+# scheduler.add_job(set_category_data, CronTrigger.from_crontab(cron))
+# scheduler.start()
 
 
 # 요청 URL에서 문자열 쿼리스트링 인코딩
