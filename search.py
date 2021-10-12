@@ -1,5 +1,5 @@
 import os
-api_key = os.environ['API_KET']
+api_key = os.environ['API_KEY']
 from flask import jsonify, request, Blueprint
 import requests
 from urllib import parse
