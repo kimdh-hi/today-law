@@ -13,12 +13,13 @@ let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판
 
 let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
+let EB_URL="http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com"
 
 $(document).ready(function () {
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/login-check`,
+        url: `${EB_URL}/login-check`,
         success: function (res) {
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
@@ -121,7 +122,7 @@ function openClose() {
 function open_modal(url, id, title, proposer_name, proposer_names) {
     $.ajax({
         type: "POST",
-        url: 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws/details',
+        url: `${EB_URL}api/laws/details`,
         data: {
             url_give: url,
             id_give: id,
@@ -231,7 +232,7 @@ function get_law_list() {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws?offset=${offset}`,
+        url: `${EB_URL}/api/laws?offset=${offset}`,
         success: function (res) {
             total_count = res[0].total_count
             $('#total_count').text(total_count)
@@ -248,7 +249,7 @@ function get_law_list_by_title(title) {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws?offset=${offset}&query=${title}&condition=법안명`,
+        url: `${EB_URL}/api/laws?offset=${offset}&query=${title}&condition=법안명`,
         success: function (res) {
             total_count = res[0].total_count
             if (!more) g_readmore_button_show = total_count > 10 ? true : false
@@ -264,7 +265,7 @@ function get_law_list_by_proposer_name(name) {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws?offset=${offset}&proposer=${name}&condition=제안자`,
+        url: `${EB_URL}/api/laws?offset=${offset}&proposer=${name}&condition=제안자`,
         success: function (res) {
             total_count = res[0].total_count
             if (!more) g_readmore_button_show = total_count > 10 ? true : false
@@ -317,7 +318,7 @@ function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/rank`,
+        url: `${EB_URL}/api/rank`,
         success: function (res) {
             if (res.length == 0) {
                 $('#ranking-list').append('<li>조회된 법안이 없습니다.</li>')
@@ -335,7 +336,7 @@ function get_ranking() {
 function likeLaw(id) {
     $.ajax({
         type: 'POST',
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/like`,
+        url: `${EB_URL}/api/like`,
         data: {id_give: id},
         success: function (response) {
             console.log(response)
@@ -348,7 +349,7 @@ function likeLaw(id) {
 function hateLaw(id) {
     $.ajax({
         type: 'POST',
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/hate`,
+        url: `${EB_URL}/api/hate`,
         data: {id_give: id},
         success: function (response) {
             console.log(response)
@@ -408,7 +409,7 @@ function bookmark_show() {
     $('#bookmark').empty() // 수정
     $.ajax({
             type: 'GET',
-            url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/bookmark`,
+            url: `${EB_URL}/api/bookmark`,
             data: {},
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
@@ -470,7 +471,7 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
     console.log(data)
     $.ajax({
         type: "POST",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/bookmark`,
+        url: `${EB_URL}/api/bookmark`,
         data: data,
         success: function (response) {
             alert(response["msg"])
@@ -483,7 +484,7 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
 function delete_bookmark(id) {
     $.ajax({
         type: "DELETE",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/bookmark`,
+        url: `${EB_URL}/api/bookmark`,
         data: {id_give: id},
         success: function (response) {
             alert(response["msg"])
@@ -506,7 +507,7 @@ function likes_show() {
     $('#likes').empty()
     $.ajax({
             type: 'GET',
-            url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/likes_list`,
+            url: `${EB_URL}/api/likes_list`,
             data: {},
             success: function (response) {
                 let likes_list = response['likes_list']
