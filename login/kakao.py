@@ -4,6 +4,8 @@ import requests
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 import jwt
+from decouple import config
+TOKEN_KEY = config('TOKEN_KEY')
 
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
@@ -84,7 +86,7 @@ def login(id, name):
 @bp.route('/login-check')
 def login_check():
 
-    token = request.cookies.get('mytoken')
+    token = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
         exp = payload['exp']

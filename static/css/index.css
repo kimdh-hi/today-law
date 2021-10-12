@@ -100,3 +100,31 @@ h1 {
     border-radius: 5px;
     text-align: left !important;
 }
+
+.content, .footer_wish{
+    text-align: left !important;
+}
+
+.petitionsView_info {
+    margin-bottom: 45px;
+    margin-top: 45px;
+}
+
+.petitionsView_info_list {
+    padding: 15px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    background-color: #f6f6f6;
+}
+
+.petitionsView_info_list li {
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 54px;
+}
+
+.petitionsView_info_list li p {
+    font-weight: 600;
+    margin-right: 8px;
+    float: left;
+}

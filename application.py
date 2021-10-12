@@ -52,17 +52,19 @@ mail = Mail(application)
 def index():
     return render_template('index.html')
 
+# 알림 메일 메서드 (테스트용으로 url 매핑)
 @application.route('/mail-test')
 def mail_send():
     laws = get_laws()
+    # 여제 발의된 법안이 0개인 경우
     if len(laws) == 0:
         return jsonify({"success":False,"msg":"어제 발의된 법안이 없습니다."})
+    # 알림 메일에 동의한 사용자 리스트
     user_mail_list = get_allow_mail_list()
 
     recipients = []
     for user_mail in user_mail_list:
         recipients.append(user_mail['username'])
-    print('수신 리스트 : ', recipients)
     msg = Message("[오늘의 국회] - 어제자 발의법률안 알림 메시지", sender=application.config['MAIL_USERNAME'], recipients=recipients)
 
     title = "<div style='width:100%; margin:auto; text-align:center'><h1>어제자 발의 법률안</h1></div>"
@@ -70,7 +72,6 @@ def mail_send():
     table_row = ""
 
     for law in laws:
-        print(law['title'], law['proposer_name'], law['url'])
         table_row += f"<tr style='padding: 10px; border: 1px solid black;'><td style='padding: 10px; border: 1px solid black;'>{law['title']}</td><td style='padding: 10px; border: 1px solid black; text-align: center;'>{law['proposer_name']}</td><td style='padding: 10px; border: 1px solid black; text-align: center;'><a href='{law['url']}'>상세정보</a></td></tr>"
 
     html_template = f"{title}<table style='width: 100%; border: 3px solid black; border-collapse: collapse;'>{table_head}<tbody>{table_row}</tbody></table>"

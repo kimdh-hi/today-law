@@ -5,6 +5,8 @@ import requests
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 import jwt
+from decouple import config
+TOKEN_KEY = config('TOKEN_KEY')
 
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
@@ -83,7 +85,7 @@ def login(id, name):
     # 쿠키를 담은 response를 구성하기 위해 make_response 사용
     response = make_response(redirect('/'))
     # 쿠키에 토큰 세팅
-    response.set_cookie('mytoken', token)
+    response.set_cookie(TOKEN_KEY, token)
 
     return response
 
