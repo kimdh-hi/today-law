@@ -49,7 +49,7 @@ def set_category_data():
             print(f"데이터 수집 : {category}")
             detail_categories = g_category[category]
             for keyword in detail_categories:
-                url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&BILL_NAME={keyword}&pIndex=1&pSize=50'
+                url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={api_key}&Type={type}&AGE={age}&BILL_NAME={keyword}&pIndex=1&pSize=50'
                 query = encode_querystring(url)
                 data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
 
@@ -80,7 +80,8 @@ def set_category_data():
 
 # 매일 오전 3시
 # 00분 03시 매일 매달 매주
-cron = "00 03 * * *"
+# cron = "00 03 * * *"
+cron = "10 14 * * *"
 
 scheduler = BackgroundScheduler(daemon=True)
 scheduler.add_job(set_category_data, CronTrigger.from_crontab(cron))
