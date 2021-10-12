@@ -1,16 +1,19 @@
+import os
 from flask import Blueprint
 import requests
 from urllib import parse
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
-from decouple import config
 from pymongo import MongoClient
-host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 db = client.todaylaw
 
-api_key = config('API_KEY')
+api_key = os.environ['API_KEY']
 
 bp = Blueprint("category_data_scheduler", __name__, url_prefix='/')
 
@@ -18,25 +21,26 @@ age = 21
 type = 'json'
 
 g_categories = [
-    {"건설":["건설"]},
-    {"노동/근로":["노동", "근로"]}, # 노동/근로 카테고리 클릭시 [노동, 근로]가 검색되도록 처리
-    {"문화":["문화"]},
-    {"부동산":["범죄"]},
-    {"의료/보건":["의료","보건"]},
-    {"보험":["보험"]},
-    {"주택":["주택"]},
-    {"조세":["조세"]},
-    {"교육":["교육"]},
-    {"선거":["선거"]},
-    {"농수산물":["농산물","수산물"]}, # 농수산물 카테고리 검색시 [농산물, 수산물]이 검색되도록 처리
-    {"병역":["병역"]},
-    {"범죄":["범죄"]},
-    {"금융":["금융", "은행"]},
-    {"정보통신":["정보통신", "정보보호"]},
+    {"건설": ["건설"]},
+    {"노동/근로": ["노동", "근로"]},  # 노동/근로 카테고리 클릭시 [노동, 근로]가 검색되도록 처리
+    {"문화": ["문화"]},
+    {"부동산": ["범죄"]},
+    {"의료/보건": ["의료", "보건"]},
+    {"보험": ["보험"]},
+    {"주택": ["주택"]},
+    {"조세": ["조세"]},
+    {"교육": ["교육"]},
+    {"선거": ["선거"]},
+    {"농수산물": ["농산물", "수산물"]},  # 농수산물 카테고리 검색시 [농산물, 수산물]이 검색되도록 처리
+    {"병역": ["병역"]},
+    {"범죄": ["범죄"]},
+    {"금융": ["금융", "은행"]},
+    {"정보통신": ["정보통신", "정보보호"]},
 ]
 
+
 # 카테고리 데이터 저장 스케줄러 job 메서드
-@bp.route('/category/data')
+@bp.route('/api/category/data-initialize')
 def set_category_data():
     # 카테고리 데이터 DB 데이터 삭제
     db.category.delete_many({})
@@ -46,7 +50,7 @@ def set_category_data():
             print(f"데이터 수집 : {category}")
             detail_categories = g_category[category]
             for keyword in detail_categories:
-                url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={apiKey}&Type={type}&AGE={age}&BILL_NAME={keyword}&pIndex=1&pSize=50'
+                url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={api_key}&Type={type}&AGE={age}&BILL_NAME={keyword}&pIndex=1&pSize=50'
                 query = encode_querystring(url)
                 data = requests.get('https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?' + query)
 
@@ -54,7 +58,7 @@ def set_category_data():
                 data = data['nzmimeepazxkubdpn'][1]['row']
 
                 for d in data:
-                    now = datetime.now() - timedelta(days=90) # 90일 전
+                    now = datetime.now() - timedelta(days=90)  # 90일 전
                     target_date = now.strftime('%Y-%m-%d')
                     propose_date = d['PROPOSE_DT']
                     names = d['PUBL_PROPOSER']
@@ -68,20 +72,23 @@ def set_category_data():
                             'proposer_name': d['RST_PROPOSER'],  # 대표제안자
                             'date': d['PROPOSE_DT'],  # 발의 날짜
                             'url': d['DETAIL_LINK'],  # 상세내용 크롤링 link
-                            'category': category,   # 카테고리
+                            'category': category,  # 카테고리
                         }
                         db.category.insert_one(doc)
                     else:
                         break
     return "ok"
 
+
 # 매일 오전 3시
 # 00분 03시 매일 매달 매주
-cron = "00 03 * * *"
+# cron = "00 03 * * *"
+# cron = "10 14 * * *"
+#
+# scheduler = BackgroundScheduler(daemon=True)
+# scheduler.add_job(set_category_data, CronTrigger.from_crontab(cron))
+# scheduler.start()
 
-scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(set_category_data, CronTrigger.from_crontab(cron))
-scheduler.start()
 
 # 요청 URL에서 문자열 쿼리스트링 인코딩
 def encode_querystring(url):
@@ -90,6 +97,7 @@ def encode_querystring(url):
     query = parse.urlencode(query, doseq=True)
 
     return query
+
 
 def get_other_proposer(names):
     names = names.split(',')

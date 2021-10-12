@@ -1,21 +1,23 @@
+import os
 from flask import redirect, request, jsonify, Blueprint, make_response
 import requests
-from decouple import config
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 import jwt
 from decouple import config
 TOKEN_KEY = config('TOKEN_KEY')
 
-client = MongoClient('localhost',27017)
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 db = client.todaylaw
 
 bp = Blueprint("kakao_login", __name__, url_prefix='/')
 
-kakao_client_key = config('KAKAO_REST_API')
-jwt_secret = config('JWT_SECRET')
-redirect_uri = "http://localhost:5000/oauth/kakao/callback"
-
+kakao_client_key = os.environ['KAKAO_REST_API']
+jwt_secret = os.environ['JWT_SECRET']
+redirect_uri = "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/kakao/callback"
 
 # 사용자가 카카오 로그인 요청시 카카오 로그인 페이지로 이동
 # 사용자가 카카오에 인증 성공시 지정한 Redirect_URI로 Access_token을 요청할 수 있는 인증토큰(Authentication_code)를 응답받는다.
