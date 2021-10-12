@@ -1,12 +1,13 @@
 import os
-host = os.environ['MONGO_DB_CLIENT']
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from flask import Blueprint
-from decouple import config
 from pymongo import MongoClient
-#host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
 db = client.todaylaw
 
 bp = Blueprint("rank_init_scheduler", __name__, url_prefix="/")

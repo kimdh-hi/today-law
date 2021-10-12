@@ -1,11 +1,9 @@
 import os
-api_key = os.environ['API_KEY']
 from flask import jsonify, request, Blueprint
 import requests
 from urllib import parse
-from decouple import config
-# api_key = config('API_KEY')
 
+api_key = os.environ['API_KEY']
 bp = Blueprint('search', __name__, url_prefix='/')
 
 # open api 주소

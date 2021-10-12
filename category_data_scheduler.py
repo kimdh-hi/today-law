@@ -1,19 +1,19 @@
 import os
-host = os.environ['MONGO_DB_CLIENT']
-api_key = os.environ['API_KEY']
 from flask import Blueprint
 import requests
 from urllib import parse
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
-from decouple import config
 from pymongo import MongoClient
-#host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
 db = client.todaylaw
 
-#api_key = config('API_KEY')
+api_key = os.environ['API_KEY']
 
 bp = Blueprint("category_data_scheduler", __name__, url_prefix='/')
 

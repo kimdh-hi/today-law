@@ -9,6 +9,12 @@ from pymongo import MongoClient
 
 bp = Blueprint("google", __name__, url_prefix='/')
 
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
+db = client.todaylaw
+
 GOOGLE_CLIENT_ID = os.environ['Google_API']
 GOOGLE_CLIENT_SECRET = os.environ['Google_SECRET']
 jwt_secret = os.environ['JWT_SECRET']
@@ -16,9 +22,6 @@ jwt_secret = os.environ['JWT_SECRET']
 GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
 )
-
-client = MongoClient('localhost', 27017)
-db = client.todaylaw
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 

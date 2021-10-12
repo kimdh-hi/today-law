@@ -1,19 +1,19 @@
 import os
-host = os.environ['MONGO_DB_CLIENT']
-jwt_secret = os.environ['JWT_SECRET']
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 from datetime import datetime
-from decouple import config
 import jwt
 
-# host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
 db = client.todaylaw
 
-bp = Blueprint('wish', __name__, url_prefix='/')
+host = os.environ['MONGO_DB_CLIENT']
+jwt_secret = os.environ['JWT_SECRET']
 
-# jwt_secret = config('JWT_SECRET')
+bp = Blueprint('wish', __name__, url_prefix='/')
 
 # 청원 목록 가져오기
 # 로그인 하지 않아도 보여야 함

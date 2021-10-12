@@ -1,6 +1,4 @@
 import os
-host = os.environ['MONGO_DB_CLIENT']
-api_key = os.environ['API_KEY']
 from flask import Flask, render_template, jsonify
 import search, crawl, rank, like, bookmark, category, wish
 from login import naver, kakao, google
@@ -15,12 +13,16 @@ from decouple import config
 from flask_mail import Mail, Message
 from pymongo import MongoClient
 
-#host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
 db = client.todaylaw
 
+api_key = os.environ['API_KEY']
+
 application = Flask(__name__)
-#api_key = config('API_KEY')
+
 cors = CORS(application, resources={r"/*": {"origins": "*"}})
 
 application.register_blueprint(search.bp) # 법안 조회 API

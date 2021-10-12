@@ -6,7 +6,10 @@ from pymongo import MongoClient
 from datetime import datetime, timedelta
 import jwt
 
-client = MongoClient('localhost', 27017)
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
 db = client.todaylaw
 
 bp = Blueprint("naver_login", __name__, url_prefix='/')

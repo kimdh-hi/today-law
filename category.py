@@ -1,14 +1,13 @@
 import os
-host = os.environ['MONGO_DB_CLIENT']
 from flask import jsonify, request, Blueprint, render_template
 from urllib import parse
-from decouple import config
 from pymongo import MongoClient
 
-#host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, MONGO_USERNAME, MONGO_PASSWORD)
 db = client.todaylaw
-
 bp = Blueprint("category", __name__, url_prefix='/')
 
 # http://localhost:5000/category/test
