@@ -1,21 +1,17 @@
-const EB_URL='http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com'
+let EB_URL="http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com"
 
 function wish_list() {
     $.ajax({
         type: "GET",
-        url: `${EB_URL}/wish`,
+        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish`,
         data: {},
         success: function (response) {
             let wishes = response['wish_list']
-            console.log(wishes)
-
             for (let i = 0; i < wishes.length; i++) {
                 let title = wishes[i]['title']
                 let category = wishes[i]['category']
                 let time = wishes[i]['time']
                 let agree = wishes[i]['agree']
-
-                console.log(title, category, agree)
 
                 let temp_html = `<tr>
                                     <th scope="row">${category}</th>
@@ -40,7 +36,7 @@ function post_wish() {
 
     $.ajax({
         type: "POST",
-        url: `${EB_URL}/wish`,
+        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish`,
         data: {title_give: title, category_give: category, contents_give: contents},
         success: function (response) {
             alert(response['msg'])
