@@ -1,12 +1,9 @@
 import os
 from flask import Flask, render_template, jsonify
-import search, crawl, rank, like, bookmark, category, wish, mypage
+import search, crawl, rank, like, bookmark, category, wish, mypage, yesterday
 from login import naver, kakao, google
 from urllib import parse
-import category_data_scheduler, rank_init_scheduler
 import requests
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
 from flask_cors import CORS
 from flask_mail import Mail, Message
@@ -31,11 +28,13 @@ application.register_blueprint(like.bp) # 좋아요
 application.register_blueprint(bookmark.bp) # 즐겨찾기
 application.register_blueprint(category.bp) # 카테고리별 조회 API
 application.register_blueprint(wish.bp) # 청원
+application.register_blueprint(mypage.bp) # 마이페이지
+application.register_blueprint(yesterday.bp) # 마이페이지
 
 application.register_blueprint(kakao.bp) # 카카오 로그인 API
 application.register_blueprint(google.bp) # 구글 로그인 API
-application.register_blueprint(naver.bp)
-application.register_blueprint(mypage.bp)
+application.register_blueprint(naver.bp) # 네이버 로그인 API
+
 
 application.config['MAIL_SERVER']='smtp.gmail.com'
 application.config['MAIL_PORT'] = 465

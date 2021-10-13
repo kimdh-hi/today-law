@@ -2,20 +2,11 @@ import os
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 import jwt
-<<<<<<< HEAD
-from decouple import config
-=======
->>>>>>> 79fa57429a1832fbbf0cc03d478ed931881a137f
 
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
 client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
-<<<<<<< HEAD
-
-db = client.todaylaw
-=======
->>>>>>> 79fa57429a1832fbbf0cc03d478ed931881a137f
 
 db = client.todaylaw
 
@@ -29,7 +20,7 @@ JWT_SECRET = os.environ['JWT_SECRET']
 def get_bookmark():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         # 즐겨찾기 db에서 현재 user의 id에 해당하는 데이터만 가져온다.
@@ -46,7 +37,7 @@ def get_bookmark():
 def bookmark():
     try:
         # jwt 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         # 즐겨찾기 추가를 위한 파라미터
@@ -93,7 +84,7 @@ def bookmark():
 def delete_bookmark():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
@@ -124,6 +115,3 @@ def verify_token(mytoken):
     user = db.users.find_one({'user_id': token['user_id']}, {'_id': False})
 
     return user
-
-
-
