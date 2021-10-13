@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Today 국회</title>
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
+    <meta property="og:title" content="오늘의 법"/>
+    <meta property="og:description" content="오늘도 발의되는 여러 법안들 간편하게 살펴보자!!"/>
+    <meta property="og:image" content="{{ url_for('static', filename='congress.png') }}"/>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/css/mypage.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <!-- img -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8" src="../static/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../static/js/jquery.vticker.min.js"></script>
+    <!-- 폰트 JUA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- 폰트 Nanum Gothic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <!-- js 불러오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/scroll.js"></script>
+    <script src="/static/js/login.js"></script>
+    <script src="/static/js/wish.js"></script>
+</head>
+
+<body>
+
+<section class="hero is-info is-small">
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item">
+                        <img onclick="window.location.href='/'" src="/static/congress.png" alt="Logo">
+                    </a>
+                    <span class="navbar-burger" data-target="navbarMenuHeroB">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+                </div>
+                <div id="navbarMenuHeroB" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a href="/" class="navbar-item">
+                            Today 국회
+                        </a>
+                        <a href="/category" class="navbar-item">
+                            카테고리별 법안목록
+                        </a>
+                        <a class="navbar-item">
+                            메뉴2
+                        </a>
+                        <span id="navbar" class="navbar-item">
+                            <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
+                                <span>로그인</span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</section>
+
+<div id="app">
+    <section class="main-content columns is-fullheight">
+
+        <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+            <p class="menu-label is-hidden-touch">HOME</p>
+            <ul class="menu-list">
+                <li>
+                    <a href="#" class="">
+                        <span class="icon"><i class="fa fa-home"></i></span> 최근 본 법안
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="is-active">
+                        <span class="icon"><i class="fa fa-table"></i></span> 작성한 청원
+                    </a>
+                </li>
+                <p class="menu-label is-hidden-touch">설정</p>
+                <li>
+                    <a href="#" class="">
+                        <span class="icon"><i class="fa fa-info"></i></span> 개인정보수정
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <div class="container column is-10">
+            <div class="section">
+
+                <div class="card">
+                    <div class="card-header"><p class="card-header-title">test</p></div>
+                    <div class="card-content">
+                        <div class="content">Content</div>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+            is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+        </p>
+    </div>
+</footer>
+</body>
+</html>

@@ -9,6 +9,7 @@ MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
 client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 
 db = client.todaylaw
+
 bp = Blueprint("category", __name__, url_prefix='/')
 
 # http://localhost:5000/category/test

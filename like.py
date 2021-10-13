@@ -10,109 +10,107 @@ client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_P
 
 db = client.todaylaw
 
-jwt_secret = os.environ['JWT_SECRET']
+bp = Blueprint('bookmark', __name__, url_prefix='/')
 
-bp = Blueprint('like', __name__, url_prefix='/')
+TOKEN_KEY = os.environ['TOKEN_KEY']
+JWT_SECRET = os.environ['JWT_SECRET']
 
-
-@bp.route('/api/like', methods=['POST'])
-def like_star():
+# 즐겨찾기 목록 가져오기
+@bp.route('/api/bookmark', methods=['GET'])
+def get_bookmark():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
-        id_receive = request.form['id_give']
+        # 즐겨찾기 db에서 현재 user의 id에 해당하는 데이터만 가져온다.
+        bookmark_list = list(db.bookmark.find(
+            {'user_id': user['user_id']}, {'_id':False}
+        ))
 
-        like_laws = db.users.find_one(
-            {'user_id':user['user_id']},
-            {'like_laws':1, '_id':0}
-        )['like_laws']
+        return jsonify({'bookmark_list':bookmark_list})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "허용되지 않은 접근입니다.", 'bookmark_list':[]})
 
-        if id_receive in like_laws: # 좋아요가 이미 눌린 법안인 경우
-            # 사용자의 좋아요 목록에서 제거
+# 법안 즐겨찾기
+@bp.route('/api/bookmark', methods=['POST'])
+def bookmark():
+    try:
+        # jwt 토큰 검증
+        mytoken = request.cookies.get(TOKEN_KEY)
+        user = verify_token(mytoken)
+
+        # 즐겨찾기 추가를 위한 파라미터
+        law_id = request.form['id_give'] # 즐겨찾기를 한 법안의 ID (API로부터 받은 ID)
+        title = request.form['title']
+        proposer_name = request.form['proposer_name']
+        proposer_names = request.form['proposer_names']
+        url = request.form['url']
+        date = request.form['date']
+
+        # 즐겨찾기로 추가하려는 법안이 이미 즐겨찾기로 등록되었는지 체크
+        exist_id = db.bookmark.find_one({'id': law_id})
+
+        if exist_id is not None:
+            msg = "이미 즐겨찾기에 저장된 법안입니다."
+        else:
+            bookmark_doc = {
+                "law_id": law_id,
+                "url": url,
+                "title": title,
+                "proposer_name": proposer_name,
+                "proposer_names": proposer_names,
+                "date": date,
+                "user_id": user['user_id'] # user와 bookmark를 매핑시켜줄 필드 (현재 user의 id값)
+            }
+
+            # 즐겨찾기로 추가된 법안의 id를 user의 bookmarks 필드에 추가한다.
+            # 이 부분이 필요한지 아직 잘 모르겠음. 마이페이지에서 즐겨찾기를 추가할 때에도 즐겨찾기의 user_id를 사용하면 됨.
             db.users.update(
                 {'user_id':user['user_id']},
-                {'$pull':{'like_laws':id_receive}}
+                {'$push':{'bookmarks':law_id}}
             )
+            db.bookmark.insert_one(bookmark_doc)
 
-            # 좋아요를 감소시키는 부분
-            likes = db.ranking.find_one({'id': id_receive})
-            current_like = likes['like']
-            new_like = current_like - 1
-            current_hate = likes['hate']
-            db.ranking.update_one({'id': id_receive}, {'$set': {'like': new_like}})
-        else: # 좋아요가 처음 눌린 법안인 경우
-            # 사용자의 좋아요 목록에 추가
-            db.users.update(
-                {'user_id': user['user_id']},
-                {'$push': {'like_laws': id_receive}}
-            )
+            msg = "즐겨찾기에 저장되었습니다."
+        return jsonify({'result': 'success', 'msg': f'{msg}'})
 
-            # 좋아요를 증가시키는 부분
-            likes = db.ranking.find_one({'id': id_receive})
-            current_like = likes['like']
-            new_like = current_like + 1
-            current_hate = likes['hate']
-            db.ranking.update_one({'id': id_receive}, {'$set': {'like': new_like}})
-
-        return jsonify({'id': id_receive, 'like': new_like, 'hate': current_hate})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return jsonify({"result": "허용되지 않은 접근입니다."})
+        return jsonify({"result":"허용되지 않은 접근입니다."})
 
 
-@bp.route('/api/hate', methods=['POST'])
-def delete_star():
+# 법안 즐겨찾기 삭제
+@bp.route('/api/bookmark', methods=['DELETE'])
+def delete_bookmark():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
+        # 즐겨찾기 db에 있는 지 확인
+        bookmark_id = db.bookmark.find_one({'law_id': id_receive, 'user_id':user['user_id']}, {'_id':False})
 
-        hate_laws = db.users.find_one(
-            {'user_id': user['user_id']},
-            {'hate_laws': 1, '_id': 0}
-        )['hate_laws']
-
-        if id_receive in hate_laws:
+        if bookmark_id is not None:
+            # users DB의 bookmark 필드에서 삭제 (이것도 필요한 부분인지 아직 모르겠음)
             db.users.update(
-                {'user_id': user['user_id']},
-                {'$pull': {'hate_laws': id_receive}}
+                {'user_id':user['user_id']},
+                {'$pull': {'bookmark_id':id_receive}}
             )
+            # bookmark db에서 삭제
+            db.bookmark.delete_one({"law_id": id_receive, "user_id":user['user_id']})
+            msg = "법안이 삭제 되었습니다."
+        else:
+            msg = "즐겨찾기에 없는 법안입니다."
 
-            hates = db.ranking.find_one({'id': id_receive})
-            current_hate = hates['hate']
-            new_hate = current_hate - 1
-            current_like = hates['like']
-            db.ranking.update_one({'id': id_receive}, {'$set': {'hate': new_hate}})
-        else:  # 좋아요가 처음 눌린 법안인 경우
-            # 사용자의 좋아요 목록에 추가
-            db.users.update(
-                {'user_id': user['user_id']},
-                {'$push': {'hate_laws': id_receive}}
-            )
-
-            hates = db.ranking.find_one({'id': id_receive})
-            current_hate = hates['hate']
-            new_hate = current_hate + 1
-            current_like = hates['like']
-            db.ranking.update_one({'id': id_receive}, {'$set': {'hate': new_hate}})
-
-        return jsonify({'id': id_receive, 'like': current_like, 'hate':new_hate})
+        return jsonify({'result': 'success', 'msg': f'{msg}'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return jsonify({"result": "허용되지 않은 접근입니다."})
-
-
-@bp.route('/api/likes_list', methods=['GET'])
-def show_like_list():
-    likes_list = list(db.ranking.find({}, {'_id': False}).sort([('like',-1), ('title',1)]).limit(50))
-    return jsonify({'likes_list': likes_list})
+        return jsonify({"result":"허용되지 않은 접근입니다."})
 
 # 토큰 검증 메서드
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
-    token = jwt.decode(mytoken, jwt_secret, algorithms=['HS256'])
+    token = jwt.decode(mytoken, JWT_SECRET, algorithms=['HS256'])
     # 디코딩된 payload의 user_id가 users DB에 있는지 확인
     user = db.users.find_one({'user_id': token['user_id']}, {'_id': False})
 
