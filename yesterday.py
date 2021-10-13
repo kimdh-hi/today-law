@@ -1,12 +1,10 @@
 import os
-from flask import Flask, render_template, Blueprint
+from flask import render_template, Blueprint
 import requests
 import datetime
 from urllib import parse
 
 bp = Blueprint('yesterday', __name__, url_prefix='/')
-
-app = Flask(__name__)
 
 API_KEY = os.environ['API_KEY']
 age = 21
@@ -45,7 +43,7 @@ def get_yesterday_info():
 
         laws.append(doc)
 
-    return render_template('index.html', laws=laws)
+    return render_template('yesterday.html', laws=laws)
 
 
 def encode_querystring(url):

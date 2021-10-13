@@ -1,3 +1,10 @@
+// 새로고침 후에도 탭 유지
+$(document).ready(function () {
+    var link = document.location.href;
+    var tab = link.split('/').pop();
+    $('a[href$=\\' + tab + ']').trigger("click");
+
+});
 
 function wish_list() {
     $.ajax({
@@ -100,16 +107,22 @@ function open_modal_wish(title, category, time, agree, contents) {
 }
 
 function post_comment(title) {
-    $.ajax({
-        type: "POST",
-        url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/comment",
-        data: {
-            title_give: title
-        },
-        success: function (response) {
-            alert(response['msg'])
-            window.location.reload()
-        }
-    })
+    if (confirm("청원 동의 철회 및 댓글 수정은 불가능하오니 신중하게 참여해주시기 바랍니다") === true) {
+        $.ajax({
+            type: "POST",
+            url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/comment",
+            data: {
+                title_give: title
+            },
+            success: function (response) {
+                alert(response['msg'])
+                window.location.reload()
+            }
+        })
+    } else {
+        return false;
+    }
+
+
 }
 

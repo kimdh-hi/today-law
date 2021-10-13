@@ -66,13 +66,33 @@ def show_wish_details():
 # 청원 댓글
 @bp.route('/wish/comment', methods=['POST'])
 def save_wish_comment():
-    title_receive = request.form['title_give']
-    agrees = db.wish.find_one({'title': title_receive})
-    current_agree = agrees['agree']
-    new_agree = current_agree + 1
+    try:
+        mytoken = request.cookies.get(TOKEN_KEY)
+        user = verify_token(mytoken)
 
-    db.wish.update_one({'title': title_receive}, {'$set': {'agree': new_agree}})
-    return jsonify({'result': 'success', 'msg': '동의완료'})
+        title_receive = request.form['title_give']
+        comments = db.users.find_one(
+            {'user_id': user['user_id']},
+            {'comments': 1, '_id': 0}
+        )['comments']
+
+        if title_receive in comments:
+            msg = "이미 동의한 청원입니다."
+        else:
+            db.users.update(
+                {'user_id': user['user_id']},
+                {'$push': {'comments': title_receive}}
+            )
+            title_receive = request.form['title_give']
+            agrees = db.wish.find_one({'title': title_receive})
+            current_agree = agrees['agree']
+            new_agree = current_agree + 1
+            db.wish.update_one({'title': title_receive}, {'$set': {'agree': new_agree}})
+            msg = "해당 청원에 동의하였습니다."
+
+        return jsonify({'result': 'success', 'msg': f'{msg}'})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "허용되지 않은 접근입니다."})
 
 
 

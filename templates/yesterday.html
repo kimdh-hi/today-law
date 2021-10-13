@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
 
     <title>Today 국회</title>
-    <link rel="shortcut icon" href="static/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
     <meta property="og:title" content="오늘의 법"/>
     <meta property="og:description" content="오늘도 발의되는 여러 법안들 간편하게 살펴보자!!"/>
     <meta property="og:image" content="{{ url_for('static', filename='congress.png') }}"/>
@@ -45,7 +47,7 @@
     <script src="/static/js/index.js"></script>
     <script src="/static/js/scroll.js"></script>
     <script src="/static/js/login.js"></script>
-    <script src="/static/js/category.js"></script>
+    <script src="/static/js/wish.js"></script>
 
     <style>
         .column {
@@ -57,7 +59,6 @@
             box-shadow: -7px 11px 25px -9px rgba(0, 0, 0, 1);
         }
     </style>
-
 </head>
 <body>
 
@@ -100,6 +101,14 @@
         </nav>
     </div>
 
+    <div class="quickmenu">
+        <ul>
+            <li onclick="scrollToTop()" class="far fa-caret-square-up fa-2x" style="color: rgb(62,142,208)">
+            </li>
+            <li onclick="scrollToBottom()" class="far fa-caret-square-down fa-2x" style="color: rgb(62,142,208)"></li>
+        </ul>
+    </div>
+
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
@@ -113,6 +122,7 @@
             <p class="title" style="margin: auto">
                 어제 국회 머했니 ~?
             </p>
+
         </div>
     </div>
 </section>
@@ -125,7 +135,7 @@
                     <div style="text-align: center; color: steelblue">
                         <p>
                             <span style="font-size: 0.7em;">처리상태: </span>
-                                {{ law.status }}
+                            {{ law.status }}
                             <span style="font-size: 0.6em; color: black">{{ law.detail_status }}</span></p>
                     </div>
                     <p id="category-title"
@@ -136,7 +146,8 @@
                     {% if law.committee != None %}
                         <p style="font-size: 0.8em">소관위원회: {{ law.committee }}</p>
                     {% endif %}
-                    <div style="text-align: center;"><p><a href="{{ law.url }}" style="font-size: 0.8em">상세정보</a></p></div>
+                    <div style="text-align: center;"><p><a href="{{ law.url }}" style="font-size: 0.8em">상세정보</a></p>
+                    </div>
                 </div>
             {% endfor %}
 
