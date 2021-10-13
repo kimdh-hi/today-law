@@ -13,14 +13,19 @@ let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판
 
 let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
+
 let EB_URL="http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com"
+
+let base_url = 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/'
+let base_url2 = 'http://localhost:5000/'
 
 $(document).ready(function () {
 
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type: "GET",
-        url: `${EB_URL}/login-check`,
+        // url: base_url+`login-check`,
+        url: base_url+`login-check`,
         success: function (res) {
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
@@ -39,7 +44,7 @@ $(document).ready(function () {
                                     </div>
                                     <div class="dropdown-menu" id="dropdown-menu3" role="menu">
                                         <div class="dropdown-content">
-                                            <a id="mypage_button" class="dropdown-item">
+                                            <a id="mypage_button" onclick="mypage()" class="dropdown-item">
                                                 마이페이지
                                             </a>
                                             <hr class="dropdown-divider">
@@ -86,14 +91,7 @@ $(document).ready(function () {
         $(".card-container > .card-list").eq(idx).show();
     })
 
-    $("#mypage_button").click(function () {
-        if(is_authenticated === true){
-            location.href='/mypage'
-        }
-        else{
-            show_login_modal()
-        }
-    })
+
 
     //랭킹 hover
     $('.box').hover(function () {
@@ -106,7 +104,15 @@ $(document).ready(function () {
         $('.box > .rank-board').css("height", "4em");
     })
 })
-
+    function mypage(){
+        if(is_authenticated === true){
+            console.log(123)
+            location.href=base_url+'mypage'
+        }
+        else{
+            show_login_modal()
+        }
+    }
 function dpmenu() {
     if ($(".dropdown").hasClass("is-active")) {
         $(".dropdown").removeClass("is-active")

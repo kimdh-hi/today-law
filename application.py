@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, jsonify
-import search, crawl, rank, like, bookmark, category, wish
+import search, crawl, rank, like, bookmark, category, wish, mypage
 from login import naver, kakao, google
 from urllib import parse
 import category_data_scheduler, rank_init_scheduler
@@ -35,6 +35,7 @@ application.register_blueprint(wish.bp) # 청원
 application.register_blueprint(kakao.bp) # 카카오 로그인 API
 application.register_blueprint(google.bp) # 구글 로그인 API
 application.register_blueprint(naver.bp)
+application.register_blueprint(mypage.bp)
 
 application.config['MAIL_SERVER']='smtp.gmail.com'
 application.config['MAIL_PORT'] = 465
