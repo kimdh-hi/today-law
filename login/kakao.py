@@ -56,6 +56,7 @@ def access():
                 "like_laws":[],
                 "hate_laws":[],
                 "bookmarks":[],
+                "comments": [],
                 "receive_mail": False
             }
 

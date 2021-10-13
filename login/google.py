@@ -86,6 +86,7 @@ def callback():
             "like_laws": [],
             "hate_laws": [],
             "bookmarks": [],
+            "comments": [],
             "receive_mail": False
         }
 
