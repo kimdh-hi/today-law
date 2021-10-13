@@ -43,7 +43,7 @@ def get_yesterday_info():
 
         laws.append(doc)
 
-    return render_template('index.html', laws=laws)
+    return render_template('yesterday.html', laws=laws)
 
 
 def encode_querystring(url):
