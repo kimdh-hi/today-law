@@ -14,11 +14,18 @@ let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판
 let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
 
+let EB_URL="http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com"
+
+let base_url = 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/'
+let base_url2 = 'http://localhost:5000/'
+
 $(document).ready(function () {
+
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/login-check`,
+        // url: base_url+`login-check`,
+        url: base_url+`login-check`,
         success: function (res) {
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
@@ -37,7 +44,7 @@ $(document).ready(function () {
                                     </div>
                                     <div class="dropdown-menu" id="dropdown-menu3" role="menu">
                                         <div class="dropdown-content">
-                                            <a href="#" class="dropdown-item">
+                                            <a id="mypage_button" onclick="mypage()" class="dropdown-item">
                                                 마이페이지
                                             </a>
                                             <hr class="dropdown-divider">
@@ -84,6 +91,8 @@ $(document).ready(function () {
         $(".card-container > .card-list").eq(idx).show();
     })
 
+
+
     //랭킹 hover
     $('.box').hover(function () {
         $('.box').css("height", "12em");
@@ -95,14 +104,19 @@ $(document).ready(function () {
         $('.box > .rank-board').css("height", "4em");
     })
 })
-
-function dpmenu(){
-    if($(".dropdown").hasClass("is-active"))
-    {
-        $(".dropdown").removeClass("is-active")
+    function mypage(){
+        if(is_authenticated === true){
+            console.log(123)
+            location.href=base_url+'mypage'
+        }
+        else{
+            show_login_modal()
+        }
     }
-    else
-    {
+function dpmenu() {
+    if ($(".dropdown").hasClass("is-active")) {
+        $(".dropdown").removeClass("is-active")
+    } else {
         $(".dropdown").addClass("is-active")
     }
 }
@@ -113,16 +127,16 @@ function openClose() {
         $("#btn-post-box").text("지금 청원하기");
     } else {
         $("#post-box").show();
+        ㅍ
         $("#btn-post-box").text("닫기");
     }
 }
 
 //모달 열기 (법안 상세내용)
 function open_modal(url, id, title, proposer_name, proposer_names) {
-    console.log('OPEN_MODAL')
     $.ajax({
         type: "POST",
-        url: 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws/details',
+        url: `${EB_URL}/api/laws/details`,
         data: {
             url_give: url,
             id_give: id,
@@ -131,7 +145,6 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
             proposer_names_give: proposer_names
         },
         success: function (response) {
-            console.log(response)
             let id = response['id']
             let title = response['title'].split('(')[0]
             let proposer_name = response['proposer_name']
@@ -230,11 +243,10 @@ function close_modal() {
 
 //법안 전체목록 가져오기
 function get_law_list() {
-    console.log("GET_LAW_LIST")
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws?offset=${offset}`,
+        url: `${EB_URL}/api/laws?offset=${offset}`,
         success: function (res) {
             total_count = res[0].total_count
             $('#total_count').text(total_count)
@@ -251,7 +263,7 @@ function get_law_list_by_title(title) {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws?offset=${offset}&query=${title}&condition=법안명`,
+        url: `${EB_URL}/api/laws?offset=${offset}&query=${title}&condition=법안명`,
         success: function (res) {
             total_count = res[0].total_count
             if (!more) g_readmore_button_show = total_count > 10 ? true : false
@@ -267,7 +279,7 @@ function get_law_list_by_proposer_name(name) {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/laws?offset=${offset}&proposer=${name}&condition=제안자`,
+        url: `${EB_URL}/api/laws?offset=${offset}&proposer=${name}&condition=제안자`,
         success: function (res) {
             total_count = res[0].total_count
             if (!more) g_readmore_button_show = total_count > 10 ? true : false
@@ -320,7 +332,7 @@ function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/rank`,
+        url: `${EB_URL}/api/rank`,
         success: function (res) {
             if (res.length == 0) {
                 $('#ranking-list').append('<li>조회된 법안이 없습니다.</li>')
@@ -338,9 +350,10 @@ function get_ranking() {
 function likeLaw(id) {
     $.ajax({
         type: 'POST',
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/like`,
+        url: `${EB_URL}/api/like`,
         data: {id_give: id},
         success: function (response) {
+            console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
         }
     })
@@ -350,9 +363,10 @@ function likeLaw(id) {
 function hateLaw(id) {
     $.ajax({
         type: 'POST',
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/hate`,
+        url: `${EB_URL}/api/hate`,
         data: {id_give: id},
         success: function (response) {
+            console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
         }
     });
@@ -409,7 +423,7 @@ function bookmark_show() {
     $('#bookmark').empty() // 수정
     $.ajax({
             type: 'GET',
-            url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/bookmark`,
+            url: `${EB_URL}/api/bookmark`,
             data: {},
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
@@ -468,9 +482,10 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
         "url": url,
         "date": date
     }
+    console.log(data)
     $.ajax({
         type: "POST",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/bookmark`,
+        url: `${EB_URL}/api/bookmark`,
         data: data,
         success: function (response) {
             alert(response["msg"])
@@ -483,7 +498,7 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
 function delete_bookmark(id) {
     $.ajax({
         type: "DELETE",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/bookmark`,
+        url: `${EB_URL}/api/bookmark`,
         data: {id_give: id},
         success: function (response) {
             alert(response["msg"])
@@ -506,7 +521,7 @@ function likes_show() {
     $('#likes').empty()
     $.ajax({
             type: 'GET',
-            url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/likes_list`,
+            url: `${EB_URL}/api/likes_list`,
             data: {},
             success: function (response) {
                 let likes_list = response['likes_list']

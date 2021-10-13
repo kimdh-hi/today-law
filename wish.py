@@ -1,16 +1,20 @@
+import os
 from flask import Blueprint, request, jsonify
 from pymongo import MongoClient
 from datetime import datetime
-from decouple import config
 import jwt
-TOKEN_KEY = config('TOKEN_KEY')
-host = config('MONGO_DB_CLIENT')
-client = MongoClient(host, 27017)
+
+MONGO_URL = os.environ['MONGO_URL']
+MONGO_USERNAME = os.environ['MONGO_USERNAME']
+MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
+
 db = client.todaylaw
 
 bp = Blueprint('wish', __name__, url_prefix='/')
 
-jwt_secret = config('JWT_SECRET')
+TOKEN_KEY = os.environ['TOKEN_KEY']
+JWT_SECRET = os.environ['JWT_SECRET']
 
 # 청원 목록 가져오기
 # 로그인 하지 않아도 보여야 함
@@ -74,7 +78,7 @@ def save_wish_comment():
 
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
-    token = jwt.decode(mytoken, jwt_secret, algorithms=['HS256'])
+    token = jwt.decode(mytoken, JWT_SECRET, algorithms=['HS256'])
     # 디코딩된 payload의 user_id가 users DB에 있는지 확인
     user = db.users.find_one({'user_id': token['user_id']}, {'_id': False})
 

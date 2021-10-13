@@ -1,15 +1,11 @@
 import os
 from flask import Flask, render_template, jsonify
-import search, crawl, rank, like, bookmark, category, wish
+import search, crawl, rank, like, bookmark, category, wish, mypage, yesterday
 from login import naver, kakao, google
 from urllib import parse
-import category_data_scheduler
 import requests
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.cron import CronTrigger
 from datetime import datetime, timedelta
 from flask_cors import CORS
-from decouple import config
 from flask_mail import Mail, Message
 from pymongo import MongoClient
 
@@ -32,12 +28,13 @@ application.register_blueprint(like.bp) # 좋아요
 application.register_blueprint(bookmark.bp) # 즐겨찾기
 application.register_blueprint(category.bp) # 카테고리별 조회 API
 application.register_blueprint(wish.bp) # 청원
+application.register_blueprint(mypage.bp) # 마이페이지
+application.register_blueprint(yesterday.bp) # 마이페이지
 
 application.register_blueprint(kakao.bp) # 카카오 로그인 API
 application.register_blueprint(google.bp) # 구글 로그인 API
-application.register_blueprint(naver.bp)
+application.register_blueprint(naver.bp) # 네이버 로그인 API
 
-application.register_blueprint(category_data_scheduler.bp)
 
 application.config['MAIL_SERVER']='smtp.gmail.com'
 application.config['MAIL_PORT'] = 465
@@ -53,7 +50,7 @@ def index():
     return render_template('index.html')
 
 # 알림 메일 메서드 (테스트용으로 url 매핑)
-@application.route('/mail-test')
+@application.route('/api/mail')
 def mail_send():
     laws = get_laws()
     # 여제 발의된 법안이 0개인 경우
@@ -96,7 +93,7 @@ def get_laws():
 
         for d in data:
             propose_date = str(d['PROPOSE_DT'])
-            target_date = str(datetime.now().date() - timedelta(days=5))
+            target_date = str(datetime.now().date() - timedelta(days=1))
             if propose_date >= target_date:
                 names = d['PUBL_PROPOSER']
                 names = get_other_proposer(names)
@@ -119,13 +116,6 @@ def get_laws():
 def get_allow_mail_list():
     allow_users = list(db.users.find({'receive_mail':True},{'_id':0, 'username':1}))
     return allow_users
-
-
-# 화요일~토요일 매일 오전 9시
-cron = "52 12 * * 0"
-scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(mail_send, CronTrigger.from_crontab(cron))
-scheduler.start()
 
 # 요청 URL에서 문자열 쿼리스트링 인코딩
 def encode_querystring(url):

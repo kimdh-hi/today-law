@@ -48,11 +48,6 @@
     <script src="/static/js/category.js"></script>
 
     <style>
-
-        .btn-category:hover {
-            transform: scale(1.5);
-        }
-
         .column {
             height: 150px;
             margin: 10px;
@@ -61,8 +56,8 @@
             -moz-box-shadow: -7px 11px 25px -9px rgba(0, 0, 0, 1);
             box-shadow: -7px 11px 25px -9px rgba(0, 0, 0, 1);
         }
-
     </style>
+
 </head>
 <body>
 
@@ -88,8 +83,8 @@
                         <a href="/category" class="navbar-item">
                             카테고리별 법안목록
                         </a>
-                        <a class="navbar-item">
-                            메뉴2
+                        <a href="/yesterday" class="navbar-item">
+                            어제의 국회
                         </a>
                         <span class="navbar-item">
               <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
@@ -114,102 +109,10 @@
             <p class="subtitle" style="margin: auto">
                 국회 발의 법안 간편하게 보자!
             </p>
-            <p class="subtitle" style="margin: auto;">
-                최근 3개월 카테고리별 법안목록 확인하자!!
+            <br/>
+            <p class="title" style="margin: auto">
+                어제 국회 머했니 ~?
             </p>
-            <br><br>
-            <div class="columns is-mobile is-multiline is-centered">
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("건설")'>건설</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("노동/근로")'>노동</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("문화")'>문화</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("부동산")'>부동산</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("의료/보건")'>의료/보건</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("보험")'>보험</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("주택")'>주택</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("조세")'>조세</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("교육")'>교육</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("선거")'>선거</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("농수산물")'>농수산물</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("병역")'>병역</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("범죄")'>범죄</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("금융")'>금융</a>
-                    </div>
-                </div>
-
-                <div class="control category-tag">
-                    <div class="tags has-addons btn-category">
-                        <a class="tag is-light is-info is-medium" onclick='get_categorized_laws("정보통신")'>정보통신/정보보호</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -217,6 +120,25 @@
 <section class="section cards">
     <div class="container">
         <div class="columns is-multiline is-centered" id="law-card-box">
+            {% for law in laws %}
+                <div class="column img1 toaster is-two-fifths " style="border-radius: 30px;">
+                    <div style="text-align: center; color: steelblue">
+                        <p>
+                            <span style="font-size: 0.7em;">처리상태: </span>
+                                {{ law.status }}
+                            <span style="font-size: 0.6em; color: black">{{ law.detail_status }}</span></p>
+                    </div>
+                    <p id="category-title"
+                       onclick="open_modal({{ law.url }}, {{ law.law_id }}, {{ law.title }},'', {{ law.proposer_names }})"
+                       class="category-title">{{ law.title }}</p>
+
+                    <p style="font-size: 0.8em">발의자: {{ law.proposer_names }}</p>
+                    {% if law.committee != None %}
+                        <p style="font-size: 0.8em">소관위원회: {{ law.committee }}</p>
+                    {% endif %}
+                    <div style="text-align: center;"><p><a href="{{ law.url }}" style="font-size: 0.8em">상세정보</a></p></div>
+                </div>
+            {% endfor %}
 
         </div>
     </div>
