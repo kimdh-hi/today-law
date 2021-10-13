@@ -93,7 +93,7 @@ def get_laws():
 
         for d in data:
             propose_date = str(d['PROPOSE_DT'])
-            target_date = str(datetime.now().date() - timedelta(days=5))
+            target_date = str(datetime.now().date() - timedelta(days=1))
             if propose_date >= target_date:
                 names = d['PUBL_PROPOSER']
                 names = get_other_proposer(names)
@@ -119,10 +119,10 @@ def get_allow_mail_list():
 
 
 # 화요일~토요일 매일 오전 9시
-cron = "52 12 * * 0"
-scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(mail_send, CronTrigger.from_crontab(cron))
-scheduler.start()
+# cron = "52 12 * * 0"
+# scheduler = BackgroundScheduler(daemon=True)
+# scheduler.add_job(mail_send, CronTrigger.from_crontab(cron))
+# scheduler.start()
 
 # 요청 URL에서 문자열 쿼리스트링 인코딩
 def encode_querystring(url):
