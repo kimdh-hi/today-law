@@ -117,13 +117,6 @@ def get_allow_mail_list():
     allow_users = list(db.users.find({'receive_mail':True},{'_id':0, 'username':1}))
     return allow_users
 
-
-# 화요일~토요일 매일 오전 9시
-# cron = "52 12 * * 0"
-# scheduler = BackgroundScheduler(daemon=True)
-# scheduler.add_job(mail_send, CronTrigger.from_crontab(cron))
-# scheduler.start()
-
 # 요청 URL에서 문자열 쿼리스트링 인코딩
 def encode_querystring(url):
     url = parse.urlparse(url)
