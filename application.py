@@ -3,7 +3,7 @@ from flask import Flask, render_template, jsonify
 import search, crawl, rank, like, bookmark, category, wish
 from login import naver, kakao, google
 from urllib import parse
-import category_data_scheduler
+import category_data_scheduler, rank_init_scheduler
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -36,8 +36,6 @@ application.register_blueprint(kakao.bp) # 카카오 로그인 API
 application.register_blueprint(google.bp) # 구글 로그인 API
 application.register_blueprint(naver.bp)
 
-application.register_blueprint(category_data_scheduler.bp)
-
 application.config['MAIL_SERVER']='smtp.gmail.com'
 application.config['MAIL_PORT'] = 465
 application.config['MAIL_USERNAME'] = os.environ['SENDER_MAIL_ID']
@@ -52,7 +50,7 @@ def index():
     return render_template('index.html')
 
 # 알림 메일 메서드 (테스트용으로 url 매핑)
-@application.route('/mail-test')
+@application.route('/api/mail')
 def mail_send():
     laws = get_laws()
     # 여제 발의된 법안이 0개인 경우
