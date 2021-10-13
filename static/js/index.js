@@ -13,8 +13,10 @@ let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판
 
 let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
+let base_url = 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/'
 
 $(document).ready(function () {
+
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type: "GET",
@@ -37,7 +39,7 @@ $(document).ready(function () {
                                     </div>
                                     <div class="dropdown-menu" id="dropdown-menu3" role="menu">
                                         <div class="dropdown-content">
-                                            <a href="#" class="dropdown-item">
+                                            <a id="mypage_button" class="dropdown-item">
                                                 마이페이지
                                             </a>
                                             <hr class="dropdown-divider">
@@ -84,6 +86,15 @@ $(document).ready(function () {
         $(".card-container > .card-list").eq(idx).show();
     })
 
+    $("#mypage_button").click(function () {
+        if(is_authenticated === true){
+            location.href='/mypage'
+        }
+        else{
+            show_login_modal()
+        }
+    })
+
     //랭킹 hover
     $('.box').hover(function () {
         $('.box').css("height", "12em");
@@ -96,13 +107,10 @@ $(document).ready(function () {
     })
 })
 
-function dpmenu(){
-    if($(".dropdown").hasClass("is-active"))
-    {
+function dpmenu() {
+    if ($(".dropdown").hasClass("is-active")) {
         $(".dropdown").removeClass("is-active")
-    }
-    else
-    {
+    } else {
         $(".dropdown").addClass("is-active")
     }
 }
@@ -113,6 +121,7 @@ function openClose() {
         $("#btn-post-box").text("지금 청원하기");
     } else {
         $("#post-box").show();
+        ㅍ
         $("#btn-post-box").text("닫기");
     }
 }
