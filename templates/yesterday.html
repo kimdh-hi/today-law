@@ -100,6 +100,14 @@
         </nav>
     </div>
 
+    <div class="quickmenu">
+        <ul>
+            <li onclick="scrollToTop()" class="far fa-caret-square-up fa-2x" style="color: rgb(62,142,208)">
+            </li>
+            <li onclick="scrollToBottom()" class="far fa-caret-square-down fa-2x" style="color: rgb(62,142,208)"></li>
+        </ul>
+    </div>
+
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
@@ -125,7 +133,7 @@
                     <div style="text-align: center; color: steelblue">
                         <p>
                             <span style="font-size: 0.7em;">처리상태: </span>
-                                {{ law.status }}
+                            {{ law.status }}
                             <span style="font-size: 0.6em; color: black">{{ law.detail_status }}</span></p>
                     </div>
                     <p id="category-title"
@@ -136,7 +144,8 @@
                     {% if law.committee != None %}
                         <p style="font-size: 0.8em">소관위원회: {{ law.committee }}</p>
                     {% endif %}
-                    <div style="text-align: center;"><p><a href="{{ law.url }}" style="font-size: 0.8em">상세정보</a></p></div>
+                    <div style="text-align: center;"><p><a href="{{ law.url }}" style="font-size: 0.8em">상세정보</a></p>
+                    </div>
                 </div>
             {% endfor %}
 
