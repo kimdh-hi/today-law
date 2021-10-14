@@ -128,3 +128,26 @@ h1 {
     margin-right: 8px;
     float: left;
 }
+
+.category_area {
+    overflow: hidden;
+    border: 2px solid #103176;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+
+.category_area ul {
+    padding: 20px;
+    overflow: hidden;
+}
+
+.category_area ul li {
+    float: left;
+    width: 20%;
+}
+
+.category_area ul li:hover {
+    background: #DFF0F9;
+    color: #103176;
+}
+

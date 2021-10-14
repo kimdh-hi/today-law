@@ -6,29 +6,36 @@ $(document).ready(function () {
 
 });
 
-function wish_list() {
+function wish_list(category) {
+    $('#wish_tr').empty()
     $.ajax({
         type: "GET",
-        url: `/wish`,
+        url: `/wish?query=${category}`,
         data: {},
         success: function (response) {
             let wishes = response['wish_list']
-            for (let i = 0; i < wishes.length; i++) {
-                let title = wishes[i]['title']
-                let category = wishes[i]['category']
-                let time = wishes[i]['time']
-                let agree = wishes[i]['agree']
-
+            if (wishes == "") {
                 let temp_html = `<tr>
+                                    <td colspan='4'>해당 카테고리의 청원이 없습니다.</td>
+                                 </tr>`
+                $('#wish_tr').append(temp_html)
+            } else {
+                for (let i = 0; i < wishes.length; i++) {
+                    let title = wishes[i]['title']
+                    let category = wishes[i]['category']
+                    let time = wishes[i]['time']
+                    let agree = wishes[i]['agree']
+
+                    let temp_html = `<tr>
                                     <th scope="row">${category}</th>
                                     <td onclick="open_modal_wish('${title}','${category}','${time}','${agree}', '${contents}')">${title}</td>
                                     <td>${time}</td>
                                     <td>${agree}명</td>
                                 </tr>`
-
-                $('#wish_tr').append(temp_html)
-
+                    $('#wish_tr').append(temp_html)
+                }
             }
+
         }
     })
 }

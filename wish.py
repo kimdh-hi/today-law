@@ -16,11 +16,16 @@ bp = Blueprint('wish', __name__, url_prefix='/')
 TOKEN_KEY = os.environ['TOKEN_KEY']
 JWT_SECRET = os.environ['JWT_SECRET']
 
-# 청원 목록 가져오기
+# 카테고리별 청원 목록 가져오기
 # 로그인 하지 않아도 보여야 함
 @bp.route('/wish', methods=['GET'])
 def show_wish():
-    wish_list = list(db.wish.find({}, {'_id': False}).sort([('_id', -1)]))
+    query = request.args.get('query')
+    if query == "전체":
+        wish_list = list(db.wish.find({}, {'_id': False}).sort([('_id', -1)]))
+    else:
+        wish_list = list(db.wish.find({'category': query}, {'_id': False}).sort([('_id', -1)]))
+
     return jsonify({'wish_list': wish_list})
 
 
