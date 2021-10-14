@@ -46,6 +46,7 @@
     <script src="/static/js/scroll.js"></script>
     <script src="/static/js/login.js"></script>
     <script src="/static/js/category.js"></script>
+    <script src="/static/js/yesterday.js"></script>
 
     <style>
         .column {
@@ -133,42 +134,44 @@
             </p>
 
 
-            <div class="dropdown is-hoverable">
+            <div class="dropdown" id="yesterday-status" onclick="yesterday_toggle()">
                 <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
                         <span>처리상태</span>
-                        <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+                        <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
                     </button>
                 </div>
-
-                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                <div class="dropdown-menu" id="dropdown-menu3" role="menu">
                     <div class="dropdown-content">
-                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=제출'">
-                            <p>제출</p>
-                        </div>
-                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=발의'">
-                            <p>발의</p>
-                        </div>
-                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=회부'">
-                            <p>회부</p>
-                        </div>
-                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=상정'">
-                            <p>상정</p>
-                        </div>
-                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=본회의 부의'">
-                            <p>본회의부의</p>
-                        </div>
-                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=처리'">
-                            <p>처리</p>
-                        </div>
-                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=공포'">
-                            <p>공포</p>
-                        </div>
-
+                        <a href="/yesterday?status=제출" class="dropdown-item">
+                            제출
+                        </a>
+                        <a href="/yesterday?status=발의" class="dropdown-item">
+                            발의
+                        </a>
+                        <a href="/yesterday?status=회부" class="dropdown-item">
+                            회부
+                        </a>
+                        <a href="/yesterday?status=상정" class="dropdown-item">
+                            상정
+                        </a>
+                        <a href="/yesterday?status=본회의부의" class="dropdown-item">
+                            본회의부의
+                        </a>
+                        <a href="/yesterday?status=처리" class="dropdown-item">
+                            처리
+                        </a>
+                        <a href="/yesterday?status=공포" class="dropdown-item">
+                            공포
+                        </a>
                     </div>
                 </div>
             </div>
-            <button class="button is-light" onclick="window.location.href='/yesterday'" style="font-weight: bold">전체보기</button>
+
+            <button class="button is-light" onclick="window.location.href='/yesterday'" style="font-weight: bold">전체보기
+            </button>
         </div>
 
     </div>
@@ -203,7 +206,7 @@
             </div>
         {% else %}
             <div style="text-align: center">
-                <h2>조회된 결과가 없습니다.</h2>
+                <h3>조회된 결과가 없습니다.</h3>
             </div>
         {% endif %}
     </div>
