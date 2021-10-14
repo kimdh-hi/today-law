@@ -31,7 +31,7 @@ def get_yesterday_info():
 
     try:
         if data['RESULT']['MESSAGE'] == "해당하는 데이터가 없습니다.":
-            return render_template('index.html', laws=laws)
+            return render_template('yesterday.html', laws=laws)
     except (KeyError):
         total_count = data['nqfvrbsdafrmuzixe'][0]['head'][0]['list_total_count']
         data = data['nqfvrbsdafrmuzixe'][1]['row']
