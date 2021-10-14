@@ -106,6 +106,7 @@
             <li onclick="scrollToBottom()" class="far fa-caret-square-down fa-2x" style="color: rgb(62,142,208)"></li>
         </ul>
     </div>
+
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
@@ -149,7 +150,7 @@
                         <a href="#2">⭐ 즐겨찾기</a>
                     </li>
                     <li id="wish">
-                        <a href="#3">💡 청원</a>
+                        <a href="#3" onclick='wish_list("전체")'>💡 청원</a>
                     </li>
                     <li style="margin-left: auto;">
                         <a href="#4">👍🏻 인기순</a>
@@ -213,6 +214,26 @@
                                 <button type="button" class="btn btn-primary" onclick="post_wish()">작성완료</button>
                             </div>
 
+                        </div>
+                        <hr>
+                        <div class="category_area">
+                            <ul>
+                                <li onclick='wish_list("전체")'>전체</li>
+                                <li onclick='wish_list("정치")'>정치</li>
+                                <li onclick='wish_list("수사")'>수사</li>
+                                <li onclick='wish_list("재정")'>재정</li>
+                                <li onclick='wish_list("교육")'>교육</li>
+                                <li onclick='wish_list("외교")'>외교</li>
+                                <li onclick='wish_list("재난")'>재난</li>
+                                <li onclick='wish_list("행정")'>행정</li>
+                                <li onclick='wish_list("문화")'>문화</li>
+                                <li onclick='wish_list("농업")'>농업</li>
+                                <li onclick='wish_list("소비자")'>소비자</li>
+                                <li onclick='wish_list("산업")'>산업</li>
+                                <li onclick='wish_list("보건의료")'>보건의료</li>
+                                <li onclick='wish_list("국토")'>국토</li>
+                                <li onclick='wish_list("인권")'>인권</li>
+                            </ul>
                         </div>
                         <hr>
                         <table class="table">

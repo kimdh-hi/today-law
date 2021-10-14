@@ -13,12 +13,13 @@ db = client.todaylaw
 bp = Blueprint('like', __name__, url_prefix='/')
 
 jwt_secret = os.environ['JWT_SECRET']
+TOKEN_KEY = os.environ['TOKEN_KEY']
 
 @bp.route('/api/like', methods=['POST'])
 def like_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
@@ -64,7 +65,7 @@ def like_star():
 def delete_star():
     try:
         # 토큰 검증
-        mytoken = request.cookies.get(jwt_secret)
+        mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']

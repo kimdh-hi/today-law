@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="/static/css/mypage.css">
-    <link rel="stylesheet" href="/static/css/login.css">
+    {#    <link rel="stylesheet" href="/static/css/login.css">#}
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
@@ -72,8 +72,8 @@
                         <a href="/category" class="navbar-item">
                             카테고리별 법안목록
                         </a>
-                        <a class="navbar-item">
-                            메뉴2
+                        <a href="/yesterday" class="navbar-item">
+                            어제의 국회
                         </a>
                         <span id="navbar" class="navbar-item">
                             <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
@@ -94,12 +94,17 @@
             <p class="menu-label is-hidden-touch">HOME</p>
             <ul class="menu-list">
                 <li>
-                    <a href="#" class="">
-                        <span class="icon"><i class="fa fa-home"></i></span> 최근 본 법안
+                    <a href="#" class="is-active">
+                        <span class="icon"><i class="fa fa-home"></i></span> 내정보
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="is-active">
+                    <a href="#" class="">
+                        <span class="icon"><i class="fa fa-table"></i></span> 최근 본 법안
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="">
                         <span class="icon"><i class="fa fa-table"></i></span> 작성한 청원
                     </a>
                 </li>
@@ -111,18 +116,8 @@
                 </li>
             </ul>
         </aside>
+        <div id="mypage-container">
 
-        <div class="container column is-10">
-            <div class="section">
-
-                <div class="card">
-                    <div class="card-header"><p class="card-header-title">test</p></div>
-                    <div class="card-content">
-                        <div class="content">Content</div>
-                    </div>
-                </div>
-                <br/>
-            </div>
         </div>
 
     </section>

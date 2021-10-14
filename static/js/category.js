@@ -3,7 +3,7 @@ function get_categorized_laws(category) {
     $.ajax({
         type: "GET",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/api/category?query=${category}`,
+        url: `/api/category?query=${category}`,
         success: function(res) {
 
             for (let i=0;i<res.length;i++) {

@@ -6,29 +6,36 @@ $(document).ready(function () {
 
 });
 
-function wish_list() {
+function wish_list(category) {
+    $('#wish_tr').empty()
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish`,
+        url: `/wish?query=${category}`,
         data: {},
         success: function (response) {
             let wishes = response['wish_list']
-            for (let i = 0; i < wishes.length; i++) {
-                let title = wishes[i]['title']
-                let category = wishes[i]['category']
-                let time = wishes[i]['time']
-                let agree = wishes[i]['agree']
-
+            if (wishes == "") {
                 let temp_html = `<tr>
+                                    <td colspan='4'>해당 카테고리의 청원이 없습니다.</td>
+                                 </tr>`
+                $('#wish_tr').append(temp_html)
+            } else {
+                for (let i = 0; i < wishes.length; i++) {
+                    let title = wishes[i]['title']
+                    let category = wishes[i]['category']
+                    let time = wishes[i]['time']
+                    let agree = wishes[i]['agree']
+
+                    let temp_html = `<tr>
                                     <th scope="row">${category}</th>
                                     <td onclick="open_modal_wish('${title}','${category}','${time}','${agree}', '${contents}')">${title}</td>
                                     <td>${time}</td>
                                     <td>${agree}명</td>
                                 </tr>`
-
-                $('#wish_tr').append(temp_html)
-
+                    $('#wish_tr').append(temp_html)
+                }
             }
+
         }
     })
 }
@@ -42,7 +49,7 @@ function post_wish() {
 
     $.ajax({
         type: "POST",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish`,
+        url: `/wish`,
         data: {title_give: title, category_give: category, contents_give: contents},
         success: function (response) {
             alert(response['msg'])
@@ -55,7 +62,7 @@ function open_modal_wish(title, category, time, agree, contents) {
 
     $.ajax({
         type: "POST",
-        url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/details",
+        url: "/wish/details",
         data: {
             title_give: title,
             category_give: category,
@@ -110,7 +117,7 @@ function post_comment(title) {
     if (confirm("청원 동의 철회 및 댓글 수정은 불가능하오니 신중하게 참여해주시기 바랍니다") === true) {
         $.ajax({
             type: "POST",
-            url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/comment",
+            url: "/wish/comment",
             data: {
                 title_give: title
             },

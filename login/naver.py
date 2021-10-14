@@ -11,6 +11,7 @@ TOKEN_KEY = config('TOKEN_KEY')
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
+#로컬테스트를 위해 주석처리
 # client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 client = MongoClient(MONGO_URL, 27017)
 db = client.todaylaw
@@ -22,8 +23,8 @@ naver_client_secret = os.environ['NAVER_CLIENT_SECRET']
 jwt_secret = os.environ['JWT_SECRET']
 # UTF-8로 URL Encoding
 #로컬테스트를 위해 주석처리
-redirect_uri = quote("http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/naver/callback", encoding='UTF-8')
-# redirect_uri = quote("http://localhost:5000/oauth/naver/callback", encoding='UTF-8')
+# redirect_uri = quote("http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/naver/callback", encoding='UTF-8')
+redirect_uri = quote("http://localhost:5000/oauth/naver/callback", encoding='UTF-8')
 
 # 사용자가 네이버 로그인 요청시 네이버 로그인 페이지로 이동
 # 사용자가 네이버에 인증 성공시 지정한 Redirect_URI로 Access_token을 요청할 수 있는 인증토큰(Authentication_code)를 응답받는다.
