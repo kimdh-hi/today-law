@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
 
     <title>Today 국회</title>
-    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="static/favicon.png" type="image/x-icon">
     <meta property="og:title" content="오늘의 법"/>
     <meta property="og:description" content="오늘도 발의되는 여러 법안들 간편하게 살펴보자!!"/>
     <meta property="og:image" content="{{ url_for('static', filename='congress.png') }}"/>
@@ -47,7 +45,7 @@
     <script src="/static/js/index.js"></script>
     <script src="/static/js/scroll.js"></script>
     <script src="/static/js/login.js"></script>
-    <script src="/static/js/wish.js"></script>
+    <script src="/static/js/category.js"></script>
 
     <style>
         .column {
@@ -59,6 +57,7 @@
             box-shadow: -7px 11px 25px -9px rgba(0, 0, 0, 1);
         }
     </style>
+
 </head>
 <body>
 
@@ -87,18 +86,28 @@
                         <a href="/yesterday" class="navbar-item">
                             어제의 국회
                         </a>
-                        <span class="navbar-item">
-              <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
-                <span>로그인</span>
-              </a>
-                            <a onclick="logout()" class="button is-info is-inverted is-hidden" id="logout_button">
-                <span>로그아웃</span>
-              </a>
-            </span>
+                        <span id="navbar" class="navbar-item">
+                            <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
+                                <span>로그인</span>
+                            </a>
+                        </span>
                     </div>
                 </div>
             </div>
         </nav>
+    </div>
+
+    <div class="box">
+        <span style="font-weight: bold; font-size: large;">이번주 조회수 순위</span>
+        <div class="rank-board" id="ranking-box">
+            <ul class="rank-list is-hidden" id="ranking-list">
+                <li>조회된 법안이 없습니다.</li>
+                <li>조회된 법안이 없습니다.</li>
+                <li>조회된 법안이 없습니다.</li>
+                <li>조회된 법안이 없습니다.</li>
+                <li>조회된 법안이 없습니다.</li>
+            </ul>
+        </div>
     </div>
 
     <div class="quickmenu">
@@ -119,51 +128,85 @@
                 국회 발의 법안 간편하게 보자!
             </p>
             <br/>
-            <p class="title" style="margin: auto">
+            <p class="title" style="margin: 0 auto 30px auto;">
                 어제 국회 머했니 ~?
             </p>
 
+
+            <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                        <span>처리상태</span>
+                        <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=제출'">
+                            <p>제출</p>
+                        </div>
+                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=발의'">
+                            <p>발의</p>
+                        </div>
+                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=회부'">
+                            <p>회부</p>
+                        </div>
+                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=상정'">
+                            <p>상정</p>
+                        </div>
+                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=본회의 부의'">
+                            <p>본회의부의</p>
+                        </div>
+                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=처리'">
+                            <p>처리</p>
+                        </div>
+                        <div class="dropdown-item" onclick="window.location.href='/yesterday?status=공포'">
+                            <p>공포</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <button class="button is-light" onclick="window.location.href='/yesterday'" style="font-weight: bold">전체보기</button>
         </div>
+
     </div>
 </section>
 
 <section class="section cards">
     <div class="container">
-        <div class="columns is-multiline is-centered" id="law-card-box">
-            {% for law in laws %}
-                <div class="column img1 toaster is-two-fifths " style="border-radius: 30px;">
-                    <div style="text-align: center; color: steelblue">
-                        <p>
-                            <span style="font-size: 0.7em;">처리상태: </span>
-                            {{ law.status }}
-                            <span style="font-size: 0.6em; color: black">{{ law.detail_status }}</span></p>
-                    </div>
-                    <p id="category-title"
-                       onclick="open_modal({{ law.url }}, {{ law.law_id }}, {{ law.title }},'', {{ law.proposer_names }})"
-                       class="category-title">{{ law.title }}</p>
+        {% if laws|length >= 1 %}
+            <div class="columns is-multiline is-centered" id="law-card-box">
+                {% for law in laws %}
+                    <div class="column img1 toaster is-two-fifths " style="border-radius: 30px;">
+                        <div style="text-align: center; color: steelblue">
+                            <p>
+                                <span style="font-size: 0.7em;">처리상태: </span>
+                                {{ law.status }}
+                                <span style="font-size: 0.6em; color: black">{{ law.detail_status }}</span></p>
+                        </div>
+                        <p id="category-title"
+                           onclick="open_modal({{ law.url }}, {{ law.law_id }}, {{ law.title }},'', {{ law.proposer_names }})"
+                           class="category-title">{{ law.title }}</p>
 
-                    <p style="font-size: 0.8em">발의자: {{ law.proposer_names }}</p>
-                    {% if law.committee != None %}
-                        <p style="font-size: 0.8em">소관위원회: {{ law.committee }}</p>
-                    {% endif %}
-                    <div style="text-align: center;"><p><a href="{{ law.url }}" style="font-size: 0.8em">상세정보</a></p>
+                        <p style="font-size: 0.8em">발의자: {{ law.proposer_names }}</p>
+                        {% if law.committee != None %}
+                            <p style="font-size: 0.8em">소관위원회: {{ law.committee }}</p>
+                        {% endif %}
+                        <div style="text-align: center;"><p><a href="{{ law.url }}" style="font-size: 0.8em">상세정보</a>
+                        </p>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
 
-        </div>
+            </div>
+        {% else %}
+            <h1>조회된 결과가 없습니다.</h1>
+        {% endif %}
     </div>
 </section>
 
-<footer class="footer">
-    <div class="content has-text-centered">
-        <p>
-            <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
-            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-            is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
-        </p>
-    </div>
-</footer>
 
 </body>
 </html>
