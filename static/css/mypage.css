@@ -12,6 +12,37 @@ html, body, #app {
 .footer {
   margin-top: -12px;
 }
+
+.container.profile {
+  margin-top:50px;
+}
+.profile-heading {
+  margin: 20px 0;
+  padding-bottom: 30px;
+}
+.profile-heading .name {
+  border-right: 1px solid #f1f1f1;
+  margin:-30px 0;
+  padding: 40px 30px 0 30px;
+}
+
+.tagline {
+  padding:20px 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.avatar {
+  float: right;
+}
+
+.avatar img {
+  border-radius: 200px;
+}
+
+p.title.is-bold {
+  font-weight: bold;
+}
+
 @media screen and (max-width: 768px) {
   #menu-toggle:checked + .nav-menu {
     display: block;
