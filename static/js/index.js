@@ -24,8 +24,8 @@ $(document).ready(function () {
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type: "GET",
-        // url: base_url+`login-check`,
-        url: base_url2 + `login-check`,
+        url: base_url+`login-check`,
+        // url: base_url2 + `login-check`,
         success: function (res) {
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
