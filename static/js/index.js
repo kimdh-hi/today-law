@@ -145,7 +145,7 @@ $(document).ready(function () {
 
 function mypage() {
     if (is_authenticated === true) {
-        location.href = base_url + '/mypage'
+        location.href = base_url + 'mypage'
     } else {
         show_login_modal()
     }
