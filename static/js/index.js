@@ -13,19 +13,12 @@ let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판
 
 let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
-
-let EB_URL = "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com"
-
-let base_url = 'http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/'
-let base_url2 = 'http://localhost:5000/'
-
 $(document).ready(function () {
 
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type: "GET",
-        url: base_url+`login-check`,
-        // url: base_url2 + `login-check`,
+        url: `/login-check`,
         success: function (res) {
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
@@ -119,15 +112,12 @@ $(document).ready(function () {
     //마이페이지 메뉴 전환
     $(".menu-list li").click(function () {
         let idx = $("li").index(this);
-        // console.log(idx)
         $(".menu-list li a").removeClass("is-active");
         $(".menu-list li a").eq(idx).addClass("is-active");
 
         if (idx == 2) {
             console.log('개인정보 수정')
         }
-        // $(".card-container > .card-list").hide();
-        // $(".card-container > .card-list").eq(idx).show();
     })
 
 
@@ -145,7 +135,7 @@ $(document).ready(function () {
 
 function mypage() {
     if (is_authenticated === true) {
-        location.href = {EB_URL} + '/mypage'
+        location.href = base_url + 'mypage'
     } else {
         show_login_modal()
     }
@@ -173,7 +163,7 @@ function openClose() {
 function open_modal(url, id, title, proposer_name, proposer_names) {
     $.ajax({
         type: "POST",
-        url: `${EB_URL}/api/laws/details`,
+        url: '/api/laws/details',
         data: {
             url_give: url,
             id_give: id,
@@ -283,7 +273,7 @@ function get_law_list() {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `${EB_URL}/api/laws?offset=${offset}`,
+        url: `/api/laws?offset=${offset}`,
         success: function (res) {
             total_count = res[0].total_count
             $('#total_count').text(total_count)
@@ -300,7 +290,7 @@ function get_law_list_by_title(title) {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `${EB_URL}/api/laws?offset=${offset}&query=${title}&condition=법안명`,
+        url: `/api/laws?offset=${offset}&query=${title}&condition=법안명`,
         success: function (res) {
             total_count = res[0].total_count
             if (!more) g_readmore_button_show = total_count > 10 ? true : false
@@ -316,7 +306,7 @@ function get_law_list_by_proposer_name(name) {
     if (!more) $('#laws-box').empty()
     $.ajax({
         type: "GET",
-        url: `${EB_URL}/api/laws?offset=${offset}&proposer=${name}&condition=제안자`,
+        url: `/api/laws?offset=${offset}&proposer=${name}&condition=제안자`,
         success: function (res) {
             total_count = res[0].total_count
             if (!more) g_readmore_button_show = total_count > 10 ? true : false
@@ -369,7 +359,7 @@ function get_ranking() {
     $('#ranking-list').empty()
     $.ajax({
         type: "GET",
-        url: `${EB_URL}/api/rank`,
+        url: `/api/rank`,
         success: function (res) {
             if (res.length == 0) {
                 $('#ranking-list').append('<li>조회된 법안이 없습니다.</li>')
@@ -387,7 +377,7 @@ function get_ranking() {
 function likeLaw(id) {
     $.ajax({
         type: 'POST',
-        url: `${EB_URL}/api/like`,
+        url: `/api/like`,
         data: {id_give: id},
         success: function (response) {
             console.log(response)
@@ -400,7 +390,7 @@ function likeLaw(id) {
 function hateLaw(id) {
     $.ajax({
         type: 'POST',
-        url: `${EB_URL}/api/hate`,
+        url: `/api/hate`,
         data: {id_give: id},
         success: function (response) {
             console.log(response)
@@ -460,7 +450,7 @@ function bookmark_show() {
     $('#bookmark').empty() // 수정
     $.ajax({
             type: 'GET',
-            url: `${EB_URL}/api/bookmark`,
+            url: `/api/bookmark`,
             data: {},
             success: function (response) {
                 let bookmark_list = response['bookmark_list']
@@ -522,7 +512,7 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
     console.log(data)
     $.ajax({
         type: "POST",
-        url: `${EB_URL}/api/bookmark`,
+        url: `/api/bookmark`,
         data: data,
         success: function (response) {
             alert(response["msg"])
@@ -535,7 +525,7 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
 function delete_bookmark(id) {
     $.ajax({
         type: "DELETE",
-        url: `${EB_URL}/api/bookmark`,
+        url: `/api/bookmark`,
         data: {id_give: id},
         success: function (response) {
             alert(response["msg"])
@@ -558,7 +548,7 @@ function likes_show() {
     $('#likes').empty()
     $.ajax({
             type: 'GET',
-            url: `${EB_URL}/api/likes_list`,
+            url: `/api/likes_list`,
             data: {},
             success: function (response) {
                 let likes_list = response['likes_list']

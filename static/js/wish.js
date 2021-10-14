@@ -9,7 +9,7 @@ $(document).ready(function () {
 function wish_list() {
     $.ajax({
         type: "GET",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish`,
+        url: `/wish`,
         data: {},
         success: function (response) {
             let wishes = response['wish_list']
@@ -42,7 +42,7 @@ function post_wish() {
 
     $.ajax({
         type: "POST",
-        url: `http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish`,
+        url: `/wish`,
         data: {title_give: title, category_give: category, contents_give: contents},
         success: function (response) {
             alert(response['msg'])
@@ -55,7 +55,7 @@ function open_modal_wish(title, category, time, agree, contents) {
 
     $.ajax({
         type: "POST",
-        url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/details",
+        url: "/wish/details",
         data: {
             title_give: title,
             category_give: category,
@@ -110,7 +110,7 @@ function post_comment(title) {
     if (confirm("청원 동의 철회 및 댓글 수정은 불가능하오니 신중하게 참여해주시기 바랍니다") === true) {
         $.ajax({
             type: "POST",
-            url: "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/wish/comment",
+            url: "/wish/comment",
             data: {
                 title_give: title
             },

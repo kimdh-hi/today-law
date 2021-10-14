@@ -10,7 +10,7 @@
 
 
 ### 🔗 라이브
-> http://todaylaw.dhk-99.shop/
+> http://dhk-99.shop/
 
 
 <br/>

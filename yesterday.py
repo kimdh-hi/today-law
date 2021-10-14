@@ -1,5 +1,5 @@
 import os
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, request
 import requests
 import datetime
 from urllib import parse
@@ -15,33 +15,43 @@ def get_yesterday_info():
     target_date = datetime.datetime.now() - datetime.timedelta(days=1)
     target_date = str(target_date.strftime("%Y-%m-%d"))
 
-    request_url = f"https://open.assembly.go.kr/portal/openapi/nqfvrbsdafrmuzixe?Key={API_KEY}&Type=json&AGE={age}&DT={target_date}"
-    query = encode_querystring(request_url)
+    status = request.args.get('status')
 
-    data = requests.get("https://open.assembly.go.kr/portal/openapi/nqfvrbsdafrmuzixe?" + query)
-
-    data = data.json()
-    total_count = data['nqfvrbsdafrmuzixe'][0]['head'][0]['list_total_count']
-    data = data['nqfvrbsdafrmuzixe'][1]['row']
+    if status is None:
+        request_url = f"https://open.assembly.go.kr/portal/openapi/nqfvrbsdafrmuzixe?Key={API_KEY}&Type=json&AGE={age}&DT={target_date}"
+        query = encode_querystring(request_url)
+    else:
+        request_url = f"https://open.assembly.go.kr/portal/openapi/nqfvrbsdafrmuzixe?Key={API_KEY}&Type=json&AGE={age}&DT={target_date}&ACT_STATUS={status}"
+        query = encode_querystring(request_url)
 
     laws = []
 
-    for d in data:
-        title = d['BILL_NM']
-        proposer_names = title.split('(')[-1][:-1]
-        title = title.split('(')[0]
+    data = requests.get("https://open.assembly.go.kr/portal/openapi/nqfvrbsdafrmuzixe?" + query)
+    data = data.json()
 
-        doc = {
-            "law_id": d['BILL_ID'],
-            "title": title,
-            "committee": d['COMMITTEE'],
-            "status": d['ACT_STATUS'],
-            "detail_status": d['STAGE'],
-            "url": d['LINK_URL'],
-            "proposer_names": proposer_names
-        }
+    try:
+        if data['RESULT']['MESSAGE'] == "해당하는 데이터가 없습니다.":
+            return render_template('yesterday.html', laws=laws)
+    except (KeyError):
+        total_count = data['nqfvrbsdafrmuzixe'][0]['head'][0]['list_total_count']
+        data = data['nqfvrbsdafrmuzixe'][1]['row']
 
-        laws.append(doc)
+        for d in data:
+            title = d['BILL_NM']
+            proposer_names = title.split('(')[-1][:-1]
+            title = title.split('(')[0]
+
+            doc = {
+                "law_id":d['BILL_ID'],
+                "title":title,
+                "committee":d['COMMITTEE'],
+                "status":d['ACT_STATUS'],
+                "detail_status":d['STAGE'],
+                "url":d['LINK_URL'],
+                "proposer_names":proposer_names
+            }
+
+            laws.append(doc)
 
     return render_template('yesterday.html', laws=laws)
 
