@@ -21,22 +21,21 @@ application = Flask(__name__)
 
 cors = CORS(application, resources={r"/*": {"origins": "*"}})
 
-application.register_blueprint(search.bp) # 법안 조회 API
-application.register_blueprint(crawl.bp) # 법안 상세페이지 크롤링 API
-application.register_blueprint(rank.bp) # 순위
-application.register_blueprint(like.bp) # 좋아요
-application.register_blueprint(bookmark.bp) # 즐겨찾기
-application.register_blueprint(category.bp) # 카테고리별 조회 API
-application.register_blueprint(wish.bp) # 청원
-application.register_blueprint(mypage.bp) # 마이페이지
-application.register_blueprint(yesterday.bp) # 마이페이지
+application.register_blueprint(search.bp)  # 법안 조회 API
+application.register_blueprint(crawl.bp)  # 법안 상세페이지 크롤링 API
+application.register_blueprint(rank.bp)  # 순위
+application.register_blueprint(like.bp)  # 좋아요
+application.register_blueprint(bookmark.bp)  # 즐겨찾기
+application.register_blueprint(category.bp)  # 카테고리별 조회 API
+application.register_blueprint(wish.bp)  # 청원
+application.register_blueprint(mypage.bp)  # 마이페이지
+application.register_blueprint(yesterday.bp)  # 마이페이지
 
-application.register_blueprint(kakao.bp) # 카카오 로그인 API
-application.register_blueprint(google.bp) # 구글 로그인 API
-application.register_blueprint(naver.bp) # 네이버 로그인 API
+application.register_blueprint(kakao.bp)  # 카카오 로그인 API
+application.register_blueprint(google.bp)  # 구글 로그인 API
+application.register_blueprint(naver.bp)  # 네이버 로그인 API
 
-
-application.config['MAIL_SERVER']='smtp.gmail.com'
+application.config['MAIL_SERVER'] = 'smtp.gmail.com'
 application.config['MAIL_PORT'] = 465
 application.config['MAIL_USERNAME'] = os.environ['SENDER_MAIL_ID']
 application.config['MAIL_PASSWORD'] = os.environ['SENDER_MAIL_PASSWORD']
@@ -45,9 +44,11 @@ application.config['MAIL_USE_SSL'] = True
 
 mail = Mail(application)
 
+
 @application.route('/')
 def index():
     return render_template('index.html')
+
 
 # 알림 메일 메서드 (테스트용으로 url 매핑)
 @application.route('/api/mail')
@@ -55,7 +56,7 @@ def mail_send():
     laws = get_laws()
     # 여제 발의된 법안이 0개인 경우
     if len(laws) == 0:
-        return jsonify({"success":False,"msg":"어제 발의된 법안이 없습니다."})
+        return jsonify({"success": False, "msg": "어제 발의된 법안이 없습니다."})
     # 알림 메일에 동의한 사용자 리스트
     user_mail_list = get_allow_mail_list()
 
@@ -76,7 +77,8 @@ def mail_send():
 
     mail.send(msg)
 
-    return jsonify({"success":True,"msg":"알림 메일 발송이 완료되었습니다."})
+    return jsonify({"success": True, "msg": "알림 메일 발송이 완료되었습니다."})
+
 
 # 발의된 날짜가 어제인 법안을 받아온다.
 def get_laws():
@@ -86,7 +88,7 @@ def get_laws():
     pIndex = 0
     law_list = []
     while flag:
-        pIndex+=1
+        pIndex += 1
         url = f'https://open.assembly.go.kr/portal/openapi/nzmimeepazxkubdpn?Key={api_key}&Type={type}&AGE={age}&pIndex={pIndex}&pSize=10'
         data = requests.get(url).json()
         data = data['nzmimeepazxkubdpn'][1]['row']
@@ -112,10 +114,12 @@ def get_laws():
 
     return law_list
 
+
 # users DB에서 알람 메일을 받기로 한 사용자의 정보를 가져온다. (receive_mail is True)
 def get_allow_mail_list():
-    allow_users = list(db.users.find({'receive_mail':True},{'_id':0, 'username':1}))
+    allow_users = list(db.users.find({'receive_mail': True}, {'_id': 0, 'username': 1}))
     return allow_users
+
 
 # 요청 URL에서 문자열 쿼리스트링 인코딩
 def encode_querystring(url):
@@ -125,6 +129,7 @@ def encode_querystring(url):
 
     return query
 
+
 def get_other_proposer(names):
     names = names.split(',')
     names_len = len(names)
@@ -133,6 +138,7 @@ def get_other_proposer(names):
         extra = names_len - 10
         names = names + f' 외 {extra}명'
     return names
+
 
 if __name__ == '__main__':
     application.run('0.0.0.0', port=5000, debug=True)
