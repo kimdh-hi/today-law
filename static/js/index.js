@@ -377,7 +377,7 @@ function get_ranking() {
 function likeLaw(id) {
     $.ajax({
         type: 'POST',
-        url: `$/api/like`,
+        url: `/api/like`,
         data: {id_give: id},
         success: function (response) {
             console.log(response)
