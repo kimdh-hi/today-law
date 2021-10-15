@@ -1,12 +1,41 @@
-.btn-social-login {
-  transition: all .2s;
-  outline: 0;
-  border: 1px solid transparent;
-  padding: .5rem !important;
-  border-radius: 50%;
-  color: #fff;
+ul, li {
+    list-style: none;
+    text-align: center;
 }
-.btn-social-login:focus {
-  box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+
+.content ul {
+    margin-left: 0.1em !important;
 }
-.text-dark { color: #343a40!important; }
+
+.content ul li:nth-child(1){
+    height: 62px;
+}
+.content ul li:nth-child(2){
+    height: 52px;
+}
+
+.content ul li button {
+    width: 70%;
+    background-size: cover;
+    border: none;
+}
+
+.content ul li button:focus {
+    border: none;
+    outline: none;
+}
+
+.img_kakao {
+    height: 70px;
+    background: url("/static/kakao.png");
+}
+
+.img_google {
+    height: 63px;
+    background: url("/static/google.png") no-repeat;
+}
+
+.img_naver {
+    height: 74px;
+    background: url("/static/naver.png") no-repeat;
+}

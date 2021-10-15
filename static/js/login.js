@@ -6,9 +6,17 @@ function show_login_modal() {
                                         <div class="card-content" style="text-align: center">     
                                         <p style="font-size: 30px">로그인</p>                             
                                             <div class="content" style="margin-top: 40px">
-                                                <button onclick="window.location.href='/oauth/kakao'" class='btn-social-login' style='background:#FFEB00'><i class="xi-3x xi-kakaotalk text-dark"></i></button>
-                                                <button onclick="window.location.href='/login_google'" class='btn-social-login' style='background:#D93025'><i class="xi-3x xi-google"></i></button>
-                                                <button onclick="window.location.href='/oauth/naver'" class='btn-social-login' style='background:#1FC700'><i class="xi-3x xi-naver"></i></button>                                                
+                                                <ul>
+                                                    <li>
+                                                        <button class="img_kakao" onclick="window.location.href='/oauth/kakao'"></button>
+                                                    </li>
+                                                    <li>
+                                                        <button class="img_google" onclick="window.location.href='/oauth/google'"></button>
+                                                    </li>
+                                                    <li>
+                                                        <button class="img_naver" onclick="window.location.href='/oauth/naver'"></button>
+                                                    </li>
+                                                </ul>                                                
                                             </div>
 
                                         </div>

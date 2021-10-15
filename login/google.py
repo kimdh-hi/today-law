@@ -30,7 +30,7 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 
-@bp.route("/login_google", methods=["GET"])
+@bp.route("/oauth/google", methods=["GET"])
 def login():
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
@@ -43,7 +43,7 @@ def login():
     return redirect(request_uri)
 
 
-@bp.route("/login_google/callback")
+@bp.route("/oauth/google/callback")
 def callback():
     code = request.args.get("code")
 
