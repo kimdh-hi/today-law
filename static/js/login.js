@@ -6,7 +6,7 @@ function show_login_modal() {
                                         <div class="card-content" style="text-align: center">     
                                         <p style="font-size: 30px">로그인</p>                             
                                             <div class="content" style="margin-top: 40px">
-                                                <ul>
+                                                <ul class="social_button">
                                                     <li>
                                                         <button class="img_kakao" onclick="window.location.href='/oauth/kakao'"></button>
                                                     </li>
