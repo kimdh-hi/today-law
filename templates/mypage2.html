@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile using Bulma</title>
+
+
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.2.1/css/bulma.min.css'>
+    <script src="/static/js/mypage.js"></script>
+    <link rel="stylesheet" href="/static/css/mypage.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8" src="../static/js/jquery-3.4.1.min.js"></script>
+    <script src="/static/js/index.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+
+</head>
+
+<body>
+<section class="hero is-info is-small">
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item">
+                        <img onclick="window.location.href='/'" src="/static/congress.png" alt="Logo">
+                    </a>
+                    <span class="navbar-burger" data-target="navbarMenuHeroB">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+                </div>
+                <div id="navbarMenuHeroB" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a href="/" class="navbar-item">
+                            Today 국회
+                        </a>
+                        <a href="/category" class="navbar-item">
+                            카테고리별 법안목록
+                        </a>
+                        <a href="/yesterday" class="navbar-item">
+                            어제의 국회
+                        </a>
+                        <span id="navbar" class="navbar-item">
+                            <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
+                                <span>로그인</span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</section>
+<div class='columns'>
+    <div class='container profile'>
+        <div class='modal' id='edit-preferences-modal'>
+            <div class='modal-background'></div>
+            <div class='modal-card'>
+                <header class='modal-card-head'>
+                    <p class='modal-card-title'>프로필 수정</p>
+                    <button class='delete'></button>
+                </header>
+                <section class='modal-card-body'>
+                    <label class='label'>Username</label>
+                    <p class='control has-icon has-icon-right'>
+                        <input class='input' placeholder='Text input' type='text' value='pmillerk'>
+                    </p>
+                    <label class='label'>Email</label>
+                    <p class='control has-icon has-icon-right'>
+                        <input class='input' placeholder='Email input' type='text' value='hello@'>
+                        <i class='fa fa-warning'></i>
+                        <span class='help is-danger'>This email is invalid</span>
+                    </p>
+
+                    <label class='label'>Description</label>
+                    <p class='control'>
+                        <textarea class='textarea' placeholder='Describe Yourself!'></textarea>
+                    </p>
+
+                </section>
+                <footer class='modal-card-foot'>
+                    <a class='button is-primary modal-save'>Save changes</a>
+                    <a class='button modal-cancel'>Cancel</a>
+                </footer>
+            </div>
+        </div>
+        <div class='section profile-heading'>
+            <div class='columns is-mobile is-multiline'>
+                <div class='column is-2'>
+                    <span class='header-icon user-profile-image'>
+                        <img alt='' src='http://placehold.it/300x225'>
+                    </span>
+                </div>
+                <div class='column is-4-tablet is-10-mobile name'>
+                    <p>
+                        <span class='title is-bold'> 아이디 </span>
+                        <br>
+                        <a class='button is-primary is-outlined' href='#' id='edit-preferences' style='margin: 5px 0'>
+                            프로필 수정
+                        </a>
+                        <br>
+                    </p>
+                    <p class='tagline'>
+                        The users profile bio would go here, of course. It could be two lines or more or whatever. We
+                        should probably limit the amount of characters to ~500 at most though.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class='profile-options is-fullwidth'>
+            <div class='tabs is-fullwidth is-medium'>
+                <ul class="menu_list">
+                    <li class='link'>
+                        <a>
+                            <span class='icon'>
+                                <i class='fa fa-list'></i>
+                            </span>
+                            <span>최근 본 법안</span>
+                        </a>
+                    </li>
+                    <li class='link is-active'>
+                        <a>
+                            <span class='icon'>
+                                <i class='fa fa-thumbs-up'></i>
+                            </span>
+                            <span>좋아요한 법안</span>
+                        </a>
+                    </li>
+                    <li class='link'>
+                        <a>
+                            <span class='icon'>
+                                <i class='fa fa-search'></i>
+                            </span>
+                            <span>작성한 청원</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class='columns is-mobile'>
+            <div class='column is-3-tablet is-6-mobile'>
+                <div class='card'>
+                    <p class="card-header-title">ㅇㅇㅇㅇㅇ</p>
+                    <div class='card-content'>
+                        <div class='content'>
+                            <span class='tag is-dark subtitle'>#1</span>
+                            <p>Personal Notes on the Property (can be edited and saved automatically by clicking in and
+                                clicking out of text area) - these are unique to the user - they will show up as part of
+                                a saved listings' info here - but adding notes to a property does not automatically
+                                create a saved listing. Likewise, removing this proeprty from saved listings does not
+                                auto remove the notes.</p>
+                        </div>
+                    </div>
+                    <footer class='card-footer'>
+                        <a class='card-footer-item'>Compare</a>
+                        <a class='card-footer-item'>Share</a>
+                        <a class='card-footer-item'>Delete</a>
+                    </footer>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>

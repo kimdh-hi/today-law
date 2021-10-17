@@ -13,6 +13,10 @@ let g_readmore_button_show = true // 더보기 버튼을 보여줄 것인지 판
 
 let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
+
+
+
+
 $(document).ready(function () {
 
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
@@ -28,25 +32,20 @@ $(document).ready(function () {
                 $('#login_warning').addClass("is-hidden")
 
                 if ($(location).attr('pathname') == '/mypage') {
-                    let temp_mypage = `<div class = "container profile">
-                                            <div class = "section profile-heading">
-                                                <div class = "columns">
-                                                    <div class = "column is-2">
-                                                        <div class = "image is-128x128 avatar">
-                                                            <img src = "${res['profile_image']}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="column is-10 name">
-                                                        <p>
-                                                            <span class="title is-bold">${res['name']}</span>
-                                                        </p>
-                                                        <p class="tagline">자기소개</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`
-                    console.log('hi!' + res['name'])
-                    $('#mypage-container').append(temp_mypage)
+                    $.ajax({
+                        type: "GET",
+                        url: `/mypage`,
+                        success: function (res) {
+
+                            console.log(res['result'])
+
+                            $('#mypage-container').append(temp_html)
+
+                        },
+                        fail: function (){
+                            location.pathname = '/'
+                        }
+                    })
                 }
                 let temp_html = `<div onclick="dpmenu()" class = "dropdown" >
                                     <div class = "dropdown-trigger" >
@@ -109,18 +108,6 @@ $(document).ready(function () {
         $(".card-container > .card-list").eq(idx).show();
     })
 
-    //마이페이지 메뉴 전환
-    $(".menu-list li").click(function () {
-        let idx = $("li").index(this);
-        $(".menu-list li a").removeClass("is-active");
-        $(".menu-list li a").eq(idx).addClass("is-active");
-
-        if (idx == 2) {
-            console.log('개인정보 수정')
-        }
-    })
-
-
     //랭킹 hover
     $('.box').hover(function () {
         $('.box').css("height", "12em");
@@ -135,7 +122,8 @@ $(document).ready(function () {
 
 function mypage() {
     if (is_authenticated === true) {
-        location.href = base_url + 'mypage'
+        console.log(location.host)
+        location.href = 'http://' + location.host + '/mypage'
     } else {
         show_login_modal()
     }
@@ -615,26 +603,26 @@ function likes_show() {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Get all "navbar-burger" elements
-  var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    // Get all "navbar-burger" elements
+    var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
-  // Check if there are any nav burgers
-  if ($navbarBurgers.length > 0) {
+    // Check if there are any nav burgers
+    if ($navbarBurgers.length > 0) {
 
-    // Add a click event on each of them
-    $navbarBurgers.forEach(function ($el) {
-      $el.addEventListener('click', function () {
+        // Add a click event on each of them
+        $navbarBurgers.forEach(function ($el) {
+            $el.addEventListener('click', function () {
 
-        // Get the target from the "data-target" attribute
-        var target = $el.dataset.target;
-        var $target = document.getElementById(target);
+                // Get the target from the "data-target" attribute
+                var target = $el.dataset.target;
+                var $target = document.getElementById(target);
 
-        // Toggle the class on both the "navbar-burger" and the "navbar-menu"
-        $el.classList.toggle('is-active');
-        $target.classList.toggle('is-active');
+                // Toggle the class on both the "navbar-burger" and the "navbar-menu"
+                $el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
 
-      });
-    });
-  }
+            });
+        });
+    }
 
 });
