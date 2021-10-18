@@ -4,8 +4,8 @@ import requests
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 import jwt
-from decouple import config
-TOKEN_KEY = config('TOKEN_KEY')
+
+TOKEN_KEY = os.environ['TOKEN_KEY']
 
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
