@@ -1,3 +1,4 @@
+
 let is_authenticated = false // 인증된 사용자=true , 인증되지 않은 사용자=false
 
 
@@ -24,7 +25,6 @@ function agree_receive() {
 function edit_profile() {
     let name = $('#profile-name').val()
     let bio = $('#profile-bio').val()
-    console.log(name, bio)
     $.ajax({
         type: "POST",
         url: `/mypage/profile`,
@@ -41,7 +41,7 @@ function edit_profile() {
 }
 
 $(document).ready(function () {
-
+    show_recently()
     // 현재 요청이 인증되었는지 확인 (매 요청마다 확인하는 것인지 맞는지 잘 모르겠음)
     $.ajax({
         type: "GET",
@@ -144,7 +144,6 @@ $(document).ready(function () {
                 is_authenticated = true
             } else {
                 if ($(location).attr('pathname') == '/mypage') {
-                    console.log('not logged in')
                     location.pathname = '/'
                 }
                 $('#login_button').removeClass("is-hidden")
@@ -168,7 +167,6 @@ $(document).ready(function () {
                 url: `/mypage/wishlist`,
                 success: function (res) {
                     $("#mypage-contents").empty();
-                    console.log(res['title'])
                     let category = res['category_give']
                     let title = res['title_give']
                     let time = res['time_give']
@@ -196,9 +194,7 @@ $(document).ready(function () {
 
                 }
             })
-        }
-        else if ($(this).text().includes('좋아요')) {
-            console.log('좋아요')
+        } else if ($(this).text().includes('좋아요')) {
             $.ajax({
                 type: "GET",
                 url: `/mypage/likes`,
@@ -206,75 +202,76 @@ $(document).ready(function () {
                     $("#mypage-contents").empty();
                     like_laws = res['like_laws']
                     let temp_html = `<div class='columns is-mobile' style="flex-wrap: wrap">`
-                    for (let i=0; i<like_laws.length; i++) {
-                       let category = "category"
+                    for (let i = 0; i < like_laws.length; i++) {
+
+                        let id = like_laws[i]['like_law_id']
                         let title = like_laws[i]['title']
-                        let time = "time"
-                        let contents = "contents"
-                        let agree = "agree"
+                        let content = like_laws[i]['content']
+                        let proposer_name = like_laws[i]['proposer_name']
+                        let proposer_names = like_laws[i]['proposer_names']
+                        let url = like_laws[i]['url']
+
                         temp_html += `<div class='column is-3-tablet is-6-mobile'>
                                         <div class='card'>
                                             <p class="card-header-title">${title}</p>
                                             <div class='card-content'>
                                                 <div class='content'>
-                                                    <p>내용 요약.</p>
+                                                    <p>${content}</p>
                                                 </div>
-                                            </div>
+                                                </div>
                                             <footer class='card-footer'>
-                                                <a class='card-footer-item'>공유</a>
-                                                <a class='card-footer-item'>삭제</a>
+                                                <a onclick="open_modal('${url}', '${id}', '${title}', '${proposer_name}', '${proposer_names}')" class='card-footer-item'>보기</a>
                                             </footer>
                                         </div>
                                         <br>
                                         </div>`
                     }
-                    $("#mypage-contents").append(temp_html+`</div>`)
+                    $("#mypage-contents").append(temp_html + `</div>`)
                 }
             })
         } else if ($(this).text().includes('최근')) {
-            $.ajax({
-                type: "GET",
-                url: `/mypage/recently_view`,
-                success: function (res) {
-                    $("#mypage-contents").empty();
-                    let temp_html = `<div class='columns is-mobile' style="flex-wrap: wrap">`
-                    for (let i = res['recently_list']['recently_view'].length-1; i >= 0; i--) {
-                        console.log(res['recently_list']['recently_view'][i])
-                        let title = res['recently_list']['recently_view'][i]['title']
-                        let content = res['recently_list']['recently_view'][i]['content'].slice(0,87)+'...'
-                        let urls = res['recently_list']['recently_view'][i]['url']
-                        let id = res['recently_list']['recently_view'][i]['recently_view_id']
-                        let proposer_name = res['recently_list']['recently_view'][i]['proposer_name']
-                        let proposer_names = res['recently_list']['recently_view'][i]['proposer_names']
-
-                        temp_html += `
-                                    <div class='column is-3-tablet is-6-mobile'>
-                                        <div class='card'>
-                                            <p class="card-header-title">${title}</p>
-                                            <div class='card-content'>
-                                                <div class='content'>
-                                                    <span class='tag is-dark subtitle'>#1</span>
-                                                    <p>${content}</p>
-                                                </div>
-                                            </div>
-                                            <footer class='card-footer'>
-                                                <a onclick="open_modal('${urls}', '${id}', '${title}', '${proposer_name}', '${proposer_names}')" class='card-footer-item'>보기</a>
-                                            </footer>
-                                        </div>
-                    
-                                        <br>
-                                    </div>
-                                `
-                    }
-                    $('#mypage-contents').append(temp_html+`</div>`)
-                    console.log(res['recently_list']['recently_view'])
-                }
-            })
+            show_recently()
         }
 
     })
 
 })
+
+function show_recently() {
+    $.ajax({
+        type: "GET",
+        url: `/mypage/recently_view`,
+        success: function (res) {
+            $("#mypage-contents").empty();
+            let temp_html = `<div class='columns is-mobile' style="flex-wrap: wrap">`
+            for (let i = res['recently_list']['recently_view'].length - 1; i >= 0; i--) {
+                let title = res['recently_list']['recently_view'][i]['title']
+                let content = res['recently_list']['recently_view'][i]['content'].slice(0, 87) + '...'
+                let urls = res['recently_list']['recently_view'][i]['url']
+                let id = res['recently_list']['recently_view'][i]['recently_view_id']
+                let proposer_name = res['recently_list']['recently_view'][i]['proposer_name']
+                let proposer_names = res['recently_list']['recently_view'][i]['proposer_names']
+
+                temp_html += `<div class='column is-3-tablet is-6-mobile'>
+                                    <div class='card'>
+                                        <p class="card-header-title">${title}</p>
+                                        <div class='card-content'>
+                                            <div class='content'>
+                                                <p>${content}</p>
+                                            </div>
+                                        </div>
+                                        <footer class='card-footer'>
+                                            <a onclick="open_modal('${urls}', '${id}', '${title}', '${proposer_name}', '${proposer_names}')" class='card-footer-item'>보기</a>
+                                        </footer>
+                                    </div>
+                
+                                    <br>
+                                </div>`
+            }
+            $('#mypage-contents').append(temp_html + `</div>`)
+        }
+    })
+}
 
 function dpmenu() {
     if ($(".dropdown").hasClass("is-active")) {
@@ -380,7 +377,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                             </div>`
             $('body').append(temp_html)
 
-            add_like_hate_button(id, like, hate, title)
+            add_like_hate_button(id, like, hate, title, content2, proposer_name, proposer_names, url)
 
             // 인증된 사용자에게만 즐겨찾기, 좋아요/싫어요 버튼을 보이도록 처리
             if (is_authenticated == false) {
@@ -392,4 +389,113 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
             }
         }
     })
+}
+
+function add_like_hate_button(id, like, hate, title, proposer_name, proposer_names, url) {
+    $('#card-footer').empty()
+
+
+    let tmp_html = `<a href="#" onClick="likeLaw('${id}', '${title}', '${proposer_name}', '${proposer_names}', '${url}')" class="card-footer-item has-text-info">
+                        좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" onClick="hateLaw('${id}', '${title}', '${proposer_name}', '${proposer_names}', '${url}')" class="card-footer-item has-text-danger">
+                        싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    </a>`
+    $('#card-footer').append(tmp_html)
+}
+
+function likeLaw(id, title, content, proposer_name, proposer_names, url) {
+    $.ajax({
+        type: 'POST',
+        url: `/api/like`,
+        data: {
+            id_give: id,
+            title_give: title,
+            content_give: content,
+            proposer_name_give: proposer_name,
+            proposer_names_give: proposer_names,
+            url_give: url
+        },
+        success: function (response) {
+            // add_like_hate_button(
+            //     response.id, response.like, response.hate, response.title, response.proposer_name, response.proposer_names, response.url
+            // )
+            window.location.reload();
+        }
+    })
+}
+
+//싫어요 기능
+function hateLaw(id, title, content, proposer_name, proposer_names, url) {
+    let data = {
+            id_give: id,
+            title_give: title,
+            content_give: content,
+            proposer_name_give: proposer_name,
+            proposer_names_give: proposer_names,
+            url_give: url
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: `/api/hate`,
+        data: data,
+        success: function (response) {
+            // add_like_hate_button(
+            //     response.id, response.like, response.hate, response.title, response.proposer_name, response.proposer_names, response.url
+            // )
+            window.location.reload();
+        }
+    });
+}
+
+// 좋아요 싫어요 버튼 추가
+function add_like_hate_button(id, like, hate, title, content, proposer_name, proposer_names, url) {
+    $('#card-footer').empty()
+
+    content = content.replaceAll("\"","").replaceAll("\'","").replaceAll(".","").replaceAll("\n","")
+    content = $.trim(content);
+    console.log(content)
+
+    let tmp_html = `<a href="#" onClick="likeLaw('${id}', '${title}', '${content}', '${proposer_name}', '${proposer_names}', '${url}')" class="card-footer-item has-text-info">
+                        좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" onClick="hateLaw('${id}', '${title}', '${content}', '${proposer_name}', '${proposer_names}', '${url}')" class="card-footer-item has-text-danger">
+                        싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    </a>`
+    $('#card-footer').append(tmp_html)
+}
+
+function bookmark(id, title, proposer_name, proposer_names, url, date) {
+    let data = {
+        "id_give": id,
+        "title": title,
+        "proposer_name": proposer_name,
+        "proposer_names": proposer_names,
+        "url": url,
+        "date": date
+    }
+
+    $.ajax({
+        type: "POST",
+        url: `/api/bookmark`,
+        data: data,
+        success: function (response) {
+            alert(response["msg"])
+            bookmark_show()
+        }
+    });
+}
+
+// 법안 즐겨찾기 삭제 기능
+function delete_bookmark(id) {
+    $.ajax({
+        type: "DELETE",
+        url: `/api/bookmark`,
+        data: {id_give: id},
+        success: function (response) {
+            alert(response["msg"])
+            bookmark_show()
+        }
+    });
 }

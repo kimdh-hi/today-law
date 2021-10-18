@@ -137,6 +137,8 @@ def likes():
             {'_id':False}
         )['like_laws']
 
+        print(like_laws)
+
         return jsonify({"like_laws": like_laws})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "허용되지 않은 접근입니다."})

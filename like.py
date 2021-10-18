@@ -24,7 +24,17 @@ def like_star():
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
+
         title_receive = request.form['title_give']
+
+        content_receive = request.form['content_give']
+        content_receive = content_receive[:100]
+        content_receive += " ..."
+
+
+        proposer_name_receive = request.form['proposer_name_give']
+        proposer_names_receive = request.form['proposer_names_give']
+        url_receive = request.form['url_give']
 
         like_laws = db.users.find_one(
             {'user_id':user['user_id']}, # 현재 인증된 사용자로 DB 조회
@@ -58,6 +68,10 @@ def like_star():
             doc = {
                 'like_law_id': id_receive,
                 'title': title_receive,
+                'content': content_receive,
+                'proposer_name': proposer_name_receive,
+                'proposer_names': proposer_names_receive,
+                'url': url_receive
             }
             db.users.update(
                 {'user_id': user['user_id']},
@@ -66,8 +80,6 @@ def like_star():
                  }
             )
 
-
-
             # 좋아요를 증가시키는 부분
             likes = db.ranking.find_one({'id': id_receive})
             current_like = likes['like']
@@ -75,7 +87,17 @@ def like_star():
             current_hate = likes['hate']
             db.ranking.update_one({'id': id_receive}, {'$set': {'like': new_like}})
 
-        return jsonify({'id': id_receive, 'like': new_like, 'hate': current_hate})
+
+        return jsonify(
+            {'id': id_receive,
+              'like': new_like,
+             'hate': current_hate,
+             'title': title_receive,
+             'content': content_receive,
+             'proposer_name': proposer_name_receive,
+             'proposer_names': proposer_name_receive,
+             'url': url_receive
+             })
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
@@ -90,6 +112,10 @@ def hate_star():
 
         id_receive = request.form['id_give']
         title_receive = request.form['title_give']
+        content_receive = request.form['content_give']
+        proposer_name_receive = request.form['proposer_name_give']
+        proposer_names_receive = request.form['proposer_names_give']
+        url_receive = request.form['url_give']
 
         hate_laws = db.users.find_one(
             {'user_id': user['user_id']},
@@ -121,6 +147,10 @@ def hate_star():
             doc = {
                 'hate_law_id': id_receive,
                 'title': title_receive,
+                'content': content_receive,
+                'proposer_name': proposer_name_receive,
+                'proposer_names': proposer_names_receive,
+                'url': url_receive
             }
             db.users.update(
                 {'user_id': user['user_id']},
@@ -135,7 +165,16 @@ def hate_star():
             current_like = hates['like']
             db.ranking.update_one({'id': id_receive}, {'$set': {'hate': new_hate}})
 
-        return jsonify({'id': id_receive, 'like': current_like, 'hate':new_hate})
+        return jsonify(
+            {'id': id_receive,
+             'like': current_like,
+             'hate':new_hate,
+             'title': title_receive,
+             'content': content_receive,
+             'proposer_name': proposer_name_receive,
+             'proposer_names': proposer_name_receive,
+             'url': url_receive
+             })
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
