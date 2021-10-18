@@ -117,7 +117,7 @@ def login(id, name):
 
 @bp.route('/login-check')
 def login_check():
-    token = request.cookies.get('mytoken')
+    token = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
 

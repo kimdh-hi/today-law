@@ -34,7 +34,6 @@ def wishlist():
 
         wishlist = list(db.wish.find({'user_id': user['user_id']}, {'_id': False}))
 
-        print(wishlist[0])
         title = wishlist[0]['title']
         category = wishlist[0]['category']
         time = wishlist[0]['time']
@@ -54,8 +53,6 @@ def showprofile():
         user = verify_token(mytoken)
 
         user = db.users.find_one({'user_id': user['user_id']}, {'_id': False})
-
-        print(user)
 
         return jsonify({'result': 'success'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
@@ -98,8 +95,6 @@ def edit_profile():
 
         name_receive = request.form['name_give']
         bio_receive = request.form['bio_give']
-
-        print(bio_receive)
 
         if user['name']==db.user.find_one({'name': name_receive}) or (db.user.find_one({'name': name_receive})) == None:
             db.users.update(
