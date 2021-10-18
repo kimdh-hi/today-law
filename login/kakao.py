@@ -96,7 +96,7 @@ def login_check():
         exp = payload['exp']
 
         user = db.users.find_one({'user_id':payload['user_id']}, {'_id':False})
-        return jsonify({'result': 'success', 'name': user['name'],'profile_image': user['profile_image'],'email': user['username'],'bio': user['bio'],'receive_mail':user['receive_mail'] } )
+        return jsonify({'result': 'success', 'name': user['name'],'profile_image': user['profile_image']} )
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
 
