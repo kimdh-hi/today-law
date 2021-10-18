@@ -225,7 +225,8 @@ $(document).ready(function () {
                                                 <a class='card-footer-item'>삭제</a>
                                             </footer>
                                         </div>
-                                        <br></div>`
+                                        <br>
+                                        </div>`
                     }
                     $("#mypage-contents").append(temp_html+`</div>`)
                 }
