@@ -91,8 +91,6 @@ def hate_star():
         id_receive = request.form['id_give']
         title_receive = request.form['title_give']
 
-        print(title_receive)
-
         hate_laws = db.users.find_one(
             {'user_id': user['user_id']},
             {'_id': 0}

@@ -6,8 +6,8 @@ from pymongo import MongoClient
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
-# client = MongoClient(MONGO_URL, 27017)
-client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
+client = MongoClient(MONGO_URL, 27017)
+# client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 TOKEN_KEY = os.environ['TOKEN_KEY']
 JWT_SECRET = os.environ['JWT_SECRET']
 
@@ -46,6 +46,21 @@ def wishlist():
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
 
+@bp.route('/mypage/recently_view', methods=['GET'])
+def recently_list():
+    try:
+        mytoken = request.cookies.get(TOKEN_KEY)
+        user = verify_token(mytoken)
+
+        recently_list = list(db.users.find({'user_id': user['user_id']}, {'recently_view': True, '_id': False}))
+
+        print(recently_list)
+
+        return jsonify({'result': 'success','recently_list':recently_list[0]})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "허용되지 않은 접근입니다."})
+
+
 @bp.route('/mypage', methods=['GET'])
 def showprofile():
     try:
@@ -67,16 +82,16 @@ def agree():
 
         user = db.users.find_one({'user_id': user['user_id']}, {'_id': False})
 
-        if user['receive_mail'] == 1:
+        if user['receive_mail'] == True:
             db.users.update(
                 {'user_id': user['user_id']},
-                {'$set': {'receive_mail': 0}}, upsert=True
+                {'$set': {'receive_mail': False}}, upsert=True
             )
             msg = '알림이 해제되었습니다.'
         else:
             db.users.update(
                 {'user_id': user['user_id']},
-                {'$set': {'receive_mail': 1}}, upsert=True
+                {'$set': {'receive_mail': True}}, upsert=True
             )
             msg = '알림이 설정되었습니다.'
 
@@ -96,7 +111,8 @@ def edit_profile():
         name_receive = request.form['name_give']
         bio_receive = request.form['bio_give']
 
-        if user['name']==db.user.find_one({'name': name_receive}) or (db.user.find_one({'name': name_receive})) == None:
+        if user['name'] == db.user.find_one({'name': name_receive}) or (
+        db.user.find_one({'name': name_receive})) == None:
             db.users.update(
                 {'user_id': user['user_id']},
                 {'$set': {'name': name_receive, 'bio': bio_receive}}, upsert=True
@@ -105,12 +121,25 @@ def edit_profile():
         else:
             result = 'fail'
 
-
         return jsonify({'result': result})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
 
+@bp.route('/mypage/likes')
+def likes():
+    try:
+        mytoken = request.cookies.get(TOKEN_KEY)
+        user = verify_token(mytoken)
+
+        like_laws = db.users.find_one(
+            {'user_id': user['user_id']},
+            {'_id':False}
+        )['like_laws']
+
+        return jsonify({"like_laws": like_laws})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "허용되지 않은 접근입니다."})
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
     token = jwt.decode(mytoken, JWT_SECRET, algorithms=['HS256'])

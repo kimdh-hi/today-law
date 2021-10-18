@@ -163,9 +163,7 @@ $(document).ready(function () {
     //마이페이지 메뉴 전환
     $(".page-list li").click(function () {
         let idx = $("li").index(this);
-        console.log(idx)
         $(".page-list li").removeClass("is-active");
-        console.log($(".page_list li").eq(idx))
         $(".page-list li").eq(idx).addClass("is-active");
         if ($(this).text().includes('작성한 청원')) {
             $.ajax({
@@ -203,36 +201,75 @@ $(document).ready(function () {
             })
         }
         else if ($(this).text().includes('좋아요')) {
+            console.log('좋아요')
+
             $.ajax({
                 type: "GET",
-                url: `/mypage/wishlist`,
+                url: `/mypage/likes`,
+                success: function (res) {
+                    $("#mypage-contents-body").empty();
+                    like_laws = res['like_laws']
+                    for (let i=0; i<like_laws.length; i++) {
+                       let category = "category"
+                        let title = like_laws[i]['title']
+                        let time = "time"
+                        let contents = "contents"
+                        let agree = "agree"
+
+                        temp_html = `<div class='column is-3-tablet is-6-mobile'>
+                                        <div class='card'>
+                                            <p class="card-header-title">${title}</p>
+                                            <div class='card-content'>
+                                                <div class='content'>
+                                                    <p>내용 요약.</p>
+                                                </div>
+                                            </div>
+                                            <footer class='card-footer'>
+                                                <a class='card-footer-item'>공유</a>
+                                                <a class='card-footer-item'>삭제</a>
+                                            </footer>
+                                        </div>
+                                        <br>`
+                    $("#mypage-contents-body").append(temp_html)
+                    }
+                }
+            })
+        } else if ($(this).text().includes('최근')) {
+            $.ajax({
+                type: "GET",
+                url: `/mypage/recently_view`,
                 success: function (res) {
                     $("#mypage-contents").empty();
-                    console.log(res['title'])
-                    let category = res['category_give']
-                    let title = res['title_give']
-                    let time = res['time_give']
-                    let contents = res['contents_give']
-                    let agree = res['agree_give']
-                    temp_html = `<div class="wishlist">
-                                  <table class="table is-responsive">
-                                    <thead>
-                                      <tr>
-                                        <th>법안이름</th>
-                                        <th>대표발의자</th>
-                                        <th>발의일</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>`
-                    $('#mypage-contents').append(temp_html)
+                    let temp_html = `<div class='columns is-mobile'>`
+                    for (let i = res['recently_list']['recently_view'].length-1; i >= 0; i--) {
+                        console.log(res['recently_list']['recently_view'][i])
+                        let title = res['recently_list']['recently_view'][i]['title']
+                        let content = res['recently_list']['recently_view'][i]['content'].slice(0,87)+'...'
+                        let url = res['recently_list']['recently_view'][i]['url']
+
+                        temp_html += `
+                                    <div class='column is-3-tablet is-6-mobile'>
+                                        <div class='card'>
+                                            <p class="card-header-title">${title}</p>
+                                            <div class='card-content'>
+                                                <div class='content'>
+                                                    <span class='tag is-dark subtitle'>#1</span>
+                                                    <p>${content}</p>
+                                                </div>
+                                            </div>
+                                            <footer class='card-footer'>
+                                                <a class='card-footer-item'>보기</a>
+                                                <a class='card-footer-item'>삭제</a>
+                                            </footer>
+                                        </div>
+                    
+                                        <br>
+                                    </div>
+                                `
+                    }
+                    $('#mypage-contents').append(temp_html+`</div>`)
+                    console.log(res['recently_list']['recently_view'])
+
 
                 }
             })
