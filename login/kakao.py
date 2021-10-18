@@ -12,8 +12,8 @@ MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
 # 로컬 테스트를 위해 주석처리
-# client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
-client = MongoClient(MONGO_URL, 27017)
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
+#client = MongoClient(MONGO_URL, 27017)
 db = client.todaylaw
 
 bp = Blueprint("kakao_login", __name__, url_prefix='/')
