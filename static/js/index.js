@@ -203,7 +203,8 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
                             </div>`
             $('body').append(temp_html)
-            add_like_hate_button(id, like, hate)
+
+            add_like_hate_button(id, like, hate, title)
 
             // 인증된 사용자에게만 즐겨찾기, 좋아요/싫어요 버튼을 보이도록 처리
             if (is_authenticated == false) {
@@ -332,11 +333,11 @@ function get_ranking() {
 }
 
 // 좋아요 기능
-function likeLaw(id) {
+function likeLaw(id, title) {
     $.ajax({
         type: 'POST',
         url: `/api/like`,
-        data: {id_give: id},
+        data: {id_give: id, title_give: title},
         success: function (response) {
             console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
@@ -345,11 +346,11 @@ function likeLaw(id) {
 }
 
 //싫어요 기능
-function hateLaw(id) {
+function hateLaw(id, title) {
     $.ajax({
         type: 'POST',
         url: `/api/hate`,
-        data: {id_give: id},
+        data: {id_give: id, title_give: title},
         success: function (response) {
             console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
@@ -358,12 +359,12 @@ function hateLaw(id) {
 }
 
 // 좋아요 싫어요 버튼 추가
-function add_like_hate_button(id, like, hate) {
+function add_like_hate_button(id, like, hate,title) {
     $('#card-footer').empty()
-    let tmp_html = `<a href="#" onClick="likeLaw('${id}')" class="card-footer-item has-text-info">
+    let tmp_html = `<a href="#" onClick="likeLaw('${id}', '${title}')" class="card-footer-item has-text-info">
                         좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                     </a>
-                    <a href="#" onClick="hateLaw('${id}')" class="card-footer-item has-text-danger">
+                    <a href="#" onClick="hateLaw('${id}', '${title}')" class="card-footer-item has-text-danger">
                         싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                     </a>`
     $('#card-footer').append(tmp_html)
