@@ -15,6 +15,7 @@ bp = Blueprint('like', __name__, url_prefix='/')
 jwt_secret = os.environ['JWT_SECRET']
 TOKEN_KEY = os.environ['TOKEN_KEY']
 
+# 좋아요
 @bp.route('/api/like', methods=['POST'])
 def like_star():
     try:
@@ -23,31 +24,49 @@ def like_star():
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
+        title_receive = request.form['title_give']
 
         like_laws = db.users.find_one(
-            {'user_id':user['user_id']},
-            {'like_laws':1, '_id':0}
+            {'user_id':user['user_id']}, # 현재 인증된 사용자로 DB 조회
+            {'_id':0}
         )['like_laws']
 
-        if id_receive in like_laws: # 좋아요가 이미 눌린 법안인 경우
-            # 사용자의 좋아요 목록에서 제거
-            db.users.update(
-                {'user_id':user['user_id']},
-                {'$pull':{'like_laws':id_receive}}
-            )
+        flag = True
 
-            # 좋아요를 감소시키는 부분
-            likes = db.ranking.find_one({'id': id_receive})
-            current_like = likes['like']
-            new_like = current_like - 1
-            current_hate = likes['hate']
-            db.ranking.update_one({'id': id_receive}, {'$set': {'like': new_like}})
-        else: # 좋아요가 처음 눌린 법안인 경우
+        for like_law in like_laws:
+            if id_receive in like_law['like_law_id']:
+
+                res = db.users.update(
+                    {'user_id': user['user_id']},  # 현재 인증된 사용자로 DB 조회
+                    {'$pull':  # 리스트에서 제거
+                         {'like_laws':  # like_laws 리스트의 요소중 like_law_id 필드가 id_receive인 요소
+                            {'like_law_id': id_receive, 'title': title_receive}
+                          }
+                     },
+                )
+
+                # 좋아요를 감소시키는 부분
+                likes = db.ranking.find_one({'id': id_receive})
+                current_like = likes['like']
+                new_like = current_like - 1
+                current_hate = likes['hate']
+                db.ranking.update_one({'id': id_receive}, {'$set': {'like': new_like}})
+                flag = False
+
+        if flag:
             # 사용자의 좋아요 목록에 추가
+            doc = {
+                'like_law_id': id_receive,
+                'title': title_receive,
+            }
             db.users.update(
                 {'user_id': user['user_id']},
-                {'$push': {'like_laws': id_receive}}
+                {'$push':
+                     {'like_laws': doc}
+                 }
             )
+
+
 
             # 좋아요를 증가시키는 부분
             likes = db.ranking.find_one({'id': id_receive})
@@ -61,36 +80,53 @@ def like_star():
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
 
+# 싫어요
 @bp.route('/api/hate', methods=['POST'])
-def delete_star():
+def hate_star():
     try:
         # 토큰 검증
         mytoken = request.cookies.get(TOKEN_KEY)
         user = verify_token(mytoken)
 
         id_receive = request.form['id_give']
+        title_receive = request.form['title_give']
 
         hate_laws = db.users.find_one(
             {'user_id': user['user_id']},
-            {'hate_laws': 1, '_id': 0}
+            {'_id': 0}
         )['hate_laws']
 
-        if id_receive in hate_laws:
-            db.users.update(
-                {'user_id': user['user_id']},
-                {'$pull': {'hate_laws': id_receive}}
-            )
+        flag = True
 
-            hates = db.ranking.find_one({'id': id_receive})
-            current_hate = hates['hate']
-            new_hate = current_hate - 1
-            current_like = hates['like']
-            db.ranking.update_one({'id': id_receive}, {'$set': {'hate': new_hate}})
-        else:  # 좋아요가 처음 눌린 법안인 경우
-            # 사용자의 좋아요 목록에 추가
+        for hate_law in hate_laws:
+            if id_receive in hate_law['hate_law_id']:
+                db.users.update(
+                    {'user_id':user['user_id']},
+                    {'$pull':
+                         {'hate_laws':
+                              {'hate_law_id': id_receive, 'title': title_receive}
+                          }
+                     }
+                )
+
+                hates = db.ranking.find_one({'id': id_receive})
+                current_hate = hates['hate']
+                new_hate = current_hate - 1
+                current_like = hates['like']
+                db.ranking.update_one({'id': id_receive}, {'$set': {'hate': new_hate}})
+
+                flag = False
+
+        if flag:
+            doc = {
+                'hate_law_id': id_receive,
+                'title': title_receive,
+            }
             db.users.update(
                 {'user_id': user['user_id']},
-                {'$push': {'hate_laws': id_receive}}
+                {'$push':
+                     {'hate_laws': doc}
+                 }
             )
 
             hates = db.ranking.find_one({'id': id_receive})

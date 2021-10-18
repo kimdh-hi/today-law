@@ -126,6 +126,20 @@ def edit_profile():
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
 
+@bp.route('/mypage/likes')
+def likes():
+    try:
+        mytoken = request.cookies.get(TOKEN_KEY)
+        user = verify_token(mytoken)
+
+        like_laws = db.users.find_one(
+            {'user_id': user['user_id']},
+            {'_id':False}
+        )['like_laws']
+
+        return jsonify({"like_laws": like_laws})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "허용되지 않은 접근입니다."})
 def verify_token(mytoken):
     # 인코딩된 토큰의 payload 부분 디코딩
     token = jwt.decode(mytoken, JWT_SECRET, algorithms=['HS256'])

@@ -20,7 +20,8 @@ bp = Blueprint("kakao_login", __name__, url_prefix='/')
 
 kakao_client_key = os.environ['KAKAO_REST_API']
 jwt_secret = os.environ['JWT_SECRET']
-redirect_uri = "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/kakao/callback"
+# redirect_uri = "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/kakao/callback"
+redirect_uri = "http://localhost:5000/oauth/kakao/callback"
 
 
 # 사용자가 카카오 로그인 요청시 카카오 로그인 페이지로 이동
@@ -52,6 +53,7 @@ def access():
 
         if find_user == None:
             user_info_doc = {
+
                 "user_id": id,
                 "username": kakao_account['email'],
                 "name": kakao_account['profile']['nickname'],
@@ -63,6 +65,7 @@ def access():
                 "bio": "",
                 "receive_mail": False,
                 "recently_view": []
+
             }
 
             db.users.insert_one(user_info_doc)
@@ -100,9 +103,9 @@ def login_check():
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
         exp = payload['exp']
-
         user = db.users.find_one({'user_id': payload['user_id']}, {'_id': False})
         return jsonify({'result': 'success', 'name': user['name'], 'profile_image': user['profile_image'],
                         'email': user['username'], 'bio': user['bio'], 'receive_mail': user['receive_mail']})
+
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
