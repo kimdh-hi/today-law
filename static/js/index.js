@@ -334,6 +334,7 @@ function get_ranking() {
 
 // 좋아요 기능
 function likeLaw(id, title) {
+    console.log(id, title)
     $.ajax({
         type: 'POST',
         url: `/api/like`,
@@ -347,6 +348,7 @@ function likeLaw(id, title) {
 
 //싫어요 기능
 function hateLaw(id, title) {
+    console.log(id, title)
     $.ajax({
         type: 'POST',
         url: `/api/hate`,
