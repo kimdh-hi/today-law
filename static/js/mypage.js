@@ -201,8 +201,7 @@ $(document).ready(function () {
 
                 }
             })
-        }
-        else if ($(this).text().includes('좋아요')) {
+        } else if ($(this).text().includes('좋아요')) {
             $.ajax({
                 type: "GET",
                 url: `/mypage/wishlist`,
@@ -233,6 +232,45 @@ $(document).ready(function () {
                                   </table>
                                 </div>`
                     $('#mypage-contents').append(temp_html)
+
+                }
+            })
+        } else if ($(this).text().includes('최근')) {
+            $.ajax({
+                type: "GET",
+                url: `/mypage/recently_view`,
+                success: function (res) {
+                    $("#mypage-contents").empty();
+                    let temp_html = `<div class='columns is-mobile'>`
+                    for (let i = res['recently_list']['recently_view'].length-1; i >= 0; i--) {
+                        console.log(res['recently_list']['recently_view'][i])
+                        let title = res['recently_list']['recently_view'][i]['title']
+                        let content = res['recently_list']['recently_view'][i]['content'].slice(0,87)+'...'
+                        let url = res['recently_list']['recently_view'][i]['url']
+
+                        temp_html += `
+                                    <div class='column is-3-tablet is-6-mobile'>
+                                        <div class='card'>
+                                            <p class="card-header-title">${title}</p>
+                                            <div class='card-content'>
+                                                <div class='content'>
+                                                    <span class='tag is-dark subtitle'>#1</span>
+                                                    <p>${content}</p>
+                                                </div>
+                                            </div>
+                                            <footer class='card-footer'>
+                                                <a class='card-footer-item'>보기</a>
+                                                <a class='card-footer-item'>삭제</a>
+                                            </footer>
+                                        </div>
+                    
+                                        <br>
+                                    </div>
+                                `
+                    }
+                    $('#mypage-contents').append(temp_html+`</div>`)
+                    console.log(res['recently_list']['recently_view'])
+
 
                 }
             })
