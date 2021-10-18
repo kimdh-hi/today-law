@@ -24,6 +24,7 @@ $(document).ready(function () {
         type: "GET",
         url: `/login-check`,
         success: function (res) {
+            console.log(res)
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
                 $('#logout_button').removeClass("is-hidden")
@@ -31,22 +32,6 @@ $(document).ready(function () {
                 $('#btn-post-box').removeClass("is-hidden")
                 $('#login_warning').addClass("is-hidden")
 
-                if ($(location).attr('pathname') == '/mypage') {
-                    $.ajax({
-                        type: "GET",
-                        url: `/mypage`,
-                        success: function (res) {
-
-                            console.log(res['result'])
-
-                            $('#mypage-container').append(temp_html)
-
-                        },
-                        fail: function (){
-                            location.pathname = '/'
-                        }
-                    })
-                }
                 let temp_html = `<div onclick="dpmenu()" class = "dropdown" >
                                     <div class = "dropdown-trigger" >
                                         <button style="padding-left: 0" class = "button" aria-haspopup = "true" aria-controls = "dropdown-menu3" >
@@ -72,17 +57,6 @@ $(document).ready(function () {
 
 
                 is_authenticated = true
-            } else {
-                if ($(location).attr('pathname') == '/mypage') {
-                    console.log('not logged in')
-                    location.pathname = '/'
-                }
-                $('#login_button').removeClass("is-hidden")
-                $('#logout_button').addClass("is-hidden")
-                $('#bookmark-tab').addClass("is-hidden")
-                $('#btn-post-box').addClass("is-hidden")
-                $('#login_warning').removeClass("is-hidden")
-                is_authenticated = false
             }
         }
     })

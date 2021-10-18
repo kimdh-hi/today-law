@@ -15,7 +15,27 @@ function agree_receive() {
         type: "POST",
         url: `/mypage/agree`,
         success: function (res) {
+            alert(res['result'])
+            location.reload()
+        }
+    })
+}
+
+function edit_profile() {
+    let name = $('#profile-name').val()
+    let bio = $('#profile-bio').val()
+    console.log(name, bio)
+    $.ajax({
+        type: "POST",
+        url: `/mypage/profile`,
+        data: {name_give: name, bio_give: bio},
+        success: function (res) {
+            if (res['result'] == 'success') {
                 alert(res['result'])
+                location.reload()
+            } else {
+                alert('이미 존재하는 닉네임입니다.')
+            }
         }
     })
 }
@@ -47,23 +67,23 @@ $(document).ready(function () {
                                             <section class='modal-card-body'>
                                                 <label class='label'>닉네임</label>
                                                 <p class='control has-icon has-icon-right'>
-                                                    <input class='input' placeholder='Text input' type='text' value='${res['name']}'>
+                                                    <input id="profile-name" class='input' placeholder='Text input' type='text' value='${res['name']}'>
                                                 </p>
                                                 <label class='label'>이메일</label>
                                                 <p class='control has-icon has-icon-right'>
-                                                    <input class='input' placeholder='Email input' type='text' value='${res['username']}'>
-                                                    <i class='fa fa-warning'></i>
-                                                    <span class='help is-danger'>This email is invalid</span>
+                                                    <input class='input' placeholder='Email input' type='text' value='${res['email']}' readonly>
+<!--                                                    <i class='fa fa-warning'></i>-->
+<!--                                                    <span class='help is-danger'>This email is invalid</span>-->
                                                 </p>
                             
                                                 <label class='label'>자기소개</label>
                                                 <p class='control'>
-                                                    <textarea class='textarea' placeholder='자기 소개를 작성해보세요!'></textarea>
+                                                    <textarea id="profile-bio" class='textarea' placeholder='자기 소개를 작성해보세요!'>${res['bio']}</textarea>
                                                 </p>
                             
                                             </section>
                                             <footer class='modal-card-foot'>
-                                                <a class='button is-primary modal-save'>Save changes</a>
+                                                <a onclick="edit_profile()" class='button is-primary modal-save'>Save changes</a>
                                                 <a onclick="close_modal()" class='button modal-cancel'>Cancel</a>
                                             </footer>
                                         </div>
@@ -82,15 +102,17 @@ $(document).ready(function () {
                                                     <a onclick="modal()" class='button is-primary is-outlined' id='edit-preferences' style='margin: 5px 0'>
                                                         프로필 수정
                                                     </a>
-                                                    <a onclick="agree_receive()" class='button is-primary is-outlined' id='edit-preferences' style='margin: 5px 0'>
+                                                        ${res['receive_mail'] ? `<a onclick="agree_receive()" class='button is-danger is-outlined' id='edit-preferences' style='margin: 5px 0'>
+                                                        알림끄기
+                                                    </a>` : `<a onclick="agree_receive()" class='button is-primary is-outlined' id='edit-preferences' style='margin: 5px 0'>
                                                         알림받기
-                                                    </a>
+                                                    </a>`}
+                                                    
                                                     
                                                     <br>
                                                 </p>
                                                 <p class='tagline'>
-                                                    자기 소개를 작성해보세요!
-                                                    
+                                                    ${res['bio']}         
                                                 </p>
                                             </div>
                             
@@ -169,8 +191,43 @@ $(document).ready(function () {
                                     <tbody>
                                       <tr>
                                         <td>${category}</td>
-                                        <td class="link" onclick="open_modal_wish('${title}','${category}','${time}','${agree}', '${contents}')">${title}</td>
+                                        <td onclick="open_modal_wish('${title}','${category}','${time}','${agree}', '${contents}')"><a>${title}</a></td>
                                         <td>${time}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>`
+                    $('#mypage-contents').append(temp_html)
+
+                }
+            })
+        }
+        else if ($(this).text().includes('좋아요')) {
+            $.ajax({
+                type: "GET",
+                url: `/mypage/wishlist`,
+                success: function (res) {
+                    $("#mypage-contents").empty();
+                    console.log(res['title'])
+                    let category = res['category_give']
+                    let title = res['title_give']
+                    let time = res['time_give']
+                    let contents = res['contents_give']
+                    let agree = res['agree_give']
+                    temp_html = `<div class="wishlist">
+                                  <table class="table is-responsive">
+                                    <thead>
+                                      <tr>
+                                        <th>법안이름</th>
+                                        <th>대표발의자</th>
+                                        <th>발의일</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -191,4 +248,10 @@ function dpmenu() {
     } else {
         $(".dropdown").addClass("is-active")
     }
+}
+
+function close_modal() {
+    $(".modal").removeClass("is-active");
+    //모달을 비워주지 않으면 두번째 창부터 좋아요 버튼이 생기지 않음
+    $(".modal").empty();
 }

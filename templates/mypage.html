@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>User Profile using Bulma</title>
+    <title>Today 국회</title>
+    <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
+    <meta property="og:title" content="오늘의 법"/>
+    <meta property="og:description" content="오늘도 발의되는 여러 법안들 간편하게 살펴보자!!"/>
+    <meta property="og:image" content="{{ url_for('static', filename='congress.png') }}"/>
 
 
     <!-- Bootstrap CSS -->
@@ -40,7 +44,7 @@
     <!-- js 불러오기 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="/static/js/login.js"></script>
-
+    <script src="/static/js/wish.js"></script>
     <script src="/static/js/mypage.js"></script>
 
 </head>
