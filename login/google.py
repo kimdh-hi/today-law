@@ -87,7 +87,8 @@ def callback():
             "hate_laws": [],
             "bookmarks": [],
             "comments": [],
-            "receive_mail": False
+            "receive_mail": False,
+            "bio":" ",
         }
 
         db.users.insert_one(user_info_doc)

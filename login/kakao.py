@@ -53,11 +53,11 @@ def access():
                 "username":kakao_account['email'],
                 "name":kakao_account['profile']['nickname'],
                 "profile_image":kakao_account['profile']['profile_image_url'],
-                "like_laws":[],
-                "hate_laws":[],
-                "bookmarks":[],
+                "like_laws": [],
+                "hate_laws": [],
+                "bookmarks": [],
                 "comments": [],
-                "bio":"",
+                "bio": " ",
                 "receive_mail": False
             }
 
@@ -97,7 +97,15 @@ def login_check():
         exp = payload['exp']
 
         user = db.users.find_one({'user_id':payload['user_id']}, {'_id':False})
-        return jsonify({'result': 'success', 'name': user['name'],'profile_image': user['profile_image'],'email': user['username'],'bio': user['bio'],'receive_mail':user['receive_mail']} )
+        return jsonify(
+            {'result': 'success',
+             'name': user['name'],
+             'profile_image': user['profile_image'],
+             'email': user['username'],
+             'bio': user['bio'],
+             'receive_mail':user['receive_mail']
+             }
+        )
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
 
