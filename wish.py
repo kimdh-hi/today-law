@@ -22,7 +22,7 @@ JWT_SECRET = os.environ['JWT_SECRET']
 @bp.route('/wish', methods=['GET'])
 def show_wish():
     query = request.args.get('query')
-    if query == "전체":
+    if query == "전체" or query == "undefined":
         wish_list = list(db.wish.find({}, {'_id': False}).sort([('_id', -1)]))
     else:
         wish_list = list(db.wish.find({'category': query}, {'_id': False}).sort([('_id', -1)]))

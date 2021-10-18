@@ -14,17 +14,19 @@ function wish_list(category) {
         data: {},
         success: function (response) {
             let wishes = response['wish_list']
-            if (wishes == "") {
+            if (wishes == "" & !(category == "전체")) {
                 let temp_html = `<tr>
                                     <td colspan='4'>해당 카테고리의 청원이 없습니다.</td>
                                  </tr>`
                 $('#wish_tr').append(temp_html)
             } else {
+                $('#wish_tr').empty()
                 for (let i = 0; i < wishes.length; i++) {
                     let title = wishes[i]['title']
                     let category = wishes[i]['category']
                     let time = wishes[i]['time']
                     let agree = wishes[i]['agree']
+                    let contents = wishes[i]['contents']
 
                     let temp_html = `<tr>
                                     <th scope="row">${category}</th>
@@ -45,17 +47,24 @@ function post_wish() {
     let category = $('#category').val()
     let contents = $('#contents').val().replace(/\n/g, '<br>')
 
-    console.log(title, category, contents)
+    if (!title) {
+        alert("제목을 입력해주시길 바랍니다.")
+    } else if (category == "카테고리를 선택해주세요") {
+        alert("카테고리를 선택해주시길 바랍니다.")
+    } else if (!contents) {
+        alert("청원 내용을 해주시길 바랍니다.")
+    } else {
+        $.ajax({
+            type: "POST",
+            url: `/wish`,
+            data: {title_give: title, category_give: category, contents_give: contents},
+            success: function (response) {
+                alert(response['msg'])
+                window.location.reload()
+            }
+        })
+    }
 
-    $.ajax({
-        type: "POST",
-        url: `/wish`,
-        data: {title_give: title, category_give: category, contents_give: contents},
-        success: function (response) {
-            alert(response['msg'])
-            window.location.reload()
-        }
-    })
 }
 
 function open_modal_wish(title, category, time, agree, contents) {
