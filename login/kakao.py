@@ -62,7 +62,8 @@ def access():
 
             db.users.insert_one(user_info_doc)
     except:
-        return jsonify({"result":"fail"})
+        #return jsonify({"result":"fail"})
+        return redirect('/')
 
     return login(id, kakao_account['profile']['nickname'])
 
