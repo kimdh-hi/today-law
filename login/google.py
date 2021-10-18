@@ -89,6 +89,7 @@ def callback():
             "comments": [],
             "receive_mail": False,
             "bio":" ",
+            "recently_view": []
         }
 
         db.users.insert_one(user_info_doc)

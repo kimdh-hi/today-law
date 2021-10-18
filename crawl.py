@@ -10,8 +10,8 @@ from pymongo import MongoClient
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
-client = MongoClient(MONGO_URL, 27017)
-# client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
+# client = MongoClient(MONGO_URL, 27017)
+client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 TOKEN_KEY = os.environ['TOKEN_KEY']
 JWT_SECRET = os.environ['JWT_SECRET']
 db = client.todaylaw
@@ -82,7 +82,7 @@ def recently_view(id, title, url, proposer_name, proposer_names, content):
         recently_list = list(db.users.find(
             {'user_id': user['user_id']}, {'recently_view': True, '_id': False}
         ))
-        print(recently_list[0]['recently_view'])
+
         while (len(recently_list[0]['recently_view']) > 5):
             del recently_list[0]['recently_view'][0]
             db.users.update(
@@ -90,10 +90,9 @@ def recently_view(id, title, url, proposer_name, proposer_names, content):
                 {'$pop': {'recently_view': -1}}
             )
         temp = True
-        for i in range(5):
+        for i in range(len(recently_list[0]['recently_view'])):
             if (recently_list[0]['recently_view'][i]['recently_view_id'] == id):
                 temp = False
-                print('break')
                 break
 
         if temp == True:
