@@ -1,13 +1,13 @@
 import os
 import jwt
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, redirect
 from pymongo import MongoClient
 
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
-#client = MongoClient(MONGO_URL, 27017)
-client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
+client = MongoClient(MONGO_URL, 27017)
+# client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
 TOKEN_KEY = os.environ['TOKEN_KEY']
 JWT_SECRET = os.environ['JWT_SECRET']
 
@@ -84,6 +84,34 @@ def agree():
             msg = '알림이 설정되었습니다.'
 
         return jsonify({'result': msg})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "허용되지 않은 접근입니다."})
+
+
+@bp.route('/mypage/profile', methods=['POST'])
+def edit_profile():
+    try:
+        mytoken = request.cookies.get(TOKEN_KEY)
+        user = verify_token(mytoken)
+
+        user = db.users.find_one({'user_id': user['user_id']}, {'_id': False})
+
+        name_receive = request.form['name_give']
+        bio_receive = request.form['bio_give']
+
+        print(bio_receive)
+
+        if user['name']==db.user.find_one({'name': name_receive}) or (db.user.find_one({'name': name_receive})) == None:
+            db.users.update(
+                {'user_id': user['user_id']},
+                {'$set': {'name': name_receive, 'bio': bio_receive}}, upsert=True
+            )
+            result = 'success'
+        else:
+            result = 'fail'
+
+
+        return jsonify({'result': result})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
