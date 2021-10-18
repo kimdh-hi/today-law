@@ -20,7 +20,6 @@ $(document).ready(function () {
         type: "GET",
         url: `/login-check`,
         success: function (res) {
-            console.log(res)
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
                 $('#logout_button').removeClass("is-hidden")
@@ -92,7 +91,6 @@ $(document).ready(function () {
 
 function mypage() {
     if (is_authenticated === true) {
-        console.log(location.host)
         location.href = 'http://' + location.host + '/mypage'
     } else {
         show_login_modal()
@@ -340,8 +338,7 @@ function likeLaw(id, title) {
         url: `/api/like`,
         data: {id_give: id, title_give: title},
         success: function (response) {
-            console.log(response)
-            add_like_hate_button(response.id, response.like, response.hate)
+            add_like_hate_button(response.id, response.like, response.hate, title)
         }
     })
 }
@@ -354,14 +351,13 @@ function hateLaw(id, title) {
         url: `/api/hate`,
         data: {id_give: id, title_give: title},
         success: function (response) {
-            console.log(response)
-            add_like_hate_button(response.id, response.like, response.hate)
+            add_like_hate_button(response.id, response.like, response.hate, title)
         }
     });
 }
 
 // 좋아요 싫어요 버튼 추가
-function add_like_hate_button(id, like, hate,title) {
+function add_like_hate_button(id, like, hate, title) {
     $('#card-footer').empty()
     let tmp_html = `<a href="#" onClick="likeLaw('${id}', '${title}')" class="card-footer-item has-text-info">
                         좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
@@ -470,7 +466,7 @@ function bookmark(id, title, proposer_name, proposer_names, url, date) {
         "url": url,
         "date": date
     }
-    console.log(data)
+
     $.ajax({
         type: "POST",
         url: `/api/bookmark`,
