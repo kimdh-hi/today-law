@@ -20,8 +20,8 @@ bp = Blueprint("kakao_login", __name__, url_prefix='/')
 
 kakao_client_key = os.environ['KAKAO_REST_API']
 jwt_secret = os.environ['JWT_SECRET']
-# redirect_uri = "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/kakao/callback"
-redirect_uri = "http://localhost:5000/oauth/kakao/callback"
+redirect_uri = "http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/kakao/callback"
+#redirect_uri = "http://localhost:5000/oauth/kakao/callback"
 
 
 # 사용자가 카카오 로그인 요청시 카카오 로그인 페이지로 이동
