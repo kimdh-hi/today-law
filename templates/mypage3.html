@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+
     <title>Today 국회</title>
     <link rel="shortcut icon" href="../static/favicon.png" type="image/x-icon">
     <meta property="og:title" content="오늘의 법"/>
     <meta property="og:description" content="오늘도 발의되는 여러 법안들 간편하게 살펴보자!!"/>
     <meta property="og:image" content="{{ url_for('static', filename='congress.png') }}"/>
-
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -43,13 +42,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     <!-- js 불러오기 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script src="/static/js/scroll.js"></script>
     <script src="/static/js/login.js"></script>
     <script src="/static/js/wish.js"></script>
-    <script src="/static/js/mypage.js"></script>
-
 </head>
 
 <body>
+
 <section class="hero is-info is-small">
     <div class="hero-head">
         <nav class="navbar">
@@ -86,65 +86,52 @@
         </nav>
     </div>
 </section>
-<div class='columns'>
-    <div class='container profile'>
-        <div id="profile-container">
+
+<div id="app">
+    <section class="main-content columns is-fullheight">
+
+        <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+            <p class="menu-label is-hidden-touch">HOME</p>
+            <ul class="menu-list">
+                <li>
+                    <a href="#" class="is-active">
+                        <span class="icon"><i class="fa fa-home"></i></span> 내정보
+                    </a>
+                </li>
+                <li>
+                    <a class="">
+                        <span class="icon"><i class="fa fa-table"></i></span> 최근 본 법안
+                    </a>
+                </li>
+                <li>
+                    <a class="wishlist">
+                        <span class="icon"><i class="fa fa-table"></i></span> 작성한 청원
+                    </a>
+                </li>
+                <p class="menu-label is-hidden-touch">설정</p>
+                <li>
+                    <a href="#" class="">
+                        <span class="icon"><i class="fa fa-info"></i></span> 개인정보수정
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        <div id="mypage-container" class="is-narrow-mobile is-fullheight section is-hidden-mobile">
 
         </div>
-        <div class='profile-options is-fullwidth'>
-            <div class='tabs is-fullwidth is-medium'>
-                <ul class="page-list">
-                    <li class='link is-active'>
-                        <a>
-                            <span class='icon'>
-                                <i class='fa fa-list'></i>
-                            </span>
-                            <span>최근 본 법안</span>
-                        </a>
-                    </li>
-                    <li class='link'>
-                        <a>
-                            <span class='icon'>
-                                <i class='fa fa-thumbs-up'></i>
-                            </span>
-                            <span>좋아요한 법안</span>
-                        </a>
-                    </li>
-                    <li class='link'>
-                        <a>
-                            <span class='icon'>
-                                <i class='fa fa-search'></i>
-                            </span>
-                            <span>작성한 청원</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div id="mypage-contents">
-            <div class='columns is-mobile'>
-                <div class='column is-3-tablet is-6-mobile'>
-                    <div class='card'>
-                        <p class="card-header-title">법안이름</p>
-                        <div class='card-content'>
-                            <div class='content'>
-                                <span class='tag is-dark subtitle'>#1</span>
-                                <p>내용 요약.</p>
-                            </div>
-                        </div>
-                        <footer class='card-footer'>
-                            <a class='card-footer-item'>공유</a>
-                            <a class='card-footer-item'>삭제</a>
-                        </footer>
-                    </div>
-                    <br>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    </section>
 </div>
 
 
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+            is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+        </p>
+    </div>
+</footer>
 </body>
-
 </html>

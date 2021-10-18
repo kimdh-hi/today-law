@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 import jwt
 from oauthlib.oauth2 import WebApplicationClient
 from pymongo import MongoClient
-from decouple import config
-TOKEN_KEY = config('TOKEN_KEY')
+
+TOKEN_KEY = os.environ['TOKEN_KEY']
 
 bp = Blueprint("google", __name__, url_prefix='/')
 
@@ -117,7 +117,7 @@ def login(id, name):
 
 @bp.route('/login-check')
 def login_check():
-    token = request.cookies.get('mytoken')
+    token = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(token, jwt_secret, algorithms=['HS256'])
 

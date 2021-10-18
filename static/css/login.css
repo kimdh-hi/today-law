@@ -39,3 +39,7 @@ ul, li {
     height: 74px;
     background: url("/static/naver.png") no-repeat;
 }
+
+.social_button button:hover{
+    cursor: pointer;
+}

@@ -20,6 +20,7 @@ $(document).ready(function () {
         type: "GET",
         url: `/login-check`,
         success: function (res) {
+            console.log(res)
             if (res['result'] == 'success') {
                 $('#login_button').addClass("is-hidden")
                 $('#logout_button').removeClass("is-hidden")
@@ -27,27 +28,6 @@ $(document).ready(function () {
                 $('#btn-post-box').removeClass("is-hidden")
                 $('#login_warning').addClass("is-hidden")
 
-                if ($(location).attr('pathname') == '/mypage') {
-                    let temp_mypage = `<div class = "container profile">
-                                            <div class = "section profile-heading">
-                                                <div class = "columns">
-                                                    <div class = "column is-2">
-                                                        <div class = "image is-128x128 avatar">
-                                                            <img src = "${res['profile_image']}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="column is-10 name">
-                                                        <p>
-                                                            <span class="title is-bold">${res['name']}</span>
-                                                        </p>
-                                                        <p class="tagline">자기소개</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`
-                    console.log('hi!' + res['name'])
-                    $('#mypage-container').append(temp_mypage)
-                }
                 let temp_html = `<div onclick="dpmenu()" class = "dropdown" >
                                     <div class = "dropdown-trigger" >
                                         <button style="padding-left: 0" class = "button" aria-haspopup = "true" aria-controls = "dropdown-menu3" >
@@ -73,17 +53,6 @@ $(document).ready(function () {
 
 
                 is_authenticated = true
-            } else {
-                if ($(location).attr('pathname') == '/mypage') {
-                    console.log('not logged in')
-                    location.pathname = '/'
-                }
-                $('#login_button').removeClass("is-hidden")
-                $('#logout_button').addClass("is-hidden")
-                $('#bookmark-tab').addClass("is-hidden")
-                $('#btn-post-box').addClass("is-hidden")
-                $('#login_warning').removeClass("is-hidden")
-                is_authenticated = false
             }
         }
     })
@@ -109,18 +78,6 @@ $(document).ready(function () {
         $(".card-container > .card-list").eq(idx).show();
     })
 
-    //마이페이지 메뉴 전환
-    $(".menu-list li").click(function () {
-        let idx = $("li").index(this);
-        $(".menu-list li a").removeClass("is-active");
-        $(".menu-list li a").eq(idx).addClass("is-active");
-
-        if (idx == 2) {
-            console.log('개인정보 수정')
-        }
-    })
-
-
     //랭킹 hover
     $('.box').hover(function () {
         $('.box').css("height", "12em");
@@ -135,7 +92,8 @@ $(document).ready(function () {
 
 function mypage() {
     if (is_authenticated === true) {
-        location.href = base_url + 'mypage'
+        console.log(location.host)
+        location.href = 'http://' + location.host + '/mypage'
     } else {
         show_login_modal()
     }
@@ -245,7 +203,8 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
                             </div>`
             $('body').append(temp_html)
-            add_like_hate_button(id, like, hate)
+
+            add_like_hate_button(id, like, hate, title)
 
             // 인증된 사용자에게만 즐겨찾기, 좋아요/싫어요 버튼을 보이도록 처리
             if (is_authenticated == false) {
@@ -374,11 +333,11 @@ function get_ranking() {
 }
 
 // 좋아요 기능
-function likeLaw(id) {
+function likeLaw(id, title) {
     $.ajax({
         type: 'POST',
         url: `/api/like`,
-        data: {id_give: id},
+        data: {id_give: id, title_give: title},
         success: function (response) {
             console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
@@ -387,11 +346,11 @@ function likeLaw(id) {
 }
 
 //싫어요 기능
-function hateLaw(id) {
+function hateLaw(id, title) {
     $.ajax({
         type: 'POST',
         url: `/api/hate`,
-        data: {id_give: id},
+        data: {id_give: id, title_give: title},
         success: function (response) {
             console.log(response)
             add_like_hate_button(response.id, response.like, response.hate)
@@ -400,12 +359,12 @@ function hateLaw(id) {
 }
 
 // 좋아요 싫어요 버튼 추가
-function add_like_hate_button(id, like, hate) {
+function add_like_hate_button(id, like, hate,title) {
     $('#card-footer').empty()
-    let tmp_html = `<a href="#" onClick="likeLaw('${id}')" class="card-footer-item has-text-info">
+    let tmp_html = `<a href="#" onClick="likeLaw('${id}', '${title}')" class="card-footer-item has-text-info">
                         좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                     </a>
-                    <a href="#" onClick="hateLaw('${id}')" class="card-footer-item has-text-danger">
+                    <a href="#" onClick="hateLaw('${id}', '${title}')" class="card-footer-item has-text-danger">
                         싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                     </a>`
     $('#card-footer').append(tmp_html)
@@ -615,26 +574,26 @@ function likes_show() {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Get all "navbar-burger" elements
-  var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    // Get all "navbar-burger" elements
+    var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
-  // Check if there are any nav burgers
-  if ($navbarBurgers.length > 0) {
+    // Check if there are any nav burgers
+    if ($navbarBurgers.length > 0) {
 
-    // Add a click event on each of them
-    $navbarBurgers.forEach(function ($el) {
-      $el.addEventListener('click', function () {
+        // Add a click event on each of them
+        $navbarBurgers.forEach(function ($el) {
+            $el.addEventListener('click', function () {
 
-        // Get the target from the "data-target" attribute
-        var target = $el.dataset.target;
-        var $target = document.getElementById(target);
+                // Get the target from the "data-target" attribute
+                var target = $el.dataset.target;
+                var $target = document.getElementById(target);
 
-        // Toggle the class on both the "navbar-burger" and the "navbar-menu"
-        $el.classList.toggle('is-active');
-        $target.classList.toggle('is-active');
+                // Toggle the class on both the "navbar-burger" and the "navbar-menu"
+                $el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
 
-      });
-    });
-  }
+            });
+        });
+    }
 
 });

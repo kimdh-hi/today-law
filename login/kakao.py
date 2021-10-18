@@ -4,15 +4,15 @@ import requests
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 import jwt
-from decouple import config
-TOKEN_KEY = config('TOKEN_KEY')
+
+TOKEN_KEY = os.environ['TOKEN_KEY']
 
 MONGO_URL = os.environ['MONGO_URL']
 MONGO_USERNAME = os.environ['MONGO_USERNAME']
 MONGO_PASSWORD = os.environ['MONGO_PASSWORD']
 # 로컬 테스트를 위해 주석처리
 client = MongoClient(MONGO_URL, 27017, username=MONGO_USERNAME, password=MONGO_PASSWORD)
-# client = MongoClient(MONGO_URL, 27017)
+#client = MongoClient(MONGO_URL, 27017)
 db = client.todaylaw
 
 bp = Blueprint("kakao_login", __name__, url_prefix='/')
@@ -57,12 +57,14 @@ def access():
                 "hate_laws":[],
                 "bookmarks":[],
                 "comments": [],
+                "bio":"",
                 "receive_mail": False
             }
 
             db.users.insert_one(user_info_doc)
     except:
-        return jsonify({"result":"fail"})
+        #return jsonify({"result":"fail"})
+        return redirect('/')
 
     return login(id, kakao_account['profile']['nickname'])
 
@@ -81,7 +83,7 @@ def login(id, name):
     # 쿠키를 담은 response를 구성하기 위해 make_response 사용
     response = make_response(redirect('/'))
     # 쿠키에 토큰 세팅
-    response.set_cookie('mytoken', token)
+    response.set_cookie(TOKEN_KEY, token)
 
     return response
 
@@ -95,7 +97,7 @@ def login_check():
         exp = payload['exp']
 
         user = db.users.find_one({'user_id':payload['user_id']}, {'_id':False})
-        return jsonify({'result': 'success', 'name': user['name'],'profile_image': user['profile_image'] } )
+        return jsonify({'result': 'success', 'name': user['name'],'profile_image': user['profile_image'],'email': user['username'],'bio': user['bio'],'receive_mail':user['receive_mail']} )
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/')
 
