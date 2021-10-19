@@ -391,19 +391,6 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
     })
 }
 
-function add_like_hate_button(id, like, hate, title, proposer_name, proposer_names, url) {
-    $('#card-footer').empty()
-
-
-    let tmp_html = `<a href="#" onClick="likeLaw('${id}', '${title}', '${proposer_name}', '${proposer_names}', '${url}')" class="card-footer-item has-text-info">
-                        좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                    </a>
-                    <a href="#" onClick="hateLaw('${id}', '${title}', '${proposer_name}', '${proposer_names}', '${url}')" class="card-footer-item has-text-danger">
-                        싫어요 ${hate}명 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                    </a>`
-    $('#card-footer').append(tmp_html)
-}
-
 function likeLaw(id, title, content, proposer_name, proposer_names, url) {
     $.ajax({
         type: 'POST',
