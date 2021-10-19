@@ -74,7 +74,7 @@
                     <a class="navbar-item">
                         <img onclick="window.location.href='/'" src="/static/congress.png" alt="Logo">
                     </a>
-                    <span class="navbar-burger" data-target="navbarMenuHeroB">
+                    <span class="navbar-burger burger" aria-expanded="false" data-target="navbarMenuHeroB">
             <span></span>
             <span></span>
             <span></span>
@@ -91,14 +91,11 @@
                         <a href="/yesterday" class="navbar-item">
                             어제의 국회
                         </a>
-                        <span class="navbar-item">
-              <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
-                <span>로그인</span>
-              </a>
-                            <a onclick="logout()" class="button is-info is-inverted is-hidden" id="logout_button">
-                <span>로그아웃</span>
-              </a>
-            </span>
+                        <span id="navbar" class="navbar-item">
+                            <a onclick="show_login_modal()" class="button is-info is-inverted" id="login_button">
+                                <span>로그인</span>
+                            </a>
+                        </span>
                     </div>
                 </div>
             </div>
