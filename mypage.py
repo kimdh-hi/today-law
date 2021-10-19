@@ -34,14 +34,26 @@ def wishlist():
 
         wishlist = list(db.wish.find({'user_id': user['user_id']}, {'_id': False}))
 
-        title = wishlist[0]['title']
-        category = wishlist[0]['category']
-        time = wishlist[0]['time']
-        agree = wishlist[0]['agree']
-        contents = wishlist[0]['contents']
+        response = []
 
-        return jsonify({'result': 'success', 'title_give': title, 'category_give': category, 'time_give': time,
-                        'agree_give': agree, 'contents_give': contents})
+        for wish in wishlist:
+            title = wish['title']
+            category = wish['category']
+            time = wish['time']
+            agree = wish['agree']
+            contents = wish['contents']
+
+            doc = {
+                "title_give": title,
+                "category_give": category,
+                "time_give": time,
+                "agree_give": agree,
+                "contents_give": contents
+            }
+
+            response.append(doc)
+
+        return jsonify(response)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return jsonify({"result": "허용되지 않은 접근입니다."})
 
