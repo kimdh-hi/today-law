@@ -196,7 +196,6 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                             </footer>
 
                                         </div>
-
                                 </div>
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal()"></button>
                             </div>`

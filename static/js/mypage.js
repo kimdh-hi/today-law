@@ -329,7 +329,7 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
 
 
             let temp_html = `<div class="modal is-active">
-                                <div class="modal-background" onclick="close_modal()"></div>
+                                <div class="modal-background" onclick="close_modal2()"></div>
                                 <div class="modal-content">
 
                                         <div class="card-content" style="text-align: center">
@@ -371,13 +371,13 @@ function open_modal(url, id, title, proposer_name, proposer_names) {
                                             </footer>
 
                                         </div>
-
                                 </div>
                                 <button class="modal-close is-large" aria-label="close" onclick="close_modal2()"></button>
                             </div>`
             $('body').append(temp_html)
 
             add_like_hate_button(id, like, hate, title, content2, proposer_name, proposer_names, url)
+
 
             // 인증된 사용자에게만 즐겨찾기, 좋아요/싫어요 버튼을 보이도록 처리
             if (is_authenticated == false) {
@@ -404,9 +404,9 @@ function likeLaw(id, title, content, proposer_name, proposer_names, url) {
             url_give: url
         },
         success: function (response) {
-            // add_like_hate_button(
-            //     response.id, response.like, response.hate, response.title, response.proposer_name, response.proposer_names, response.url
-            // )
+            add_like_hate_button(
+                response.id, response.like, response.hate, response.title, response.proposer_name, response.proposer_names, response.url
+            )
             window.location.reload();
         }
     })
@@ -428,9 +428,9 @@ function hateLaw(id, title, content, proposer_name, proposer_names, url) {
         url: `/api/hate`,
         data: data,
         success: function (response) {
-            // add_like_hate_button(
-            //     response.id, response.like, response.hate, response.title, response.proposer_name, response.proposer_names, response.url
-            // )
+            add_like_hate_button(
+                response.id, response.like, response.hate, response.title, response.proposer_name, response.proposer_names, response.url
+            )
             window.location.reload();
         }
     });
@@ -442,7 +442,6 @@ function add_like_hate_button(id, like, hate, title, content, proposer_name, pro
 
     content = content.replaceAll("\"","").replaceAll("\'","").replaceAll(".","").replaceAll("\n","")
     content = $.trim(content);
-    console.log(content)
 
     let tmp_html = `<a href="#" onClick="likeLaw('${id}', '${title}', '${content}', '${proposer_name}', '${proposer_names}', '${url}')" class="card-footer-item has-text-info">
                         좋아요 ${like}명 <i class="fa fa-thumbs-up" aria-hidden="true"></i>
