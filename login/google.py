@@ -76,7 +76,7 @@ def callback():
         return "User email not available or not verified by Google.", 400
 
 
-    find_user = db.users.find_one({'id': unique_id})
+    find_user = db.users.find_one({'user_id': unique_id})
     if find_user is None:
         user_info_doc = {
             "user_id": unique_id,
