@@ -23,7 +23,7 @@ naver_client_secret = os.environ['NAVER_CLIENT_SECRET']
 jwt_secret = os.environ['JWT_SECRET']
 # UTF-8로 URL Encoding
 #로컬테스트를 위해 주석처리
-# redirect_uri = quote("http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/naver/callback", encoding='UTF-8')
+#redirect_uri = quote("http://pythonapp-env.eba-pxmvppwj.ap-northeast-2.elasticbeanstalk.com/oauth/naver/callback", encoding='UTF-8')
 redirect_uri = quote("http://localhost:5000/oauth/naver/callback", encoding='UTF-8')
 
 # 사용자가 네이버 로그인 요청시 네이버 로그인 페이지로 이동
